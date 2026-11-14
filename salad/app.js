@@ -190,6 +190,7 @@ const signatureWraps = [
     id: 'original-chicken-wrap',
     title: 'Signature Chicken Salad Wrap',
     badge: '⭐ Menu Utama P8',
+    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=700&q=80',
     tag: 'high-protein',
     base: 'tortilla',
     greens: 'romaine',
@@ -207,6 +208,7 @@ const signatureWraps = [
     id: 'power-double-chicken',
     title: 'Power Double Chicken Wrap',
     badge: '⚡ Double Protein Pelajar',
+    image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=700&q=80',
     tag: 'high-protein',
     base: 'tortilla',
     greens: 'romaine',
@@ -224,6 +226,7 @@ const signatureWraps = [
     id: 'creamy-caesar-wrap',
     title: 'Creamy Garlic Caesar Wrap',
     badge: '🧀 Rich & Crunchy',
+    image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=700&q=80',
     tag: 'high-protein',
     base: 'tortilla',
     greens: 'romaine',
@@ -241,6 +244,7 @@ const signatureWraps = [
     id: 'garden-fresh-wrap',
     title: 'Garden Fresh Veggie & Corn Wrap',
     badge: '🌱 Ringan & Renyah',
+    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=700&q=80',
     tag: 'light',
     base: 'tortilla',
     greens: 'duo-lettuce',
@@ -503,22 +507,27 @@ function renderSignatureCards() {
 
   container.innerHTML = signatureWraps.map(wrap => `
     <div class="signature-card">
-      <div class="signature-card-header">
+      <div class="signature-img-wrap">
+        <img src="${wrap.image}" alt="${wrap.title}" class="signature-card-img" loading="lazy">
         <span class="badge-tag">${wrap.badge}</span>
-        <span class="signature-price">${formatRupiah(wrap.price)}</span>
       </div>
-      <h3 class="signature-title">${wrap.title}</h3>
-      <p class="signature-desc">${wrap.desc}</p>
-      
-      <div class="signature-macros-row">
-        <span>🔥 ${wrap.cals} kcal</span>
-        <span>💪 ${wrap.protein}g Protein</span>
-        <span>🌿 ${wrap.fiber}g Serat</span>
-      </div>
+      <div class="signature-card-body">
+        <div class="signature-card-header">
+          <h3 class="signature-title">${wrap.title}</h3>
+          <span class="signature-price">${formatRupiah(wrap.price)}</span>
+        </div>
+        <p class="signature-desc">${wrap.desc}</p>
+        
+        <div class="signature-macros-row">
+          <span>🔥 ${wrap.cals} kcal</span>
+          <span>💪 ${wrap.protein}g Protein</span>
+          <span>🌿 ${wrap.fiber}g Serat</span>
+        </div>
 
-      <div class="signature-actions">
-        <button class="btn-ghost" onclick="loadSignatureToStudio('${wrap.id}')">Sesuaikan di Studio</button>
-        <button class="btn-gold" onclick="addSignatureToBag('${wrap.id}')">+ Pesan</button>
+        <div class="signature-actions">
+          <button class="btn-ghost" onclick="loadSignatureToStudio('${wrap.id}')">Sesuaikan di Studio</button>
+          <button class="btn-gold" onclick="addSignatureToBag('${wrap.id}')">+ Pesan</button>
+        </div>
       </div>
     </div>
   `).join('');

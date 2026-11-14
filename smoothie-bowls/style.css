@@ -34,6 +34,18 @@ button, [role="button"] { cursor: pointer; }
   padding: 0;
 }
 
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+img, picture, svg, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-main);
@@ -341,10 +353,13 @@ button {
   border-radius: var(--radius-lg);
   background: linear-gradient(160deg, #181512 0%, #0d0c0a 100%);
   border: 1px solid rgba(244, 63, 94, 0.25);
-  padding: 30px;
+  padding: 16px;
   text-align: center;
   box-shadow: var(--shadow-luxury);
   overflow: hidden;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
 }
 .hero-visual-card::before {
   content: '';
@@ -356,6 +371,49 @@ button {
   height: 280px;
   background: radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, transparent 70%);
   pointer-events: none;
+}
+.hero-image-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(240px, 35vw, 360px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #11100e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.hero-wrap-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.hero-visual-card:hover .hero-wrap-photo {
+  transform: scale(1.03);
+}
+.hero-floating-pill {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(14, 13, 11, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(251, 113, 133, 0.4);
+  border-radius: 99px;
+  padding: 7px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #ffffff;
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  max-width: calc(100% - 28px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .hero-bowl-display-svg {
   width: 100%;
@@ -391,10 +449,11 @@ button {
 .studio-grid,
 .studio-workspace-grid {
   display: grid;
-  grid-template-columns: 420px 1fr;
+  grid-template-columns: minmax(320px, 420px) 1fr;
   gap: 36px;
   align-items: flex-start;
   margin-top: 36px;
+  width: 100%;
 }
 
 /* Left Column: Visual Assembly Stage */
@@ -407,6 +466,8 @@ button {
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-luxury);
+  width: 100%;
+  box-sizing: border-box;
 }
 .stage-header,
 .visualizer-header {
@@ -446,7 +507,8 @@ button {
 .stage-view-canvas,
 .studio-stage-box {
   width: 100%;
-  height: 310px;
+  max-width: 100%;
+  height: clamp(230px, 32vw, 310px);
   border-radius: var(--radius-md);
   background: radial-gradient(circle, #211c17 0%, #100e0c 100%);
   display: flex;
@@ -465,11 +527,16 @@ button {
   transition: all 0.5s ease;
 }
 .svg-bowl-stage {
-  width: 270px;
-  height: 270px;
+  width: 100%;
+  max-width: min(270px, 85%);
+  height: auto;
+  max-height: 85%;
+  aspect-ratio: 1/1;
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 14px 20px rgba(0,0,0,0.6));
+  transition: transform 0.3s ease;
+}
   transition: transform 0.3s ease;
 }
 
@@ -564,10 +631,97 @@ button {
   color: var(--text-muted);
 }
 
+/* Base Selector, Booster & Topping Grids */
+.base-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.base-tab-card {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.base-tab-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(251, 113, 133, 0.4);
+  transform: translateY(-2px);
+}
+
+.base-tab-card.active {
+  background: rgba(251, 113, 133, 0.08);
+  border-color: #fb7185;
+  box-shadow: 0 0 18px rgba(251, 113, 133, 0.2);
+}
+
+.boosters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.booster-chip {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.booster-chip:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
+
+.booster-chip.selected {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: var(--gold);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.2);
+}
+
+.topping-toggle-card {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.topping-toggle-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(251, 113, 133, 0.4);
+  transform: translateY(-1px);
+}
+
+.topping-toggle-card.active {
+  background: rgba(251, 113, 133, 0.08);
+  border-color: #fb7185;
+  box-shadow: 0 0 14px rgba(251, 113, 133, 0.2);
+}
+
 /* Selection Cards Grid */
 .ingredient-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
   gap: 12px;
 }
 .ingredient-card {
@@ -636,23 +790,66 @@ button {
 }
 .showcase-duo-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 28px;
   margin-top: 36px;
+  width: 100%;
 }
 .showcase-bowl-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 32px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: var(--transition);
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 .showcase-bowl-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-luxury);
+}
+.showcase-img-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(190px, 28vw, 240px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 18px;
+  background: #181512;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.showcase-bowl-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+  display: block;
+}
+.showcase-bowl-card:hover .showcase-bowl-img {
+  transform: scale(1.04);
+}
+.showcase-photo-pill {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(14, 13, 11, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid;
+  border-radius: 99px;
+  padding: 5px 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  max-width: calc(100% - 20px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
 }
 .showcase-bowl-card.banana-theme {
   border-color: rgba(245, 158, 11, 0.3);
@@ -668,15 +865,17 @@ button {
 }
 .showcase-bowl-title {
   font-family: var(--font-serif);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: #ffffff;
   margin-bottom: 8px;
+  line-height: 1.3;
 }
 .showcase-bowl-desc {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 20px;
+  word-break: break-word;
 }
 .showcase-ingredients-list {
   display: flex;
@@ -691,6 +890,7 @@ button {
   font-size: 0.75rem;
   color: var(--text-main);
   border: 1px solid var(--border-subtle);
+  word-break: break-word;
 }
 .showcase-footer {
   display: flex;
@@ -698,6 +898,8 @@ button {
   align-items: center;
   border-top: 1px solid var(--border-subtle);
   padding-top: 18px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .showcase-price {
   font-family: var(--font-serif);
@@ -1265,8 +1467,23 @@ footer {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
-  .ingredient-cards-grid {
+  .ingredient-cards-grid,
+  .base-selector-grid,
+  .boosters-grid {
     grid-template-columns: 1fr;
+  }
+  .showcase-duo-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .showcase-bowl-card {
+    padding: 18px 16px;
+  }
+  .showcase-img-wrap {
+    height: 190px;
+  }
+  .showcase-bowl-title {
+    font-size: 1.35rem;
   }
   .control-group-block {
     padding: 16px 14px;

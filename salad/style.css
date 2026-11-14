@@ -31,6 +31,18 @@ button, [role="button"] { cursor: pointer; }
   padding: 0;
 }
 
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+img, picture, svg, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-main);
@@ -339,16 +351,19 @@ button {
   color: var(--emerald);
 }
 
-/* Hero Visual Card */
+/* Hero Visual Media Card */
 .hero-visual-card {
   position: relative;
   border-radius: var(--radius-lg);
   background: linear-gradient(160deg, #181512 0%, #0d0c0a 100%);
   border: 1px solid var(--border);
-  padding: 30px;
+  padding: 16px;
   text-align: center;
   box-shadow: var(--shadow-luxury);
   overflow: hidden;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
 }
 .hero-visual-card::before {
   content: '';
@@ -360,6 +375,49 @@ button {
   height: 280px;
   background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
   pointer-events: none;
+}
+.hero-image-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(240px, 35vw, 360px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #11100e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.hero-wrap-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.hero-visual-card:hover .hero-wrap-photo {
+  transform: scale(1.03);
+}
+.hero-floating-pill {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(14, 13, 11, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 99px;
+  padding: 7px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #ffffff;
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  max-width: calc(100% - 28px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .hero-wrap-display-svg {
   width: 100%;
@@ -450,7 +508,8 @@ button {
 .stage-view-canvas,
 .studio-stage-box {
   width: 100%;
-  height: 310px;
+  max-width: 100%;
+  height: clamp(230px, 32vw, 310px);
   border-radius: var(--radius-md);
   background: radial-gradient(circle, #211c17 0%, #100e0c 100%);
   display: flex;
@@ -468,9 +527,13 @@ button {
   background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
   transition: all 0.5s ease;
 }
-.svg-cross-section {
-  width: 260px;
-  height: 260px;
+.svg-cross-section,
+.wrap-svg-graphic {
+  width: 100%;
+  max-width: min(260px, 85%);
+  height: auto;
+  max-height: 85%;
+  aspect-ratio: 1/1;
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 14px 20px rgba(0,0,0,0.6));
@@ -589,12 +652,14 @@ button {
   border-color: rgba(212, 175, 55, 0.4);
   transform: translateY(-2px);
 }
-.ingredient-card.active {
+.ingredient-card.active,
+.ingredient-card.selected {
   background: rgba(212, 175, 55, 0.08);
   border-color: var(--gold);
   box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
 }
-.ingredient-card.active::after {
+.ingredient-card.active::after,
+.ingredient-card.selected::after {
   content: '✓';
   position: absolute;
   top: 10px;
@@ -610,17 +675,30 @@ button {
   align-items: center;
   justify-content: center;
 }
+.ingredient-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
 .ingredient-name {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.88rem;
   color: #ffffff;
-  margin-bottom: 2px;
+  word-break: break-word;
 }
 .ingredient-desc {
   font-size: 0.75rem;
   color: var(--text-muted);
   line-height: 1.4;
-  margin-bottom: 6px;
+  word-break: break-word;
+}
+.ingredient-price {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-top: auto;
 }
 .ingredient-meta {
   display: flex;
@@ -664,90 +742,169 @@ button {
 
 .signature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 24px;
+  width: 100%;
 }
+
+.signature-card,
 .wrap-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: var(--transition);
   position: relative;
-  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
+
+.signature-card:hover,
 .wrap-card:hover {
   border-color: var(--gold);
   transform: translateY(-4px);
   box-shadow: var(--shadow-luxury);
 }
+
+.signature-img-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(180px, 25vw, 220px);
+  overflow: hidden;
+  background: #1a1714;
+}
+
+.signature-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.signature-card:hover .signature-card-img {
+  transform: scale(1.05);
+}
+
+.badge-tag,
 .wrap-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 12px;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid var(--border);
+  background: rgba(18, 16, 14, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
   color: var(--gold);
 }
+
+.signature-img-wrap .badge-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+
+.signature-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.signature-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.signature-title,
 .wrap-card-title {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   color: #ffffff;
-  margin-bottom: 6px;
+  line-height: 1.3;
+  margin: 0;
+  flex: 1;
+  word-break: break-word;
 }
+
+.signature-price,
+.wrap-price {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--gold);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.signature-desc,
 .wrap-card-desc {
   font-size: 0.85rem;
   color: var(--text-muted);
   line-height: 1.5;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  word-break: break-word;
 }
+
+.signature-macros-row,
 .wrap-nutrition-strip {
   display: flex;
-  gap: 12px;
-  font-size: 0.72rem;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.74rem;
   color: var(--emerald);
   font-weight: 600;
-  margin-bottom: 18px;
-  padding: 6px 10px;
+  margin-bottom: 16px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.15);
 }
+
+.signature-actions,
 .wrap-card-footer {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
   align-items: center;
-  border-top: 1px solid var(--border-subtle);
-  padding-top: 14px;
 }
-.wrap-price {
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
-  color: var(--gold);
-  font-weight: 600;
-}
+
+.signature-actions button,
 .btn-wrap-action {
-  padding: 8px 16px;
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 0.82rem;
   border-radius: var(--radius-full);
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid var(--border);
-  color: var(--gold);
-  font-size: 0.78rem;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   transition: var(--transition);
 }
-.btn-wrap-action:hover {
-  background: var(--gold);
-  color: #0c0b0a;
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: #ffffff;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
 /* ========================================================
@@ -1308,6 +1465,19 @@ footer {
   }
   .ingredient-cards-grid {
     grid-template-columns: 1fr;
+  }
+  .signature-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .signature-card-body {
+    padding: 16px 14px;
+  }
+  .signature-img-wrap {
+    height: 180px;
+  }
+  .signature-title {
+    font-size: 1.18rem;
   }
   .control-group-block {
     padding: 16px 14px;
