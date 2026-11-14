@@ -2198,6 +2198,29 @@
       const orderCode = '#PO-P8-' + Math.floor(1000 + Math.random() * 9000);
       const itemsListText = cart.map((it, idx) => `${idx + 1}. ${it.title} - ${formatRupiah(it.price)}`).join('%0A');
 
+      // Auto-send order directly to Google Sheets Webhook
+      const webhookPayload = {
+        code: orderCode,
+        name: name,
+        phone: '-',
+        items: cart.map(it => it.title).join(', '),
+        qty: cart.length,
+        total: total,
+        payment: payNames[selectedPayMethod] || 'QRIS',
+        address: address,
+        notes: notes || '-'
+      };
+      try {
+        fetch('https://script.google.com/macros/s/AKfycbwAlKee1CwycT00s56ZWyvGts68_V2T0QVHfVCZmrzcr0iMGUEFneLuyBjKix6ZiYib0w/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(webhookPayload)
+        });
+      } catch (err) {
+        console.warn('GSheet Auto-Input Warning:', err);
+      }
+
       const waText = `Halo%20Tim%20Smoothie%20Therapy!%0A%0ASaya%20ingin%20melakukan%20Pre-Order:%0A------------------------------------%0AKode%20PO:%20${encodeURIComponent(orderCode)}%0ANama%20Pemesan:%20${encodeURIComponent(name)}%0AAlamat%20Pengiriman:%20${encodeURIComponent(address)}%0AMetode%20Bayar:%20${encodeURIComponent(payNames[selectedPayMethod])}%0A%0ADaftar%20Pesanan:%0A${itemsListText}%0A%0ACatatan:%20${encodeURIComponent(notes)}%0ATotal%20Bayar:%20${encodeURIComponent(formatRupiah(total))}%0A------------------------------------%0AMohon%20diproses%20pesanan%20saya.%20Terima%20kasih!`;
 
       closePreOrderModal();

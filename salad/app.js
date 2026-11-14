@@ -744,6 +744,29 @@ function executeOrderPayment() {
   // Construct structured WhatsApp message
   let orderItemsText = activeOrderRecord.items.map((it, idx) => `${idx + 1}. ${it.title} (${formatRupiah(it.price)})`).join('%0A');
   
+  // Auto-send order directly to Google Sheets Webhook
+  const webhookPayload = {
+    code: orderCode,
+    name: customerName,
+    phone: '-',
+    items: activeOrderRecord.items.map(it => it.title).join(', '),
+    qty: activeOrderRecord.items.length,
+    total: grandTotal,
+    payment: activeOrderRecord.payment,
+    address: deliveryAddress,
+    notes: notes || '-'
+  };
+  try {
+    fetch('https://script.google.com/macros/s/AKfycbwAlKee1CwycT00s56ZWyvGts68_V2T0QVHfVCZmrzcr0iMGUEFneLuyBjKix6ZiYib0w/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(webhookPayload)
+    });
+  } catch (err) {
+    console.warn('GSheet Auto-Input Warning:', err);
+  }
+
   const waMessage = `Halo%20Tim%20Smoothie%20Therapy!%0A%0ASaya%20ingin%20melakukan%20Pre-Order%20Chicken%20Salad%20Wrap:%0A----------------------------%0AKode%20Pesanan:%20${encodeURIComponent(orderCode)}%0ANama:%20${encodeURIComponent(customerName)}%0AAlamat%20Pengiriman:%20${encodeURIComponent(deliveryAddress)}%0AMetode%20Bayar:%20${encodeURIComponent(activeOrderRecord.payment)}%0A%0ARincian%20Pesanan:%0A${orderItemsText}%0A%0ACatatan:%20${encodeURIComponent(notes)}%0ATotal:%20${encodeURIComponent(formatRupiah(grandTotal))}%0A----------------------------%0AMohon%20konfirmasi%20pesanan%20saya.%20Terima%20kasih!`;
 
   closeCheckoutModal();

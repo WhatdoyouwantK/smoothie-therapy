@@ -772,6 +772,16 @@
       document.getElementById('orderNotes').value = '';
 
       if (decisionStatus === 'LUNAS / PAID') {
+        try {
+          fetch('https://script.google.com/macros/s/AKfycbwAlKee1CwycT00s56ZWyvGts68_V2T0QVHfVCZmrzcr0iMGUEFneLuyBjKix6ZiYib0w/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newOrder)
+          });
+        } catch (e) {
+          console.warn('GSheet Dispatcher sync:', e);
+        }
         showToast(`✅ ${code} LUNAS! Ditambahkan ke antrean dapur.`);
       } else {
         showToast(`❌ ${code} BATAL / UNPAID. Tidak masuk antrean dapur.`);
