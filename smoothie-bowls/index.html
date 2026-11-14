@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Smoothie Therapy — Smoothie Bowl & Malibu Mango Atelier</title>
+  <meta name="description" content="Artisanal Superfood Smoothie Bowls & Malibu Mango Tropical Smoothie. 100% buah asli beku, yoghurt, oat milk, dan madu murni alami.">
+
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Dedicated Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       TOP NAVIGATION BAR
+       ======================================================== -->
+  <header class="nav-header">
+    <div class="container nav-inner">
+      <div class="brand-logo-wrap">
+        <div class="brand-mark">
+          <i data-lucide="sparkles" style="width: 18px; height: 18px; color: #fb7185;"></i>
+        </div>
+        <div>
+          <a href="../index.html" class="brand-text-name">SMOOTHIE THERAPY</a>
+          <span class="brand-text-sub">Bowl & Malibu Mango Atelier</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#studio" class="nav-link">Studio Racik</a>
+        <a href="#showcase" class="nav-link">Strawberry & Malibu Mango</a>
+        <a href="#coldchain" class="nav-link">Komitmen Kesegaran</a>
+        <a href="../salad/index.html" class="nav-portal-pill">
+          <span>🥗 Chicken Salad Wrap Studio →</span>
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-folio-cart" onclick="openCartDrawer()" title="Lihat Keranjang Pesanan">
+          <i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i>
+          <span>Keranjang PO</span>
+          <span class="cart-badge" id="cartBadgeCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       HERO SECTION
+       ======================================================== -->
+  <section class="hero-section">
+    <div class="container hero-wrap">
+      <div class="hero-content">
+        <div class="section-tag ruby">
+          <i data-lucide="award" style="width: 13px; height: 13px;"></i>
+          <span>Artisanal Superfood Bowls</span>
+        </div>
+        <h1>Artisanal <em>Smoothie Bowls & Malibu Mango</em></h1>
+        <p>100% buah beku asli (strawberry, pisang, mangga, nanas) diolah lembut dengan yoghurt, oat milk, dan madu murni alami tanpa pemanis buatan berlebih. Pilihan camilan & minuman sehat penambah energi yang ramah di kantong (Rp 15.000 – Rp 25.000).</p>
+
+        <div class="hero-badges-strip">
+          <div class="hero-stat-badge">
+            <span class="stat-num">Rp 15k–25k</span>
+            <span class="stat-label">Harga Bersahabat</span>
+          </div>
+          <div class="hero-stat-badge">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Buah Asli Beku</span>
+          </div>
+          <div class="hero-stat-badge">
+            <span class="stat-num">Fresh PO</span>
+            <span class="stat-label">Batch System</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+          <a href="#studio" class="btn-ruby">
+            <i data-lucide="sliders" style="width: 16px; height: 16px;"></i>
+            <span>Buka Studio Racik</span>
+          </a>
+          <a href="#showcase" class="btn-ghost">
+            <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+            <span>Lihat Strawberry & Malibu</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual-card">
+        <div class="hero-image-wrap">
+          <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=800&q=80" alt="Superfood Strawberry Smoothie Bowl" class="hero-wrap-photo">
+          <div class="hero-floating-pill">
+            <div class="live-pulse-dot" style="background: #fb7185;"></div>
+            <span>Pre-Order Batch 1 & 2 Dibuka</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       INTERACTIVE BOWL & DRINK STUDIO
+       ======================================================== -->
+  <section class="studio-section" id="studio">
+    <div class="container">
+      <div class="section-header-block">
+        <div class="section-tag ruby">
+          <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i>
+          <span>Interactive Studio</span>
+        </div>
+        <h2 class="section-title">The Smoothie <em>Studio</em></h2>
+        <p class="section-subtext">Pilih basis smoothie bowl atau minuman tropis Malibu Mango, tambahkan superfood booster, dan taburan topping renyah.</p>
+      </div>
+
+      <div class="studio-workspace-grid">
+        <!-- Live Graphic Visualizer -->
+        <div class="studio-visualizer-card">
+          <div class="visualizer-header">
+            <div>
+              <span class="visualizer-status">Live Texture Preview</span>
+              <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: #ffffff;">Sub-Zero Fruit Blend</h3>
+            </div>
+            <span class="visualizer-chip">P8 Recipe</span>
+          </div>
+
+          <div class="studio-stage-box" id="bowlStageSvgContainer">
+            <!-- Dynamic SVG injected via app.js -->
+          </div>
+
+          <!-- Realtime Nutrition & Pricing HUD -->
+          <div class="studio-hud-grid">
+            <div class="hud-item">
+              <span class="hud-label">Estimasi Kalori</span>
+              <span class="hud-val" id="hudCals">320 kcal</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">Protein</span>
+              <span class="hud-val" id="hudProtein">12g</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">Serat Alami</span>
+              <span class="hud-val" id="hudFiber">9g</span>
+            </div>
+            <div class="hud-item highlighted">
+              <span class="hud-label">Harga Total</span>
+              <span class="hud-val" id="hudPrice">Rp 22.000</span>
+            </div>
+          </div>
+
+          <button class="btn-ruby" style="width: 100%; justify-content: center; margin-top: 18px;" onclick="addCustomBowlToBag()">
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+            <span>+ Masukkan ke Keranjang Pre-Order</span>
+          </button>
+        </div>
+
+        <!-- Controls Builder Column -->
+        <div class="studio-controls-column">
+          <!-- Step 1: Base Selection -->
+          <div class="control-group-block">
+            <div class="control-header-row">
+              <div>
+                <span class="control-step-badge">Langkah 01</span>
+                <h3 class="control-title">Pilihan Menu Basis</h3>
+              </div>
+              <span class="control-hint">Pilih 1 Menu</span>
+            </div>
+            <div class="base-selector-grid" id="baseSelectorContainer"></div>
+          </div>
+
+          <!-- Step 2: Superfood Booster -->
+          <div class="control-group-block">
+            <div class="control-header-row">
+              <div>
+                <span class="control-step-badge">Langkah 02</span>
+                <h3 class="control-title">Booster Nutrisi Tambahan</h3>
+              </div>
+              <span class="control-hint">Pilih 1 Booster</span>
+            </div>
+            <div class="boosters-grid" id="boostersContainer"></div>
+          </div>
+
+          <!-- Step 3: Gourmet Toppings -->
+          <div class="control-group-block">
+            <div class="control-header-row">
+              <div>
+                <span class="control-step-badge">Langkah 03</span>
+                <h3 class="control-title">Topping Granola & Potongan Buah</h3>
+              </div>
+              <span class="control-hint">Pilih Bebas</span>
+            </div>
+            <div class="ingredient-cards-grid" id="toppingsContainer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       THE TWO SIGNATURE HERO CREATIONS DEEP DIVE
+       ======================================================== -->
+  <section class="showcase-section" id="showcase">
+    <div class="container">
+      <div class="section-header-block" style="text-align: center; max-width: 680px; margin: 0 auto;">
+        <div class="section-tag ruby">
+          <i data-lucide="award" style="width: 13px; height: 13px;"></i>
+          <span>Menu Favorit</span>
+        </div>
+        <h2 class="section-title">Kreasi <em>Smoothie Therapy</em></h2>
+        <p class="section-subtext">Dua menu andalan minuman dan makanan bernutrisi tinggi dengan cita rasa segar untuk menemani aktivitas harian Anda.</p>
+      </div>
+
+      <div class="showcase-duo-grid">
+        <!-- BOWL 1: STRAWBERRY SMOOTHIE BOWL -->
+        <div class="showcase-bowl-card strawberry-theme">
+          <div>
+            <span class="section-tag" style="margin-bottom: 8px;">Antioxidant & Protein</span>
+            <h3 class="showcase-bowl-title">Strawberry Smoothie Bowl</h3>
+            <p class="showcase-bowl-desc">
+              Smoothie bowl kental dan creamy berbahan dasar frozen strawberry, frozen banana, yoghurt, oat milk, dan protein powder. Ditaburi granola madu renyah dan irisan stroberi segar. Disajikan higienis dalam paper bowl ramah lingkungan.
+            </p>
+            <div class="showcase-ingredients-list">
+              <span class="pill-ingredient">🍓 Frozen Strawberry</span>
+              <span class="pill-ingredient">🍌 Frozen Banana</span>
+              <span class="pill-ingredient">🥛 Yoghurt & Oat Milk</span>
+              <span class="pill-ingredient">💪 Protein Powder</span>
+              <span class="pill-ingredient">🌾 Granola Renyah</span>
+            </div>
+          </div>
+
+          <div class="showcase-footer">
+            <div>
+              <span class="showcase-price" style="color: #fb7185;">Rp 22.000</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Estimasi: Rp 20k–25k</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-ghost" onclick="loadSignatureBowlToStudio('strawberry-smoothie-bowl')">Sesuaikan</button>
+              <button class="btn-ruby" onclick="addSignatureBowlToBag('strawberry-smoothie-bowl')">+ Pesan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOWL 2: MALIBU MANGO -->
+        <div class="showcase-bowl-card banana-theme">
+          <div>
+            <span class="section-tag banana-tag" style="margin-bottom: 8px;">Tropical Energy & Hydration</span>
+            <h3 class="showcase-bowl-title">Malibu Mango Smoothie</h3>
+            <p class="showcase-bowl-desc">
+              Minuman smoothie tropis dingin menyegarkan dengan perpaduan frozen mango manis alami, banana, nanas (pineapple), santan kelapa gurih (coconut milk), madu murni, dan es batu segar. Disajikan dalam botol higienis yang praktis dibawa.
+            </p>
+            <div class="showcase-ingredients-list">
+              <span class="pill-ingredient">🥭 Frozen Mango</span>
+              <span class="pill-ingredient">🍌 Banana</span>
+              <span class="pill-ingredient">🍍 Frozen Pineapple</span>
+              <span class="pill-ingredient">🥥 Coconut Milk</span>
+              <span class="pill-ingredient">🍯 Pure Honey</span>
+            </div>
+          </div>
+
+          <div class="showcase-footer">
+            <div>
+              <span class="showcase-price" style="color: #f59e0b;">Rp 18.000</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Estimasi: Rp 15k–20k</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-ghost" onclick="loadSignatureBowlToStudio('malibu-mango')">Sesuaikan</button>
+              <button class="btn-ruby" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);" onclick="addSignatureBowlToBag('malibu-mango')">+ Pesan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       FRESHNESS COMMITMENT STRIP
+       ======================================================== -->
+  <section class="coldchain-section" id="coldchain">
+    <div class="container">
+      <div class="section-header-block" style="text-align: center; max-width: 680px; margin: 0 auto;">
+        <div class="section-tag ruby">
+          <i data-lucide="snowflake" style="width: 13px; height: 13px;"></i>
+          <span>Jaminan Kesegaran</span>
+        </div>
+        <h2 class="section-title">Komitmen <em>Kualitas Bahan P8</em></h2>
+        <p class="section-subtext">Bagaimana kami memastikan smoothie bowl dan minuman tropis Anda tetap dingin, segar, dan bertekstur kental saat diterima.</p>
+      </div>
+
+      <div class="coldchain-grid">
+        <div class="coldchain-card">
+          <div class="coldchain-icon-wrap">
+            <i data-lucide="snowflake" style="width: 24px; height: 24px;"></i>
+          </div>
+          <h3>100% Buah Beku Asli</h3>
+          <p>Menggunakan stroberi, pisang, nanas, dan mangga beku berkualitas yang diblender tanpa tambahan air berlebih sehingga menghasilkan tekstur kental seperti gelato.</p>
+        </div>
+
+        <div class="coldchain-card">
+          <div class="coldchain-icon-wrap" style="color: #fb7185; background: rgba(244,63,94,0.1); border-color: rgba(244,63,94,0.25);">
+            <i data-lucide="clock" style="width: 24px; height: 24px;"></i>
+          </div>
+          <h3>Sistem Batch Pre-Order</h3>
+          <p>Diproduksi tepat sebelum jam istirahat atau jam pulang sekolah sesuai jumlah pesanan (PO) untuk meminimalisir risiko bahan terbuang dan menjaga kesegaran maksimal.</p>
+        </div>
+
+        <div class="coldchain-card">
+          <div class="coldchain-icon-wrap" style="color: var(--banana); background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.25);">
+            <i data-lucide="package-check" style="width: 24px; height: 24px;"></i>
+          </div>
+          <h3>Kemasan Higienis & Praktis</h3>
+          <p>Paper bowl tebal untuk smoothie bowl dan botol higienis untuk Malibu Mango, memudahkan Anda menikmati menu sehat saat belajar di kelas maupun santai di sekolah.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       CART FOLIO DRAWER
+       ======================================================== -->
+  <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="closeCartDrawer()"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <div>
+        <h3>Keranjang Pre-Order</h3>
+        <span style="font-size: 0.72rem; color: #fb7185; text-transform: uppercase; letter-spacing: 1px;">Smoothie Therapy</span>
+      </div>
+      <button class="drawer-close-btn" onclick="closeCartDrawer()">✕</button>
+    </div>
+
+    <div class="drawer-items-list" id="cartDrawerItemsList"></div>
+
+    <div class="drawer-footer">
+      <div class="drawer-subtotal-row">
+        <span>Subtotal</span>
+        <span id="drawerSubtotal">Rp 0</span>
+      </div>
+      <div class="drawer-total-row">
+        <span>Total Bayar</span>
+        <span id="drawerGrandTotal" style="color: #fb7185;">Rp 0</span>
+      </div>
+      <button class="btn-ruby btn-checkout-folio" onclick="openCheckoutModal()">
+        <i data-lucide="send" style="width: 15px; height: 15px;"></i>
+        <span>Lanjut ke Formulir Pre-Order →</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================================
+       SLEEK MINIMALIST PRE-ORDER MODAL
+       ======================================================== -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="sleek-checkout-sheet">
+      <div class="checkout-sheet-header">
+        <div class="sheet-title-group">
+          <h3>Konfirmasi Smoothie</h3>
+          <div class="sheet-summary-badge ruby-badge">
+            <span id="checkoutBadgeCount">1 Menu</span>
+            <span>•</span>
+            <span id="checkoutBadgeTotal">Rp 22.000</span>
+          </div>
+        </div>
+        <button class="sheet-close-btn" onclick="closeCheckoutModal()">✕</button>
+      </div>
+
+      <!-- Quick Item Chips Preview -->
+      <div class="sheet-quick-preview" id="checkoutMiniList"></div>
+
+      <!-- Compact 2-Col Input for Name & Address -->
+      <div class="checkout-grid-2col">
+        <div class="sleek-input-field">
+          <label>Nama Pemesan *</label>
+          <input type="text" id="recipientNameInput" placeholder="Nama lengkap">
+        </div>
+        <div class="sleek-input-field">
+          <label>Alamat Pengiriman *</label>
+          <input type="text" id="deliveryAddressInput" placeholder="Alamat jalan / no. rumah">
+        </div>
+      </div>
+
+      <!-- Optional Catatan -->
+      <div class="sleek-input-field">
+        <label>Catatan (Opsional)</label>
+        <input type="text" id="orderNotesInput" placeholder="Misal: ekstra sendok, madu agak banyak">
+      </div>
+
+      <!-- Segmented Payment Selector -->
+      <div class="sleek-control-group">
+        <label>Metode Pembayaran</label>
+        <div class="sleek-segmented-row">
+          <button type="button" class="sleek-segment-item active" id="pay_qris" onclick="setPaymentMethod('qris')">
+            <span class="seg-title">⚡ QRIS</span>
+          </button>
+          <button type="button" class="sleek-segment-item" id="pay_transfer" onclick="setPaymentMethod('transfer')">
+            <span class="seg-title">🏦 Transfer</span>
+          </button>
+          <button type="button" class="sleek-segment-item" id="pay_cash" onclick="setPaymentMethod('cash')">
+            <span class="seg-title">💵 Tunai (Sekolah)</span>
+          </button>
+        </div>
+        <div class="sleek-pay-hint" id="payHintText">
+          ⚡ Scan QRIS via GoPay, BCA, Livin, Dana, atau ShopeePay.
+        </div>
+      </div>
+
+      <!-- Sleek Action Button -->
+      <button class="btn-sleek-checkout btn-ruby-checkout" id="btnSubmitOrder" onclick="executeOrderPayment()">
+        <span>Kirim Pre-Order ke WhatsApp</span>
+        <strong id="btnPriceTag">Rp 22.000</strong>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       ORDER SUCCESS TICKET MODAL
+       ======================================================== -->
+  <div class="modal-overlay" id="trackerModal">
+    <div class="modal-card" style="max-width: 480px; text-align: center;">
+      <button class="modal-close-x" onclick="closeTrackerModal()">✕</button>
+      <div class="section-tag ruby" style="margin-bottom: 8px;">
+        <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+        <span>Pre-Order Terkirim!</span>
+      </div>
+      <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: #ffffff; margin-bottom: 4px;">Tiket Pesanan Smoothie</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">WhatsApp telah dibuka untuk konfirmasi langsung ke panitia P8.</p>
+
+      <div style="background: rgba(255,255,255,0.02); border: 1.5px dashed #fb7185; border-radius: 12px; padding: 14px; text-align: left; font-size: 0.82rem; margin-bottom: 18px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Kode Pesanan:</span>
+          <strong style="color: #fb7185;" id="trackerOrderCode">#BOWL-P8-1001</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Nama Pemesan:</span>
+          <strong style="color: #ffffff;" id="trackerStudentText">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Alamat Pengiriman:</span>
+          <strong style="color: #fb7185;" id="trackerAddressText">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08);">
+          <span style="color: var(--text-muted);">Total Bayar:</span>
+          <strong style="color: #fb7185; font-size: 1rem;" id="trackerTotalText">Rp 0</strong>
+        </div>
+      </div>
+
+      <button class="btn-ruby" style="width: 100%; justify-content: center;" onclick="closeTrackerModal()">
+        <span>Selesai & Kembali ke Atelier</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       CONCIERGE CHATBOX (WHATSAPP & FAQ)
+       ======================================================== -->
+  <div class="concierge-floating-pill" onclick="toggleConcierge()" title="Buka Concierge P8">
+    <div class="concierge-live-dot" style="background: #fb7185;"></div>
+    <span style="font-size: 0.82rem; font-weight: 700; color: #ffffff;">Tanya Panitia P8</span>
+  </div>
+
+  <div class="concierge-window" id="conciergeWindow">
+    <div class="concierge-header">
+      <div>
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Smoothie Therapy Concierge</h4>
+        <span style="font-size: 0.68rem; color: #fb7185;">● Tim Customer Care Standby</span>
+      </div>
+      <button onclick="toggleConcierge()" style="color: var(--text-muted); font-size: 1rem;">✕</button>
+    </div>
+
+    <!-- Direct Social Connections -->
+    <div class="concierge-quick-links">
+      <a href="https://wa.me/628118411410?text=Halo%20Tim%20Smoothie%20Therapy%2C%20saya%20ingin%20bertanya%20tentang%20Smoothie%20Bowl%20atau%20Malibu%20Mango" target="_blank" rel="noopener" class="link-whatsapp">
+        <span>💬 WhatsApp Panitia</span>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="link-instagram">
+        <span>📸 Instagram @smoothietherapy</span>
+      </a>
+    </div>
+
+    <!-- Messages Body -->
+    <div class="concierge-messages-body" id="conciergeMessagesBody">
+      <div class="chat-msg bot">
+        Halo! Ada yang bisa kami bantu seputar Strawberry Smoothie Bowl, Malibu Mango, atau pembayaran QRIS?
+      </div>
+    </div>
+
+    <!-- Input Row -->
+    <div class="concierge-input-row">
+      <input type="text" class="concierge-chat-input" id="conciergeChatInput" placeholder="Tanya tentang rasa, harga, pengiriman..." onkeydown="handleConciergeKey(event)">
+      <button onclick="sendConciergeMessage()" style="color: #fb7185; font-size: 0.82rem; font-weight: 700;">Kirim</button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+  <footer>
+    <div class="container" style="text-align: center; padding: 40px 0;">
+      <p>&copy; 2026 <strong>SMOOTHIE THERAPY</strong> — Artisanal Superfood Bowls & Drinks.</p>
+      
+      <div style="margin-top: 14px; display: flex; justify-content: center; gap: 20px; font-size: 0.82rem;">
+        <a href="../index.html" style="color: var(--gold);">← Beranda Utama Smoothie Therapy</a>
+        <span>•</span>
+        <a href="../salad/index.html" style="color: #4ade80;">Chicken Salad Wrap Atelier →</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Dedicated App JS Engine -->
+  <script src="app.js"></script>
+</body>
+</html>
