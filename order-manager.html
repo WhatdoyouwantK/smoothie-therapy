@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smoothie Therapy — Order Manager & Kitchen Dispatcher</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg: #0c0a09;
+      --card-bg: #1c1917;
+      --border: rgba(255, 255, 255, 0.1);
+      --gold: #d4a24c;
+      --rose: #fb7185;
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #f5f5f4;
+      --text-muted: #a8a29e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    .header-bar {
+      background: #141210;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: block;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-gsheet-link {
+      background: #047857;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+    .btn-gsheet-link:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .btn-nav-back {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      text-decoration: none;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 960px) {
+      .main-container { grid-template-columns: 1fr; }
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+    .input-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #e7e5e4;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.86rem;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .decision-buttons-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-confirm-paid {
+      background: #059669;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+    .btn-confirm-paid:hover {
+      background: #10b981;
+      transform: translateY(-2px);
+    }
+
+    .btn-cancel-unpaid {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+    .btn-cancel-unpaid:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Orders Slide / List */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .filter-tab {
+      background: none;
+      border: 1px solid transparent;
+      padding: 6px 14px;
+      border-radius: 20px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filter-tab.active {
+      background: rgba(212, 162, 76, 0.15);
+      border-color: var(--gold);
+      color: #ecd09b;
+    }
+
+    .order-card {
+      background: #151311;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: 0.2s;
+    }
+    .order-card.paid {
+      border-left: 4px solid var(--green);
+    }
+    .order-card.cancelled {
+      border-left: 4px solid var(--red);
+      opacity: 0.6;
+    }
+
+    .order-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .order-code {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+    .order-time {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .order-badge-paid {
+      background: rgba(16, 185, 129, 0.18);
+      color: #6ee7b7;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .order-badge-unpaid {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fca5a5;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .order-items {
+      font-size: 0.86rem;
+      color: #e7e5e4;
+      margin-bottom: 8px;
+    }
+    .order-customer {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .order-total {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--gold);
+      margin-top: 8px;
+    }
+
+    .kitchen-stage-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+    .btn-stage {
+      flex: 1;
+      padding: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .btn-stage.current {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--green);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .toast-notice {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #047857;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: none;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="header-bar">
+    <div class="brand-title">
+      <i data-lucide="sparkles" style="color: var(--rose); width: 22px; height: 22px;"></i>
+      <div>
+        <span>Smoothie Therapy</span>
+        <span class="brand-sub">Order Dispatcher & Verification Hub</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="https://docs.google.com/spreadsheets/d/1QYlWAJu95TnxnsKPjKj5TH7tuWENkgXEFNCsn19GLvU/edit" target="_blank" class="btn-gsheet-link" title="Buka Spreadsheet di Google Sheets">
+        <i data-lucide="file-spreadsheet" style="width: 16px; height: 16px;"></i>
+        <span>Buka Google Sheet Live ↗</span>
+      </a>
+      <a href="./index.html" class="btn-nav-back">← Ke Web Menu</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    
+    <!-- LEFT PANEL: Quick Order Verification & Input -->
+    <section class="panel-card">
+      <h2 class="panel-title">
+        <i data-lucide="shield-check" style="color: var(--gold); width: 20px; height: 20px;"></i>
+        <span>Verifikasi Pembayaran Masuk</span>
+      </h2>
+      <p class="panel-desc">
+        Tempel pesan WhatsApp dari pembeli atau isi form di bawah. Konfirmasi <strong>Lunas</strong> untuk langsung memasukkan ke antrean dapur Google Sheet, atau <strong>Batal</strong> jika belum/tidak dibayar.
+      </p>
+
+      <!-- Paste WhatsApp box -->
+      <div class="input-group">
+        <label class="input-label">📋 Tempel Format WhatsApp Pesanan (Otomatis Ekstrak):</label>
+        <textarea id="waRawInput" class="form-textarea" rows="4" placeholder="Contoh: Halo Tim Smoothie Therapy! Saya ingin melakukan Pre-Order: Kode PO: #PO-P8-1025 Nama: Cindy..."></textarea>
+        <button type="button" onclick="parseWaText()" style="margin-top: 6px; padding: 6px 12px; font-size: 0.74rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 6px; cursor: pointer;">
+          ⚡ Auto-Ekstrak Rincian
+        </button>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 16px 0;">
+
+      <!-- Structured Fields -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="input-group">
+          <label class="input-label">Kode PO:</label>
+          <input type="text" id="orderCode" class="form-input" placeholder="#PO-P8-1025">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Metode Bayar:</label>
+          <select id="payMethod" class="form-select">
+            <option value="QRIS">QRIS</option>
+            <option value="Transfer BCA">Transfer BCA</option>
+            <option value="Transfer Mandiri">Transfer Mandiri</option>
+            <option value="Tunai / Cash">Tunai / Cash</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="input-group">
+          <label class="input-label">Nama Pemesan:</label>
+          <input type="text" id="custName" class="form-input" placeholder="Nama Pelanggan">
+        </div>
+        <div class="input-group">
+          <label class="input-label">No. WhatsApp:</label>
+          <input type="text" id="custPhone" class="form-input" placeholder="0812xxxx">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Detail Menu & Racikan:</label>
+        <input type="text" id="orderItems" class="form-input" placeholder="1x Strawberry Smoothie Bowl (Granola Madu)">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="input-group">
+          <label class="input-label">Total Harga (Rp):</label>
+          <input type="number" id="orderTotal" class="form-input" placeholder="22000">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Qty Porsi:</label>
+          <input type="number" id="orderQty" class="form-input" value="1">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Alamat / Lokasi Pengantaran:</label>
+        <input type="text" id="orderAddress" class="form-input" placeholder="Gedung Utama Lt. 2 / Kelas">
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Catatan Khusus:</label>
+        <input type="text" id="orderNotes" class="form-input" placeholder="Contoh: Minta sendok kayu">
+      </div>
+
+      <!-- Action Decision -->
+      <div class="decision-buttons-row">
+        <button type="button" class="btn-confirm-paid" onclick="submitOrderDecision('LUNAS / PAID')">
+          <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
+          <span>✅ Konfirmasi Lunas</span>
+        </button>
+        <button type="button" class="btn-cancel-unpaid" onclick="submitOrderDecision('BATAL / UNPAID')">
+          <i data-lucide="x-circle" style="width: 18px; height: 18px;"></i>
+          <span>❌ Batal / Unpaid</span>
+        </button>
+      </div>
+      <p style="font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 10px;">
+        Hanya pesanan yang dikonfirmasi <strong>Lunas</strong> yang masuk ke antrean dapur & rekap omset.
+      </p>
+    </section>
+
+    <!-- RIGHT PANEL: Live Orders Tracker Slide -->
+    <section class="panel-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2 class="panel-title" style="margin-bottom: 0;">
+          <i data-lucide="list-ordered" style="color: var(--rose); width: 20px; height: 20px;"></i>
+          <span>Slide Antrean Pesanan (Kitchen Slide)</span>
+        </h2>
+        <span id="orderCountBadge" style="font-size: 0.75rem; background: rgba(251, 113, 133, 0.2); color: #fda4af; padding: 3px 8px; border-radius: 12px; font-weight: 700;">
+          2 Pesanan Aktif
+        </span>
+      </div>
+      
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setFilter('all')">Semua</button>
+        <button class="filter-tab" onclick="setFilter('paid')">🟢 Lunas (Dapur)</button>
+        <button class="filter-tab" onclick="setFilter('unpaid')">🔴 Batal / Unpaid</button>
+      </div>
+
+      <!-- Live Cards Container -->
+      <div id="ordersContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toastBox" class="toast-notice">Pesanan berhasil diproses!</div>
+
+  <script>
+    // Initial in-memory orders matching Google Sheets
+    let ordersList = [
+      {
+        code: '#PO-P8-1021',
+        time: '14 Nov, 11:15',
+        name: 'Jessica Tan',
+        phone: '081234567890',
+        items: 'Strawberry Smoothie Bowl (Extra Chia + Almond)',
+        qty: 1,
+        total: 24000,
+        pay: 'QRIS',
+        address: 'Gedung Utama Lt. 2',
+        notes: 'Minta sendok kayu',
+        status: 'LUNAS / PAID',
+        stage: 'Sedang Diracik'
+      },
+      {
+        code: '#PO-P8-1022',
+        time: '14 Nov, 11:30',
+        name: 'Kevin Wijaya',
+        phone: '081987654321',
+        items: 'Chicken Salad Wrap (Roasted Sesame + Telur)',
+        qty: 1,
+        total: 23000,
+        pay: 'Transfer BCA',
+        address: 'Lobby Resepsi',
+        notes: 'Saus dipisah',
+        status: 'LUNAS / PAID',
+        stage: 'Siap Diambil'
+      },
+      {
+        code: '#PO-P8-1023',
+        time: '14 Nov, 11:45',
+        name: 'Amanda Putri',
+        phone: '081333444555',
+        items: 'Malibu Mango Tropical Smoothie (x2)',
+        qty: 2,
+        total: 36000,
+        pay: 'Transfer Mandiri',
+        address: 'Kelas 12-A',
+        notes: 'Tidak ada bukti transfer',
+        status: 'BATAL / UNPAID',
+        stage: 'Dibatalkan'
+      }
+    ];
+
+    let currentFilter = 'all';
+
+    function formatRupiah(num) {
+      return 'Rp ' + Number(num).toLocaleString('id-ID');
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('ordersContainer');
+      const filtered = ordersList.filter(o => {
+        if (currentFilter === 'paid') return o.status === 'LUNAS / PAID';
+        if (currentFilter === 'unpaid') return o.status === 'BATAL / UNPAID';
+        return true;
+      });
+
+      const activePaidCount = ordersList.filter(o => o.status === 'LUNAS / PAID').length;
+      document.getElementById('orderCountBadge').textContent = `${activePaidCount} Pesanan Dapur`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.85rem;">Tidak ada pesanan pada kategori ini.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map((ord, idx) => {
+        const isPaid = ord.status === 'LUNAS / PAID';
+        return `
+          <div class="order-card ${isPaid ? 'paid' : 'cancelled'}">
+            <div class="order-header-row">
+              <div>
+                <span class="order-code">${ord.code}</span>
+                <span class="order-time">• ${ord.time}</span>
+              </div>
+              <span class="${isPaid ? 'order-badge-paid' : 'order-badge-unpaid'}">
+                ${isPaid ? '✅ LUNAS / PAID' : '❌ BATAL / UNPAID'}
+              </span>
+            </div>
+
+            <div class="order-items"><strong>${ord.items}</strong></div>
+            <div class="order-customer">👤 ${ord.name} (${ord.phone}) • 📍 ${ord.address}</div>
+            ${ord.notes ? `<div style="font-size: 0.74rem; color: #fb7185; margin-top: 3px;">📝 Catatan: ${ord.notes}</div>` : ''}
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+              <span class="order-total">${formatRupiah(ord.total)} (${ord.pay})</span>
+              ${isPaid ? `<span style="font-size: 0.75rem; color: var(--green); font-weight: 600;">Status: ${ord.stage}</span>` : ''}
+            </div>
+
+            ${isPaid ? `
+              <div class="kitchen-stage-row">
+                <button class="btn-stage ${ord.stage === 'Antrean' ? 'current' : ''}" onclick="setStage(${idx}, 'Antrean')">⏳ Antrean</button>
+                <button class="btn-stage ${ord.stage === 'Sedang Diracik' ? 'current' : ''}" onclick="setStage(${idx}, 'Sedang Diracik')">🥣 Diracik</button>
+                <button class="btn-stage ${ord.stage === 'Siap Diambil' ? 'current' : ''}" onclick="setStage(${idx}, 'Siap Diambil')">🛵 Siap</button>
+                <button class="btn-stage ${ord.stage === 'Selesai' ? 'current' : ''}" onclick="setStage(${idx}, 'Selesai')">✅ Selesai</button>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      renderOrders();
+    }
+
+    function setStage(idx, newStage) {
+      ordersList[idx].stage = newStage;
+      renderOrders();
+      showToast(`Status ${ordersList[idx].code} diubah jadi: ${newStage}`);
+    }
+
+    function parseWaText() {
+      const raw = document.getElementById('waRawInput').value;
+      if (!raw) return;
+
+      const codeMatch = raw.match(/Kode (?:PO|Pesanan):\s*([#A-Za-z0-9-]+)/i);
+      const nameMatch = raw.match(/Nama(?:\s*Pemesan)?:\s*([^\n\r]+)/i);
+      const addressMatch = raw.match(/Alamat(?:\s*Pengiriman)?:\s*([^\n\r]+)/i);
+      const totalMatch = raw.match(/Total(?:\s*Bayar)?:\s*(?:Rp\s*)?([0-9.,]+)/i);
+      const payMatch = raw.match(/Metode Bayar:\s*([^\n\r]+)/i);
+
+      if (codeMatch) document.getElementById('orderCode').value = codeMatch[1].trim();
+      if (nameMatch) document.getElementById('custName').value = nameMatch[1].trim();
+      if (addressMatch) document.getElementById('orderAddress').value = addressMatch[1].trim();
+      if (totalMatch) {
+        const cleaned = totalMatch[1].replace(/[^0-9]/g, '');
+        document.getElementById('orderTotal').value = cleaned;
+      }
+      if (payMatch) {
+        const p = payMatch[1].trim();
+        const sel = document.getElementById('payMethod');
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value.toLowerCase().includes(p.toLowerCase())) {
+            sel.selectedIndex = i;
+            break;
+          }
+        }
+      }
+
+      showToast('Data WhatsApp berhasil diekstrak!');
+    }
+
+    function submitOrderDecision(decisionStatus) {
+      const code = document.getElementById('orderCode').value || ('#PO-' + Math.floor(1000 + Math.random() * 9000));
+      const name = document.getElementById('custName').value || 'Pelanggan';
+      const phone = document.getElementById('custPhone').value || '-';
+      const items = document.getElementById('orderItems').value || 'Smoothie Bowl / Wrap';
+      const total = Number(document.getElementById('orderTotal').value) || 22000;
+      const qty = Number(document.getElementById('orderQty').value) || 1;
+      const pay = document.getElementById('payMethod').value;
+      const address = document.getElementById('orderAddress').value || '-';
+      const notes = document.getElementById('orderNotes').value || '-';
+
+      const now = new Date();
+      const timeStr = `${now.getDate()} Nov, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+      const newOrder = {
+        code,
+        time: timeStr,
+        name,
+        phone,
+        items,
+        qty,
+        total,
+        pay,
+        address,
+        notes,
+        status: decisionStatus,
+        stage: decisionStatus === 'LUNAS / PAID' ? 'Antrean' : 'Dibatalkan'
+      };
+
+      ordersList.unshift(newOrder);
+      renderOrders();
+
+      // Clear input fields
+      document.getElementById('waRawInput').value = '';
+      document.getElementById('orderCode').value = '';
+      document.getElementById('custName').value = '';
+      document.getElementById('custPhone').value = '';
+      document.getElementById('orderItems').value = '';
+      document.getElementById('orderTotal').value = '';
+      document.getElementById('orderAddress').value = '';
+      document.getElementById('orderNotes').value = '';
+
+      if (decisionStatus === 'LUNAS / PAID') {
+        showToast(`✅ ${code} LUNAS! Ditambahkan ke antrean dapur.`);
+      } else {
+        showToast(`❌ ${code} BATAL / UNPAID. Tidak masuk antrean dapur.`);
+      }
+    }
+
+    function showToast(msg) {
+      const b = document.getElementById('toastBox');
+      b.textContent = msg;
+      b.style.display = 'block';
+      setTimeout(() => { b.style.display = 'none'; }, 3000);
+    }
+
+    // Run on init
+    renderOrders();
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>
