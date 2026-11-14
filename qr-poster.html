@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smoothie Therapy • Official QR Standee &amp; Poster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: #141416;
+      --gold: #d4a24c;
+      --gold-light: #ecd09b;
+      --emerald: #10b981;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(212, 162, 76, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(212, 162, 76, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
+    }
+
+    /* Floating Toolbar (Hidden on print) */
+    .top-toolbar {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(20, 20, 22, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .toolbar-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(212, 162, 76, 0.3);
+      color: #f1f5f9;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .toolbar-btn:hover {
+      background: rgba(212, 162, 76, 0.2);
+      border-color: var(--gold);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .toolbar-btn.btn-primary {
+      background: linear-gradient(135deg, #d4a24c 0%, #b8860b 100%);
+      color: #0b0906;
+      border-color: #ffd700;
+    }
+
+    .toolbar-btn.btn-primary:hover {
+      background: linear-gradient(135deg, #e5b35d 0%, #c9971c 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(212, 162, 76, 0.4);
+    }
+
+    /* Main Poster Canvas */
+    .poster-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 28px;
+      padding: 44px 36px 36px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(212, 162, 76, 0.1);
+      margin-top: 50px;
+    }
+
+    .poster-card::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed rgba(212, 162, 76, 0.25);
+      border-radius: 20px;
+      pointer-events: none;
+    }
+
+    /* Brand Header */
+    .brand-emblem {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1f1b14 0%, #100f0d 100%);
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(212, 162, 76, 0.35);
+    }
+
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      background: linear-gradient(135deg, #ffffff 0%, #ecd09b 50%, #d4a24c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 99px;
+      color: #6ee7b7;
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+    }
+
+    /* QR Code Display Frame */
+    .qr-frame-wrap {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      display: inline-block;
+      margin: 0 auto 20px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+      border: 3px solid var(--gold);
+      position: relative;
+    }
+
+    .qr-img {
+      width: 240px;
+      height: 240px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .qr-scan-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .qr-url-pill {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(212, 162, 76, 0.25);
+      border-radius: 99px;
+      padding: 6px 16px;
+      font-size: 0.76rem;
+      color: #cbd5e1;
+      font-family: monospace;
+      letter-spacing: 0.05em;
+      margin-bottom: 22px;
+      word-break: break-all;
+    }
+
+    /* Feature Chips */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 10px 6px;
+    }
+
+    .feature-val {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .feature-lbl {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    /* Footer Note */
+    .poster-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 16px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .poster-footer strong {
+      color: #f1f5f9;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+
+      .top-toolbar {
+        display: none !important;
+      }
+
+      .poster-card {
+        margin: 0 auto !important;
+        box-shadow: none !important;
+        border: 2px solid #333 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        padding: 30px !important;
+        page-break-inside: avoid;
+      }
+
+      .poster-card::before {
+        border-color: #666 !important;
+      }
+
+      .brand-title {
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+      }
+
+      .brand-sub, .feature-val, .qr-scan-hint {
+        color: #111111 !important;
+      }
+
+      .qr-url-pill {
+        color: #333333 !important;
+        border-color: #999 !important;
+        background: #f1f5f9 !important;
+      }
+
+      .feature-item {
+        background: #f8fafc !important;
+        border-color: #cbd5e1 !important;
+      }
+
+      .feature-lbl, .poster-footer {
+        color: #475569 !important;
+      }
+
+      .qr-frame-wrap {
+        border-color: #111111 !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Floating Controls -->
+  <div class="top-toolbar">
+    <a href="./index.html" class="toolbar-btn">
+      <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+      <span>Beranda</span>
+    </a>
+    <button class="toolbar-btn btn-primary" onclick="window.print()">
+      <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+      <span>Cetak / Simpan PDF</span>
+    </button>
+    <a href="./assets/smoothie-therapy-qr.png" download="SmoothieTherapy-QR.png" class="toolbar-btn">
+      <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+      <span>Download PNG</span>
+    </a>
+    <a href="./assets/smoothie-therapy-qr.svg" download="SmoothieTherapy-QR.svg" class="toolbar-btn">
+      <i data-lucide="file-code" style="width: 14px; height: 14px;"></i>
+      <span>SVG Vector</span>
+    </a>
+    <button class="toolbar-btn" onclick="copyWebUrl()">
+      <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
+      <span id="copyBtnText">Salin Link</span>
+    </button>
+  </div>
+
+  <!-- Poster Standee Card -->
+  <div class="poster-card">
+    <div class="brand-emblem">
+      <i data-lucide="sparkles" style="width: 30px; height: 30px; color: var(--gold);"></i>
+    </div>
+
+    <h1 class="brand-title">SMOOTHIE THERAPY</h1>
+    <p class="brand-sub">Artisanal Bowls • Fresh Drinks • Toasted Wraps</p>
+
+    <div class="tag-badge">
+      <i data-lucide="check-circle" style="width: 13px; height: 13px;"></i>
+      <span>Healthy Living Made Enjoyable &amp; Accessible</span>
+    </div>
+
+    <!-- QR Code Centerpiece -->
+    <div>
+      <div class="qr-frame-wrap">
+        <img src="./assets/smoothie-therapy-qr.svg" alt="Smoothie Therapy QR Code" class="qr-img" id="qrMainImg">
+      </div>
+    </div>
+
+    <div class="qr-scan-hint">
+      <i data-lucide="camera" style="width: 18px; height: 18px; color: var(--gold);"></i>
+      <span>Pindai dengan Kamera Ponsel Anda</span>
+    </div>
+
+    <div class="qr-url-pill" id="qrTargetUrl">
+      https://whatdoyouwantk.github.io/smoothie-therapy/
+    </div>
+
+    <!-- 3 Core Highlights -->
+    <div class="feature-grid">
+      <div class="feature-item">
+        <span class="feature-val">Rp 15k–25k</span>
+        <span class="feature-lbl">Harga Bersahabat</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-val">100% Alami</span>
+        <span class="feature-lbl">Buah Beku Asli</span>
+      </div>
+      <div class="feature-item">
+        <span class="feature-val">Pre-Order</span>
+        <span class="feature-lbl">Batch Fresh Segar</span>
+      </div>
+    </div>
+
+    <!-- Footer Instructions -->
+    <div class="poster-footer">
+      <p>Arahkan kamera smartphone Anda ke QR Code untuk membuka menu resmi, meracik di Interactive Studio, dan melakukan pemesanan via <strong>WhatsApp Panitia</strong>.</p>
+    </div>
+  </div>
+
+  <script>
+    if (window.lucide) lucide.createIcons();
+
+    function copyWebUrl() {
+      const url = document.getElementById('qrTargetUrl').innerText.trim();
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('copyBtnText');
+        if (btn) {
+          const original = btn.innerText;
+          btn.innerText = 'Tersalin!';
+          setTimeout(() => { btn.innerText = original; }, 2000);
+        }
+      }).catch(err => {
+        alert('Tautan: ' + url);
+      });
+    }
+  </script>
+</body>
+</html>
