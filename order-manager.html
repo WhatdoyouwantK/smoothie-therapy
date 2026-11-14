@@ -32,6 +32,29 @@
       padding-bottom: 60px;
     }
 
+    /* Security Lock Overlay */
+    .pin-lock-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 10, 9, 0.95);
+      backdrop-filter: blur(14px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .pin-lock-card {
+      background: #1c1917;
+      border: 1px solid rgba(212, 162, 76, 0.4);
+      border-radius: 24px;
+      padding: 36px 28px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+    }
+
     .header-bar {
       background: #141210;
       border-bottom: 1px solid var(--border);
@@ -64,21 +87,22 @@
 
     .header-actions {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .btn-gsheet-link {
       background: #047857;
       color: #fff;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 9999px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: 0.2s;
     }
     .btn-gsheet-link:hover {
@@ -86,13 +110,33 @@
       transform: translateY(-1px);
     }
 
-    .btn-nav-back {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+    .btn-download-csv {
+      background: rgba(212, 162, 76, 0.18);
+      border: 1px solid var(--gold);
+      color: #ecd09b;
       padding: 8px 14px;
       border-radius: 9999px;
-      font-size: 0.82rem;
-      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
+    }
+    .btn-download-csv:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .btn-lock {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      cursor: pointer;
     }
 
     .main-container {
@@ -332,6 +376,26 @@
 </head>
 <body>
 
+  <!-- PIN LOCK OVERLAY (Secures page so only owner can access) -->
+  <div id="lockOverlay" class="pin-lock-overlay">
+    <div class="pin-lock-card">
+      <div style="width: 52px; height: 52px; margin: 0 auto 16px; background: rgba(251,113,133,0.15); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(251,113,133,0.3);">
+        <i data-lucide="lock" style="width: 26px; height: 26px; color: var(--rose);"></i>
+      </div>
+      <h3 style="font-family: 'Playfair Display', serif; font-size: 1.35rem; color: #fff; margin-bottom: 6px;">Portal Khusus Pemilik</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">Masukkan PIN Keamanan untuk membuka Dispatcher Pesanan Smoothie Therapy.</p>
+      
+      <input type="password" id="pinInput" maxlength="8" placeholder="••••" style="width: 170px; text-align: center; letter-spacing: 8px; font-size: 1.6rem; font-weight: 800; padding: 10px; background: rgba(0,0,0,0.5); border: 2px solid var(--gold); border-radius: 12px; color: #fff; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;" onkeydown="if(event.key==='Enter') verifyPin()">
+      
+      <div id="pinError" style="color: #ef4444; font-size: 0.78rem; font-weight: 600; min-height: 20px; margin-bottom: 12px;"></div>
+      
+      <button onclick="verifyPin()" style="width: 100%; background: var(--gold); color: #000; font-weight: 700; padding: 12px; border-radius: 12px; border: none; cursor: pointer; font-size: 0.9rem;">
+        Buka Dashboard
+      </button>
+      <div style="font-size: 0.72rem; color: #78716c; margin-top: 14px;">PIN Bawaan Awal: <strong>2026</strong></div>
+    </div>
+  </div>
+
   <!-- Top Bar -->
   <header class="header-bar">
     <div class="brand-title">
@@ -342,11 +406,18 @@
       </div>
     </div>
     <div class="header-actions">
+      <button onclick="downloadLiveCsv()" class="btn-download-csv" title="Unduh CSV Langsung">
+        <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+        <span>Unduh CSV Pesanan</span>
+      </button>
       <a href="https://docs.google.com/spreadsheets/d/1QYlWAJu95TnxnsKPjKj5TH7tuWENkgXEFNCsn19GLvU/edit" target="_blank" class="btn-gsheet-link" title="Buka Spreadsheet di Google Sheets">
         <i data-lucide="file-spreadsheet" style="width: 16px; height: 16px;"></i>
-        <span>Buka Google Sheet Live ↗</span>
+        <span>Buka Google Sheet ↗</span>
       </a>
-      <a href="./index.html" class="btn-nav-back">← Ke Web Menu</a>
+      <button onclick="lockPortal()" class="btn-lock" title="Kunci Dashboard">
+        <i data-lucide="lock" style="width: 14px; height: 14px;"></i>
+        <span>Kunci</span>
+      </button>
     </div>
   </header>
 
@@ -475,6 +546,39 @@
   <div id="toastBox" class="toast-notice">Pesanan berhasil diproses!</div>
 
   <script>
+    // Security PIN Logic (Owner only)
+    const OWNER_PIN = '2026';
+
+    function checkAuth() {
+      if (sessionStorage.getItem('st_admin_auth') === 'true') {
+        document.getElementById('lockOverlay').style.display = 'none';
+      } else {
+        document.getElementById('lockOverlay').style.display = 'flex';
+        setTimeout(() => document.getElementById('pinInput').focus(), 300);
+      }
+    }
+
+    function verifyPin() {
+      const pin = document.getElementById('pinInput').value.trim();
+      const err = document.getElementById('pinError');
+      if (pin === OWNER_PIN) {
+        sessionStorage.setItem('st_admin_auth', 'true');
+        document.getElementById('lockOverlay').style.display = 'none';
+        err.textContent = '';
+      } else {
+        err.textContent = 'PIN salah. Silakan coba lagi.';
+        document.getElementById('pinInput').value = '';
+        document.getElementById('pinInput').focus();
+      }
+    }
+
+    function lockPortal() {
+      sessionStorage.removeItem('st_admin_auth');
+      document.getElementById('pinInput').value = '';
+      document.getElementById('lockOverlay').style.display = 'flex';
+      setTimeout(() => document.getElementById('pinInput').focus(), 300);
+    }
+
     // Initial in-memory orders matching Google Sheets
     let ordersList = [
       {
@@ -674,6 +778,39 @@
       }
     }
 
+    // Direct Browser CSV Download
+    function downloadLiveCsv() {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Kode PO,Waktu,Nama,WhatsApp,Menu Items,Qty,Total,Metode Bayar,Alamat,Catatan,Status Pembayaran,Status Dapur\n";
+      
+      ordersList.forEach(o => {
+        const row = [
+          `"${o.code}"`,
+          `"${o.time}"`,
+          `"${o.name}"`,
+          `"${o.phone}"`,
+          `"${o.items}"`,
+          o.qty,
+          o.total,
+          `"${o.pay}"`,
+          `"${o.address}"`,
+          `"${o.notes}"`,
+          `"${o.status}"`,
+          `"${o.stage}"`
+        ];
+        csvContent += row.join(",") + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `smoothie_therapy_orders_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("📥 File CSV berhasil diunduh!");
+    }
+
     function showToast(msg) {
       const b = document.getElementById('toastBox');
       b.textContent = msg;
@@ -682,6 +819,7 @@
     }
 
     // Run on init
+    checkAuth();
     renderOrders();
     if (window.lucide) lucide.createIcons();
   </script>
