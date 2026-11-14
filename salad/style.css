@@ -272,7 +272,28 @@ button {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+}
+.btn-back-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: #f1f5f9;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-back-main:hover {
+  background: rgba(212, 175, 55, 0.16);
+  border-color: var(--gold);
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 .btn-folio-cart {
   position: relative;
@@ -1446,6 +1467,22 @@ footer {
 @media (max-width: 560px) {
   .container {
     padding: 0 14px;
+  }
+  .nav-inner {
+    gap: 8px;
+  }
+  .nav-actions {
+    gap: 6px;
+  }
+  .btn-back-main {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+  .btn-folio-cart {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+    gap: 5px;
   }
   .hero-content h1 {
     font-size: 1.8rem;

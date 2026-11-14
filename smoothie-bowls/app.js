@@ -35,19 +35,6 @@ const smoothieData = {
       protein: 4,
       fiber: 6,
       tag: 'Tropical Hydration & Vitamin C'
-    },
-    'banana-bliss': {
-      id: 'banana-bliss',
-      name: 'Banana Bliss Energy Bowl',
-      desc: 'Frozen ripe banana creamy berpadu dengan oat milk dan madu hutan. Sumber kalium dan energi alami untuk aktifitas belajar.',
-      color: '#eab308',
-      swirlColor: '#facc15',
-      bowlFill: '#ca8a04',
-      price: 20000,
-      cals: 340,
-      protein: 9,
-      fiber: 8,
-      tag: 'Natural Energy & Potassium'
     }
   },
 
