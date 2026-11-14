@@ -1047,9 +1047,290 @@
         gap: 6px;
       }
     }
+
+    /* ==========================================================
+       CINEMATIC LUXURY ENTRY ANIMATION
+       ========================================================== */
+    .entry-splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background: radial-gradient(circle at 50% 40%, #171512 0%, #0c0b0a 55%, #050505 100%);
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.85s ease;
+      overflow: hidden;
+    }
+
+    .entry-splash.dismissed {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Ambient glowing background aura */
+    .entry-glow-aura {
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 162, 76, 0.18) 0%, rgba(16, 185, 129, 0.08) 40%, transparent 70%);
+      filter: blur(50px);
+      animation: entryAuraPulse 3s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes entryAuraPulse {
+      0% { transform: scale(0.85); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 0.95; }
+    }
+
+    .entry-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+      max-width: 460px;
+    }
+
+    /* Central Emblem with dual rotating orbital rings */
+    .entry-emblem-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .entry-ring-outer {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px dashed rgba(212, 162, 76, 0.45);
+      animation: entryRotateRing 14s linear infinite;
+    }
+
+    .entry-ring-inner {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 162, 76, 0.25);
+      border-top-color: #d4a24c;
+      border-bottom-color: #10b981;
+      animation: entryRotateRingRev 8s linear infinite;
+    }
+
+    @keyframes entryRotateRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes entryRotateRingRev {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .entry-emblem-core {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1f1a14 0%, #12100d 100%);
+      border: 1.5px solid rgba(212, 162, 76, 0.55);
+      box-shadow: 0 0 35px rgba(212, 162, 76, 0.35), inset 0 0 15px rgba(212, 162, 76, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: entryEmblemPop 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes entryEmblemPop {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .entry-emblem-core svg,
+    .entry-emblem-core i {
+      width: 34px;
+      height: 34px;
+      color: #d4a24c;
+      filter: drop-shadow(0 0 10px rgba(212, 162, 76, 0.8));
+    }
+
+    /* Brand titles */
+    .entry-title {
+      font-family: 'Cinzel', 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      margin-bottom: 8px;
+      background: linear-gradient(120deg, #ffffff 0%, #ecd09b 30%, #d4a24c 60%, #ffffff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: entryShimmerText 3s linear infinite;
+      text-transform: uppercase;
+    }
+
+    @keyframes entryShimmerText {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .entry-subtitle {
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(226, 232, 240, 0.65);
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    /* Sleek loading bar */
+    .entry-loader-wrap {
+      width: 170px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .entry-loader-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #d4a24c, #f59e0b);
+      border-radius: 99px;
+      box-shadow: 0 0 12px rgba(212, 162, 76, 0.8);
+      animation: entryLoadProgress 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+
+    @keyframes entryLoadProgress {
+      0% { width: 0%; }
+      40% { width: 55%; }
+      85% { width: 90%; }
+      100% { width: 100%; }
+    }
+
+    .entry-status-text {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .entry-skip-btn {
+      margin-top: 28px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 162, 76, 0.25);
+      border-radius: 30px;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: #cbd5e1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .entry-skip-btn:hover {
+      background: rgba(212, 162, 76, 0.15);
+      border-color: #d4a24c;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* Staggered hero entrance animations when splash finishes */
+    body.entry-revealed .site-nav {
+      animation: heroDropIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    body.entry-revealed .hero-tag {
+      animation: heroFadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    body.entry-revealed .hero-title {
+      animation: heroFadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+
+    body.entry-revealed .hero-desc {
+      animation: heroFadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+
+    body.entry-revealed .hero-price-strip {
+      animation: heroFadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+    }
+
+    body.entry-revealed .hero-actions {
+      animation: heroFadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+    }
+
+    body.entry-revealed .hero-visual-box {
+      animation: heroScaleFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+    }
+
+    @keyframes heroDropIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes heroFadeSlideUp {
+      0% { opacity: 0; transform: translateY(22px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes heroScaleFadeIn {
+      0% { opacity: 0; transform: scale(0.94) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Cinematic Entry Splash Screen -->
+  <div class="entry-splash" id="entrySplashScreen" onclick="dismissEntrySplash()" title="Click to enter immediately">
+    <div class="entry-glow-aura"></div>
+    <div class="entry-content">
+      <div class="entry-emblem-wrap">
+        <div class="entry-ring-outer"></div>
+        <div class="entry-ring-inner"></div>
+        <div class="entry-emblem-core">
+          <i data-lucide="sparkles"></i>
+        </div>
+      </div>
+      <div class="entry-title">Smoothie Therapy</div>
+      <div class="entry-subtitle">Artisanal Bowls • Fresh Drinks • Toasted Wraps</div>
+      <div class="entry-loader-wrap">
+        <div class="entry-loader-bar"></div>
+      </div>
+      <div class="entry-status-text">
+        <span>Menyiapkan Pengalaman Sehat &amp; Segar</span>
+      </div>
+      <button class="entry-skip-btn" type="button" onclick="dismissEntrySplash(event)">
+        <span>Masuk Langsung</span>
+        <i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>
+      </button>
+    </div>
+  </div>
 
   <!-- Navigation -->
   <nav class="site-nav">
@@ -1725,9 +2006,28 @@
       window.open(`https://wa.me/628118411410?text=${msg}`, '_blank');
     }
 
-    // Initialize Lucide icons on DOM ready
+    // Entry Animation Controller
+    let splashDismissed = false;
+    function dismissEntrySplash(event) {
+      if (event && event.stopPropagation) event.stopPropagation();
+      if (splashDismissed) return;
+      splashDismissed = true;
+      const splash = document.getElementById('entrySplashScreen');
+      if (splash) {
+        splash.classList.add('dismissed');
+        document.body.classList.add('entry-revealed');
+        setTimeout(() => {
+          splash.style.display = 'none';
+        }, 900);
+      }
+    }
+
+    // Auto-dismiss after 1600ms and initialize icons
     document.addEventListener('DOMContentLoaded', () => {
       if (window.lucide) lucide.createIcons();
+      setTimeout(() => {
+        dismissEntrySplash();
+      }, 1600);
     });
   </script>
 </body>
