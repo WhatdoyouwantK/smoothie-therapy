@@ -372,9 +372,130 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       z-index: 100;
     }
+
+    /* Thermal Ticket & Print Styling */
+    .thermal-ticket {
+      background: #fafaf9;
+      color: #1c1917;
+      padding: 22px 18px;
+      border-radius: 6px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border: 1px dashed #d6d3d1;
+    }
+    .thermal-ticket .t-center { text-align: center; }
+    .thermal-ticket .t-bold { font-weight: bold; }
+    .thermal-ticket .t-title { font-size: 15px; font-weight: bold; letter-spacing: 1px; }
+    .thermal-ticket .t-divider {
+      border-top: 1px dashed #78716c;
+      margin: 8px 0;
+    }
+    .thermal-ticket .t-double-divider {
+      border-top: 2px dashed #44403c;
+      margin: 10px 0;
+    }
+    .thermal-ticket .t-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 3px 0;
+    }
+    .thermal-ticket .t-code-badge {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: #1c1917;
+      color: #fafaf9;
+      padding: 4px 10px;
+      display: inline-block;
+      margin: 6px 0;
+      border-radius: 4px;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #receiptModal {
+        display: flex !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+      #receiptModalModalContent {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 80mm !important;
+        width: 80mm !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .no-print,
+      .no-print * {
+        display: none !important;
+      }
+      #thermalReceiptPrintArea,
+      #thermalReceiptPrintArea * {
+        visibility: visible !important;
+      }
+      #thermalReceiptPrintArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 76mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 4px !important;
+        margin: 0 !important;
+        background: #fff !important;
+        color: #000 !important;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- THERMAL RECEIPT MODAL -->
+  <div id="receiptModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 999; align-items: center; justify-content: center; padding: 20px;">
+    <div id="receiptModalModalContent" style="background: #141416; border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 440px; padding: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); max-height: 90vh; overflow-y: auto;">
+      
+      <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="printer" style="width: 20px; height: 20px; color: var(--gold);"></i>
+          <h3 style="font-size: 1rem; font-weight: 700; color: #fff;">Pratinjau Struk Dapur / POS</h3>
+        </div>
+        <button onclick="closeReceiptModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <!-- Thermal Paper Simulation (What actually prints) -->
+      <div id="thermalReceiptPrintArea" class="thermal-ticket">
+        <!-- Rendered dynamically by openReceiptModal(idx) -->
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="no-print" style="display: flex; gap: 12px; margin-top: 20px;">
+        <button onclick="window.print()" style="flex: 2; background: linear-gradient(135deg, var(--gold) 0%, #b88e1e 100%); color: #000; font-weight: 800; border: none; padding: 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem;">
+          <i data-lucide="printer" style="width: 16px; height: 16px;"></i>
+          <span>Cetak Sekarang (Print / PDF)</span>
+        </button>
+        <button onclick="closeReceiptModal()" style="flex: 1; background: rgba(255,255,255,0.08); border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+          Tutup
+        </button>
+      </div>
+      <div class="no-print" style="font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 10px;">
+        Mendukung printer thermal 58mm / 80mm (Bluetooth / USB) atau print biasa & PDF.
+      </div>
+    </div>
+  </div>
 
   <!-- PIN LOCK OVERLAY (Secures page so only owner can access) -->
   <div id="lockOverlay" class="pin-lock-overlay">
@@ -665,6 +786,10 @@
                 <span class="${isPaid ? 'order-badge-paid' : 'order-badge-unpaid'}">
                   ${isPaid ? '✅ LUNAS / PAID' : '❌ BATAL / UNPAID'}
                 </span>
+                <button type="button" onclick="openReceiptModal(${idx})" title="Cetak struk dapur / struk pelanggan" style="background: rgba(212, 162, 76, 0.15); border: 1px solid rgba(212, 162, 76, 0.35); color: #ecd09b; cursor: pointer; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px; transition: 0.2s;">
+                  <i data-lucide="printer" style="width: 12px; height: 12px;"></i>
+                  <span>Struk</span>
+                </button>
                 <button type="button" onclick="deleteOrderCard(${idx})" title="Hapus log pesanan ini" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; cursor: pointer; border-radius: 6px; padding: 3px 6px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px;">
                   <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
                   <span>Hapus</span>
@@ -707,6 +832,81 @@
       ordersList[idx].stage = newStage;
       renderOrders();
       showToast(`Status ${ordersList[idx].code} diubah jadi: ${newStage}`);
+    }
+
+    function openReceiptModal(idx) {
+      const ord = ordersList[idx];
+      if (!ord) return;
+
+      const printArea = document.getElementById('thermalReceiptPrintArea');
+      const nowStr = ord.time || new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+      
+      const itemsHtml = (ord.items || '-').split(/,\s*/).map(item => `
+        <div class="t-row" style="font-weight: 600;">
+          <span style="flex: 1; word-break: break-word;">• ${item}</span>
+        </div>
+      `).join('');
+
+      printArea.innerHTML = `
+        <div class="t-center t-title">SMOOTHIE THERAPY</div>
+        <div class="t-center" style="font-size: 11px; color: #44403c;">Crisp &amp; Bowl Atelier</div>
+        <div class="t-center" style="font-size: 11px; color: #78716c;">WhatsApp Order &amp; Kitchen Dispatch</div>
+        <div class="t-divider"></div>
+        <div class="t-center">
+          <span class="t-code-badge">${ord.code}</span>
+        </div>
+        <div class="t-row" style="font-size: 11px;">
+          <span>WAKTU:</span>
+          <span>${nowStr}</span>
+        </div>
+        <div class="t-row" style="font-size: 11px;">
+          <span>PELANGGAN:</span>
+          <span class="t-bold">${ord.name}</span>
+        </div>
+        <div class="t-row" style="font-size: 11px;">
+          <span>NO. HP:</span>
+          <span>${ord.phone || '-'}</span>
+        </div>
+        <div class="t-row" style="font-size: 11px;">
+          <span>LOKASI/MEJA:</span>
+          <span class="t-bold">${ord.address || '-'}</span>
+        </div>
+        <div class="t-divider"></div>
+        <div class="t-bold" style="margin-bottom: 4px; font-size: 12px;">DAFTAR PESANAN (${ord.qty || 1} item):</div>
+        ${itemsHtml}
+        ${ord.notes && ord.notes !== '-' ? `
+          <div style="font-size: 11px; margin-top: 6px; padding: 4px; background: #f5f5f4; border-left: 2px solid #78716c;">
+            <strong>CATATAN:</strong> ${ord.notes}
+          </div>
+        ` : ''}
+        <div class="t-double-divider"></div>
+        <div class="t-row" style="font-size: 14px;">
+          <span class="t-bold">TOTAL BAYAR:</span>
+          <span class="t-bold">${formatRupiah(ord.total)}</span>
+        </div>
+        <div class="t-row" style="font-size: 11px;">
+          <span>METODE:</span>
+          <span>${ord.pay || 'QRIS / Transfer'}</span>
+        </div>
+        <div class="t-row" style="font-size: 11px;">
+          <span>STATUS:</span>
+          <span class="t-bold">${ord.status}</span>
+        </div>
+        <div class="t-divider"></div>
+        <div class="t-center" style="font-size: 11px; margin-top: 8px; line-height: 1.4;">
+          *** KITCHEN ASSEMBLY DOCKET ***<br>
+          Terima kasih atas pesanan sehat Anda!<br>
+          Fresh &bull; Organic &bull; Made to Order
+        </div>
+      `;
+
+      const modal = document.getElementById('receiptModal');
+      modal.style.display = 'flex';
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeReceiptModal() {
+      document.getElementById('receiptModal').style.display = 'none';
     }
 
     function deleteOrderCard(idx) {
