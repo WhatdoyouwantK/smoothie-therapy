@@ -109,6 +109,40 @@
       margin-top: 50px;
     }
 
+    @media (max-width: 540px) {
+      body {
+        padding: 70px 10px 24px;
+        overflow-x: hidden;
+      }
+      .top-toolbar {
+        top: 8px;
+        width: calc(100vw - 20px);
+        padding: 6px 8px;
+        justify-content: space-between;
+        gap: 4px;
+      }
+      .toolbar-btn {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+      }
+      .poster-card {
+        padding: 28px 16px 24px;
+        border-radius: 20px;
+        margin-top: 20px;
+      }
+      .brand-title {
+        font-size: 1.5rem !important;
+      }
+      .qr-img {
+        width: 180px !important;
+        height: 180px !important;
+      }
+      .feature-grid {
+        grid-template-columns: 1fr !important;
+        gap: 6px !important;
+      }
+    }
+
     .poster-card::before {
       content: "";
       position: absolute;
