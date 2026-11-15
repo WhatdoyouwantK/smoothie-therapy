@@ -754,9 +754,82 @@
     }
     .sheet-quick-preview {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+      max-height: 180px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .checkout-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      padding: 10px 12px;
+      gap: 10px;
+    }
+    .checkout-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .checkout-item-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .checkout-item-price {
+      font-size: 0.78rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 9999px;
+      padding: 2px 4px;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      line-height: 1;
+      padding: 0;
+    }
+    .qty-btn:hover {
+      background: var(--gold);
+      color: #000000;
+      transform: scale(1.08);
+    }
+    .qty-btn:active {
+      transform: scale(0.92);
+    }
+    .qty-val {
+      min-width: 22px;
+      text-align: center;
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: #ffffff;
     }
     .mini-item-chip {
       font-size: 0.72rem;
@@ -1872,16 +1945,20 @@
       <!-- Quick Item Chips Preview -->
       <div class="sheet-quick-preview" id="checkoutMiniList"></div>
 
-      <!-- Sleek Inputs: Nama & Alamat Pengiriman -->
+      <!-- Sleek Inputs: Nama, WhatsApp & Alamat Pengiriman -->
       <div class="checkout-grid-2col">
         <div class="sleek-input-field">
           <label>Nama Pemesan *</label>
           <input type="text" id="custNameInput" placeholder="Nama lengkap">
         </div>
         <div class="sleek-input-field">
-          <label>Alamat Pengiriman *</label>
-          <input type="text" id="custAddressInput" placeholder="Alamat jalan / no. rumah">
+          <label>No. WhatsApp / HP *</label>
+          <input type="tel" id="custPhoneInput" placeholder="0812xxxx">
         </div>
+      </div>
+      <div class="sleek-input-field">
+        <label>Alamat Pengiriman *</label>
+        <input type="text" id="custAddressInput" placeholder="Alamat jalan / no. rumah / kelas / gedung">
       </div>
 
       <!-- Optional Catatan -->
@@ -2042,24 +2119,51 @@
     }
 
     function addToCart(title, price, desc) {
-      cart.push({
-        id: 'item_' + Date.now() + Math.random().toString(36).substr(2, 3),
-        title: title,
-        price: price,
-        desc: desc
-      });
+      const existing = cart.find(item => item.title === title && item.desc === desc);
+      if (existing) {
+        existing.qty = (existing.qty || 1) + 1;
+        existing.price = existing.unitPrice * existing.qty;
+      } else {
+        cart.push({
+          id: 'item_' + Date.now() + Math.random().toString(36).substr(2, 3),
+          title: title,
+          unitPrice: price,
+          price: price,
+          desc: desc,
+          qty: 1
+        });
+      }
       updateCartUI();
       notify(`Ditambahkan: ${title} (${formatRupiah(price)})`);
       openCartDrawer();
     }
 
+    function changeCartQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      const newQty = (item.qty || 1) + delta;
+      if (newQty <= 0) {
+        removeFromCart(id);
+        return;
+      }
+      item.qty = newQty;
+      item.price = item.unitPrice * item.qty;
+      updateCartUI();
+      if (document.getElementById('preOrderModal')?.classList.contains('open')) {
+        renderCheckoutMiniList();
+      }
+    }
+
     function removeFromCart(id) {
       cart = cart.filter(item => item.id !== id);
       updateCartUI();
+      if (document.getElementById('preOrderModal')?.classList.contains('open')) {
+        renderCheckoutMiniList();
+      }
     }
 
     function updateCartUI() {
-      const count = cart.length;
+      const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
       const total = cart.reduce((sum, item) => sum + item.price, 0);
 
       document.getElementById('navCartCount').textContent = count;
@@ -2083,15 +2187,25 @@
       }
 
       list.innerHTML = cart.map((it, idx) => `
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <div style="font-weight: 700; color: #ffffff; font-size: 0.9rem;">#${idx + 1} ${it.title}</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">${it.desc}</div>
-            <div style="font-weight: 800; color: var(--gold); font-size: 0.88rem; margin-top: 4px;">${formatRupiah(it.price)}</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div style="font-weight: 700; color: #ffffff; font-size: 0.9rem;">#${idx + 1} ${it.title}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">${it.desc}</div>
+              <div style="font-weight: 800; color: var(--gold); font-size: 0.88rem; margin-top: 4px;">${formatRupiah(it.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(it.unitPrice)}/porsi)</span></div>
+            </div>
+            <button onclick="removeFromCart('${it.id}')" title="Hapus menu" style="background: none; border: none; color: #f43f5e; cursor: pointer; padding: 4px;">
+              <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+            </button>
           </div>
-          <button onclick="removeFromCart('${it.id}')" style="background: none; border: none; color: #f43f5e; cursor: pointer; padding: 6px;">
-            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-          </button>
+          <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 10px; gap: 8px;">
+            <span style="font-size: 0.74rem; color: var(--text-muted);">Jumlah:</span>
+            <div class="qty-stepper">
+              <button class="qty-btn" onclick="changeCartQty('${it.id}', -1)" title="Kurangi">−</button>
+              <span class="qty-val">${it.qty || 1}</span>
+              <button class="qty-btn" onclick="changeCartQty('${it.id}', 1)" title="Tambah">+</button>
+            </div>
+          </div>
         </div>
       `).join('');
 
@@ -2109,13 +2223,8 @@
       document.getElementById('cartDrawer')?.classList.remove('open');
     }
 
-    function openPreOrderModal() {
-      if (cart.length === 0) {
-        alert('Keranjang Anda masih kosong. Silakan pilih menu terlebih dahulu!');
-        return;
-      }
-      closeCartDrawer();
-      const count = cart.length;
+    function renderCheckoutMiniList() {
+      const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
       const total = cart.reduce((sum, item) => sum + item.price, 0);
 
       const countBadge = document.getElementById('checkoutBadgeCount');
@@ -2123,16 +2232,38 @@
       const priceTag = document.getElementById('btnPriceTag');
       const miniList = document.getElementById('checkoutMiniList');
 
-      if (countBadge) countBadge.textContent = `${count} Menu`;
+      if (countBadge) countBadge.textContent = `${count} Porsi`;
       if (totalBadge) totalBadge.textContent = formatRupiah(total);
       if (priceTag) priceTag.textContent = formatRupiah(total);
 
       if (miniList) {
+        if (cart.length === 0) {
+          closePreOrderModal();
+          return;
+        }
         miniList.innerHTML = cart.map(it => `
-          <span class="mini-item-chip">${it.title} (${formatRupiah(it.price)})</span>
+          <div class="checkout-item-row">
+            <div class="checkout-item-info">
+              <div class="checkout-item-title">${it.title}</div>
+              <div class="checkout-item-price">${formatRupiah(it.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(it.unitPrice)}/porsi)</span></div>
+            </div>
+            <div class="qty-stepper">
+              <button type="button" class="qty-btn" onclick="changeCartQty('${it.id}', -1)" title="Kurangi porsi">−</button>
+              <span class="qty-val">${it.qty || 1}</span>
+              <button type="button" class="qty-btn" onclick="changeCartQty('${it.id}', 1)" title="Tambah porsi">+</button>
+            </div>
+          </div>
         `).join('');
       }
+    }
 
+    function openPreOrderModal() {
+      if (cart.length === 0) {
+        alert('Keranjang Anda masih kosong. Silakan pilih menu terlebih dahulu!');
+        return;
+      }
+      closeCartDrawer();
+      renderCheckoutMiniList();
       selectPay(selectedPayMethod);
       document.getElementById('preOrderModal')?.classList.add('open');
     }
@@ -2172,6 +2303,7 @@
 
     function submitPreOrder() {
       const name = document.getElementById('custNameInput')?.value?.trim();
+      const phone = document.getElementById('custPhoneInput')?.value?.trim() || '-';
       const address = document.getElementById('custAddressInput')?.value?.trim();
       const notes = document.getElementById('custNotesInput')?.value?.trim() || 'Tanpa catatan khusus';
 
@@ -2188,6 +2320,7 @@
       }
 
       const total = cart.reduce((sum, item) => sum + item.price, 0);
+      const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
 
       const payNames = {
         'qris': 'QRIS (GoPay / BCA / Livin / Dana / ShopeePay)',
@@ -2196,15 +2329,15 @@
       };
 
       const orderCode = '#PO-P8-' + Math.floor(1000 + Math.random() * 9000);
-      const itemsListText = cart.map((it, idx) => `${idx + 1}. ${it.title} - ${formatRupiah(it.price)}`).join('%0A');
+      const itemsListText = cart.map((it, idx) => `${idx + 1}. ${it.qty || 1}x ${it.title} - ${formatRupiah(it.price)}`).join('%0A');
 
       // Auto-send order directly to Google Sheets Webhook
       const webhookPayload = {
         code: orderCode,
         name: name,
-        phone: '-',
-        items: cart.map(it => it.title).join(', '),
-        qty: cart.length,
+        phone: phone,
+        items: cart.map(it => `${it.qty || 1}x ${it.title}`).join(', '),
+        qty: totalQty,
         total: total,
         payment: payNames[selectedPayMethod] || 'QRIS',
         address: address,

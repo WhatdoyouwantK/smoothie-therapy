@@ -491,7 +491,9 @@ function addCustomWrapToBag() {
     title: 'Custom Chicken Salad Wrap',
     details: `${base.name} • ${greens.name} • ${protein.name} • ${dressing.name}`,
     toppings: toppingsList.length > 0 ? `Topping: ${toppingsList.join(', ')}` : 'Topping Standar',
-    price: price
+    unitPrice: price,
+    price: price,
+    qty: 1
   };
 
   orderBag.push(item);
@@ -575,7 +577,7 @@ function addSignatureToBag(id) {
 // ========================================================
 function updateBagBadge() {
   const badge = document.getElementById('cartBadgeCount');
-  if (badge) badge.textContent = orderBag.length;
+  if (badge) badge.textContent = orderBag.reduce((sum, item) => sum + (item.qty || 1), 0);
 }
 
 function openCartDrawer() {
@@ -587,6 +589,23 @@ function openCartDrawer() {
 function closeCartDrawer() {
   document.getElementById('cartDrawerOverlay')?.classList.remove('open');
   document.getElementById('cartDrawer')?.classList.remove('open');
+}
+
+function changeWrapQty(id, delta) {
+  const item = orderBag.find(i => i.id === id);
+  if (!item) return;
+  const newQty = (item.qty || 1) + delta;
+  if (newQty <= 0) {
+    removeFromBag(id);
+    return;
+  }
+  item.qty = newQty;
+  item.price = item.unitPrice * item.qty;
+  updateBagBadge();
+  renderCartDrawer();
+  if (document.getElementById('checkoutModal')?.classList.contains('open')) {
+    renderCheckoutMiniList();
+  }
 }
 
 function renderCartDrawer() {
@@ -616,12 +635,18 @@ function renderCartDrawer() {
       <div class="cart-item-title">#${index + 1} ${item.title}</div>
       <div class="cart-item-desc">${item.details}</div>
       <div class="cart-item-desc" style="color: var(--gold); font-size: 0.72rem;">${item.toppings}</div>
-      <div class="cart-item-footer">
-        <span class="cart-item-price">${formatRupiah(item.price)}</span>
-        <button class="btn-remove-item" onclick="removeFromBag('${item.id}')">
-          <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
-          <span>Hapus</span>
-        </button>
+      <div class="cart-item-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+        <span class="cart-item-price">${formatRupiah(item.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(item.unitPrice)}/wrap)</span></span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="qty-stepper">
+            <button class="qty-btn" onclick="changeWrapQty('${item.id}', -1)" title="Kurangi">−</button>
+            <span class="qty-val">${item.qty || 1}</span>
+            <button class="qty-btn" onclick="changeWrapQty('${item.id}', 1)" title="Tambah">+</button>
+          </div>
+          <button class="btn-remove-item" onclick="removeFromBag('${item.id}')" title="Hapus menu">
+            <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+          </button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -635,31 +660,54 @@ function removeFromBag(id) {
   orderBag = orderBag.filter(item => item.id !== id);
   updateBagBadge();
   renderCartDrawer();
+  if (document.getElementById('checkoutModal')?.classList.contains('open')) {
+    renderCheckoutMiniList();
+  }
 }
 
 // ========================================================
 // CHECKOUT & PRE-ORDER MODAL
 // ========================================================
+function renderCheckoutMiniList() {
+  const countBadge = document.getElementById('checkoutBadgeCount');
+  const totalBadge = document.getElementById('checkoutBadgeTotal');
+  const miniList = document.getElementById('checkoutMiniList');
+  const priceTag = document.getElementById('btnPriceTag');
+
+  const totalPortions = orderBag.reduce((acc, item) => acc + (item.qty || 1), 0);
+  const grandTotal = orderBag.reduce((acc, item) => acc + item.price, 0);
+
+  if (countBadge) countBadge.textContent = `${totalPortions} Wrap`;
+  if (totalBadge) totalBadge.textContent = formatRupiah(grandTotal);
+  if (priceTag) priceTag.textContent = formatRupiah(grandTotal);
+
+  if (miniList) {
+    if (orderBag.length === 0) {
+      closeCheckoutModal();
+      return;
+    }
+    miniList.innerHTML = orderBag.map(it => `
+      <div class="checkout-item-row">
+        <div class="checkout-item-info">
+          <div class="checkout-item-title">${it.title}</div>
+          <div class="checkout-item-price">${formatRupiah(it.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(it.unitPrice)}/porsi)</span></div>
+        </div>
+        <div class="qty-stepper">
+          <button type="button" class="qty-btn" onclick="changeWrapQty('${it.id}', -1)" title="Kurangi porsi">−</button>
+          <span class="qty-val">${it.qty || 1}</span>
+          <button type="button" class="qty-btn" onclick="changeWrapQty('${it.id}', 1)" title="Tambah porsi">+</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
 function openCheckoutModal() {
   if (orderBag.length === 0) {
     addCustomWrapToBag();
   }
   closeCartDrawer();
-  updateCheckoutTotal();
-
-  const countBadge = document.getElementById('checkoutBadgeCount');
-  const totalBadge = document.getElementById('checkoutBadgeTotal');
-  const miniList = document.getElementById('checkoutMiniList');
-  const grandTotal = orderBag.reduce((acc, item) => acc + item.price, 0);
-
-  if (countBadge) countBadge.textContent = `${orderBag.length} Wrap`;
-  if (totalBadge) totalBadge.textContent = formatRupiah(grandTotal);
-  if (miniList) {
-    miniList.innerHTML = orderBag.map(it => `
-      <span class="mini-item-chip">${it.title} (${formatRupiah(it.price)})</span>
-    `).join('');
-  }
-
+  renderCheckoutMiniList();
   setPaymentMethod(selectedPaymentMethod);
   document.getElementById('checkoutModal')?.classList.add('open');
 }
@@ -742,15 +790,16 @@ function executeOrderPayment() {
   };
 
   // Construct structured WhatsApp message
-  let orderItemsText = activeOrderRecord.items.map((it, idx) => `${idx + 1}. ${it.title} (${formatRupiah(it.price)})`).join('%0A');
+  let orderItemsText = activeOrderRecord.items.map((it, idx) => `${idx + 1}. ${it.qty || 1}x ${it.title} (${formatRupiah(it.price)})`).join('%0A');
   
   // Auto-send order directly to Google Sheets Webhook
+  const totalPortions = activeOrderRecord.items.reduce((sum, item) => sum + (item.qty || 1), 0);
   const webhookPayload = {
     code: orderCode,
     name: customerName,
     phone: '-',
-    items: activeOrderRecord.items.map(it => it.title).join(', '),
-    qty: activeOrderRecord.items.length,
+    items: activeOrderRecord.items.map(it => `${it.qty || 1}x ${it.title}`).join(', '),
+    qty: totalPortions,
     total: grandTotal,
     payment: activeOrderRecord.payment,
     address: deliveryAddress,
