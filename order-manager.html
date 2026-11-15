@@ -527,11 +527,16 @@
         </span>
       </div>
       
-      <!-- Filter Tabs -->
-      <div class="filter-tabs">
-        <button class="filter-tab active" onclick="setFilter('all')">Semua</button>
-        <button class="filter-tab" onclick="setFilter('paid')">🟢 Lunas (Dapur)</button>
-        <button class="filter-tab" onclick="setFilter('unpaid')">🔴 Batal / Unpaid</button>
+      <!-- Filter Tabs & Clear All Button -->
+      <div class="filter-tabs" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; gap: 8px;">
+          <button class="filter-tab active" onclick="setFilter('all')">Semua</button>
+          <button class="filter-tab" onclick="setFilter('paid')">🟢 Lunas (Dapur)</button>
+          <button class="filter-tab" onclick="setFilter('unpaid')">🔴 Batal / Unpaid</button>
+        </div>
+        <button onclick="clearAllOrdersLog()" style="background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; font-size: 0.74rem; font-weight: 600; padding: 5px 12px; border-radius: 8px; cursor: pointer;">
+          🧹 Bersihkan Semua Log
+        </button>
       </div>
 
       <!-- Live Cards Container -->
@@ -656,9 +661,15 @@
                 <span class="order-code">${ord.code}</span>
                 <span class="order-time">• ${ord.time}</span>
               </div>
-              <span class="${isPaid ? 'order-badge-paid' : 'order-badge-unpaid'}">
-                ${isPaid ? '✅ LUNAS / PAID' : '❌ BATAL / UNPAID'}
-              </span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="${isPaid ? 'order-badge-paid' : 'order-badge-unpaid'}">
+                  ${isPaid ? '✅ LUNAS / PAID' : '❌ BATAL / UNPAID'}
+                </span>
+                <button type="button" onclick="deleteOrderCard(${idx})" title="Hapus log pesanan ini" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; cursor: pointer; border-radius: 6px; padding: 3px 6px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px;">
+                  <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+                  <span>Hapus</span>
+                </button>
+              </div>
             </div>
 
             <div class="order-items"><strong>${ord.items}</strong></div>
@@ -696,6 +707,20 @@
       ordersList[idx].stage = newStage;
       renderOrders();
       showToast(`Status ${ordersList[idx].code} diubah jadi: ${newStage}`);
+    }
+
+    function deleteOrderCard(idx) {
+      const removed = ordersList.splice(idx, 1);
+      renderOrders();
+      showToast(`Log ${removed[0]?.code || 'pesanan'} telah dihapus!`);
+    }
+
+    function clearAllOrdersLog() {
+      if (confirm('Yakin ingin membersihkan semua log pesanan dari slide?')) {
+        ordersList = [];
+        renderOrders();
+        showToast('Semua log pesanan telah dibersihkan!');
+      }
     }
 
     function parseWaText() {
