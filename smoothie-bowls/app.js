@@ -13,27 +13,27 @@ const smoothieData = {
     'strawberry-smoothie-bowl': {
       id: 'strawberry-smoothie-bowl',
       name: 'Strawberry Smoothie Bowl (Menu Utama)',
-      desc: '100% frozen strawberry pilihan & frozen banana whipped kental dengan yoghurt/susu oat & protein powder. Disajikan di paper bowl ramah lingkungan.',
+      desc: '120g frozen strawberry, 80g frozen banana, 60g Greek yogurt, & 50ml oat milk (Standar USDA FoodData Central).',
       color: '#f43f5e',
       swirlColor: '#fb7185',
       bowlFill: '#e11d48',
       price: 22000,
-      cals: 320,
-      protein: 12,
-      fiber: 9,
+      cals: 169,
+      protein: 8.2,
+      fiber: 5.0,
       tag: 'Antioxidant & Creamy'
     },
     'malibu-mango': {
       id: 'malibu-mango',
       name: 'Malibu Mango Tropical Smoothie (Juice)',
-      desc: 'Perpaduan frozen mango, banana, pineapple, coconut milk, dan madu murni. Disajikan dingin menyegarkan dalam botol plastik higienis.',
+      desc: '120g frozen mango, 60g nanas, 60g pisang, 100ml air kelapa murni, & madu (350ml botol higienis).',
       color: '#f59e0b',
       swirlColor: '#fbbf24',
       bowlFill: '#d97706',
       price: 18000,
-      cals: 260,
-      protein: 4,
-      fiber: 6,
+      cals: 195,
+      protein: 2.6,
+      fiber: 5.6,
       tag: 'Tropical Hydration & Vitamin C'
     }
   },
@@ -42,38 +42,38 @@ const smoothieData = {
     'protein-powder': {
       id: 'protein-powder',
       name: 'Pure Protein Powder Boost',
-      desc: '+12g protein murni untuk ketahanan fisik & pembentukan otot.',
+      desc: '1 scoop (15g) protein isolate murni (USDA: 60 kcal, +12g protein).',
       price: 3000,
-      cals: 50,
-      protein: 12,
+      cals: 60,
+      protein: 12.0,
       fiber: 0
     },
     'oat-milk': {
       id: 'oat-milk',
       name: 'Oat Milk Creamy (Bahan Segar P8)',
-      desc: 'Susu gandum nabati bebas laktosa dengan kelembutan alami.',
+      desc: '100ml susu gandum nabati murni (USDA: 45 kcal, 1g protein, 1g serat).',
       price: 2000,
-      cals: 40,
-      protein: 2,
-      fiber: 2
+      cals: 45,
+      protein: 1.0,
+      fiber: 1.0
     },
     'pure-honey': {
       id: 'pure-honey',
       name: 'Madu Murni Alami (Honey)',
-      desc: 'Pemanis alami kaya enzim pelindung imunitas tubuh.',
+      desc: '1 sdm (15g) madu murni lebah alami (USDA: 45 kcal, kaya antioksidan).',
       price: 1000,
-      cals: 30,
-      protein: 0,
+      cals: 45,
+      protein: 0.1,
       fiber: 0
     },
     'chia-seeds': {
       id: 'chia-seeds',
       name: 'Superfood Organic Chia Seeds',
-      desc: 'Biji chia super kaya Omega-3 dan serat larut.',
+      desc: '1 sdm (12g) biji chia kering (USDA: 58 kcal, 2g protein, 4.1g serat larut).',
       price: 1000,
-      cals: 25,
-      protein: 1,
-      fiber: 3
+      cals: 58,
+      protein: 2.0,
+      fiber: 4.1
     }
   },
 
@@ -81,38 +81,38 @@ const smoothieData = {
     'granola': {
       id: 'granola',
       name: 'Crunchy Toasted Granola',
-      desc: 'Granola madu renyah (Bahan Segar P8) pelengkap tekstur crunchy.',
+      desc: '20g granola madu gandum renyah (USDA: 98 kcal, 2.7g protein, 1.8g serat).',
       price: 2000,
-      cals: 65,
-      protein: 2,
-      fiber: 2
+      cals: 98,
+      protein: 2.7,
+      fiber: 1.8
     },
     'fresh-strawberry': {
       id: 'fresh-strawberry',
       name: 'Irisan Stroberi Segar',
-      desc: 'Potongan buah stroberi segar kaya vitamin C.',
+      desc: '30g (~2 butir) irisan stroberi segar (USDA: 10 kcal, kaya Vitamin C).',
       price: 2000,
-      cals: 20,
-      protein: 0,
-      fiber: 2
+      cals: 10,
+      protein: 0.2,
+      fiber: 0.6
     },
     'fresh-banana': {
       id: 'fresh-banana',
       name: 'Irisan Pisang Ambon Segar',
-      desc: 'Potongan pisang matang lembut dan manis alami.',
+      desc: '30g (~3-4 irisan) pisang segar kaya kalium (USDA: 27 kcal, 0.3g protein).',
       price: 1000,
-      cals: 35,
-      protein: 1,
-      fiber: 1
+      cals: 27,
+      protein: 0.3,
+      fiber: 0.8
     },
     'coconut-flakes': {
       id: 'coconut-flakes',
       name: 'Toasted Coconut Flakes',
-      desc: 'Parutan kelapa sangrai harum dan gurih.',
+      desc: '10g kelapa sangrai kering harum & gurih (USDA: 66 kcal, 1.6g serat).',
       price: 1000,
-      cals: 30,
-      protein: 0,
-      fiber: 1
+      cals: 66,
+      protein: 0.7,
+      fiber: 1.6
     }
   }
 };
@@ -367,9 +367,9 @@ function updateNutrition() {
   const fiberEl = document.getElementById('hudFiber');
   const priceEl = document.getElementById('hudPrice');
 
-  if (calsEl) calsEl.textContent = `${cals} kcal`;
-  if (protEl) protEl.textContent = `${prot}g`;
-  if (fiberEl) fiberEl.textContent = `${fiber}g`;
+  if (calsEl) calsEl.textContent = `${Math.round(cals)} kcal`;
+  if (protEl) protEl.textContent = `${Math.round(prot * 10) / 10}g`;
+  if (fiberEl) fiberEl.textContent = `${Math.round(fiber * 10) / 10}g`;
   if (priceEl) priceEl.textContent = formatRupiah(price);
 }
 

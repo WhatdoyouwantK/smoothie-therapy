@@ -13,35 +13,35 @@ const wrapIngredients = {
     'tortilla': {
       id: 'tortilla',
       name: 'Classic Toasted Tortilla',
-      desc: 'Tortilla gandum lembut dipanggang hangat, dasar sempurna untuk wrap sehat.',
+      desc: 'Tortilla gandum 8-inci dipanggang hangat (Standar USDA: ~45g).',
       color: '#d4af37',
       dark: '#854d0e',
       price: 0,
       cals: 130,
-      protein: 4,
-      fiber: 2
+      protein: 3.5,
+      fiber: 1.8
     },
     'spinach-tortilla': {
       id: 'spinach-tortilla',
       name: 'Spinach & Herb Tortilla',
-      desc: 'Tortilla infused bayam hijau kaya zat besi dan aroma herbal ringan.',
+      desc: 'Tortilla bayam hijau 8-inci kaya zat besi & serat (Standar Mission/USDA: ~49g).',
       color: '#15803d',
       dark: '#14532d',
       price: 2000,
-      cals: 135,
-      protein: 4,
-      fiber: 3
+      cals: 130,
+      protein: 4.0,
+      fiber: 2.0
     },
     'whole-wheat': {
       id: 'whole-wheat',
       name: 'Whole Wheat High-Fiber Wrap',
-      desc: 'Gandum utuh berserat tinggi, mengenyangkan lebih lama dan ramah diet.',
+      desc: 'Tortilla gandum utuh 8-inci tinggi serat larut (Standar USDA: ~45g).',
       color: '#b45309',
       dark: '#78350f',
       price: 2000,
-      cals: 125,
-      protein: 5,
-      fiber: 5
+      cals: 110,
+      protein: 4.0,
+      fiber: 5.0
     }
   },
 
@@ -49,32 +49,32 @@ const wrapIngredients = {
     'romaine': {
       id: 'romaine',
       name: 'Romaine Lettuce Segar',
-      desc: 'Selada romaine renyah segar dari anggaran P8, dicuci higienis & kaya vitamin A & K.',
+      desc: 'Selada romaine renyah 50g dicuci higienis, kaya Vitamin A & K (USDA: 17 kcal/100g).',
       color: '#4ade80',
       price: 0,
-      cals: 20,
-      protein: 2,
-      fiber: 3
+      cals: 9,
+      protein: 0.6,
+      fiber: 1.1
     },
     'lettuce': {
       id: 'lettuce',
       name: 'Fresh Crisp Lettuce',
-      desc: 'Daun selada segar manis dan crunchy, memberikan sensasi sejuk di setiap gigitan.',
+      desc: 'Daun selada segar crunchy 50g penyejuk tekstur (USDA: 14 kcal/100g).',
       color: '#22c55e',
       price: 0,
-      cals: 15,
-      protein: 1,
-      fiber: 2
+      cals: 7,
+      protein: 0.5,
+      fiber: 0.7
     },
     'duo-lettuce': {
       id: 'duo-lettuce',
       name: 'Duo Romaine & Lettuce Mix',
-      desc: 'Kombinasi terbaik romaine lettuce dan fresh lettuce untuk tekstur crunch berlapis.',
+      desc: 'Kombinasi romaine & fresh lettuce 70g untuk crunch berlapis.',
       color: '#16a34a',
       price: 1000,
-      cals: 25,
-      protein: 2,
-      fiber: 4
+      cals: 12,
+      protein: 0.8,
+      fiber: 1.4
     }
   },
 
@@ -82,31 +82,31 @@ const wrapIngredients = {
     'boneless-chicken': {
       id: 'boneless-chicken',
       name: 'Savory Boneless Grilled Chicken',
-      desc: 'Daging dada ayam fillet tanpa tulang, dipanggang gurih dengan rempah alami (Menu Utama Standar).',
+      desc: '100g dada ayam fillet panggang tanpa kulit & minyak berlebih (Standar USDA FoodData Central).',
       color: '#f59e0b',
       price: 0,
-      cals: 180,
-      protein: 26,
+      cals: 165,
+      protein: 31.0,
       fiber: 0
     },
     'double-chicken': {
       id: 'double-chicken',
       name: 'Double Boneless Chicken Portion',
-      desc: 'Porsi ekstra dada ayam tanpa tulang untuk nutrisi protein maksimal (Total Rp 25.000).',
+      desc: '150g dada ayam panggang empuk untuk nutrisi pembentukan otot maksimal.',
       color: '#d97706',
       price: 5000,
-      cals: 270,
-      protein: 40,
+      cals: 248,
+      protein: 46.5,
       fiber: 0
     },
     'egg-chicken': {
       id: 'egg-chicken',
       name: 'Boneless Chicken + Rebusan Telur',
-      desc: 'Paduan dada ayam panggang empuk dengan potongan telur rebus bernutrisi.',
+      desc: '80g dada ayam panggang (132 kcal, 25g P) + 1 butir telur rebus 50g (74 kcal, 6.3g P).',
       color: '#fbbf24',
       price: 3000,
-      cals: 230,
-      protein: 32,
+      cals: 206,
+      protein: 31.1,
       fiber: 0
     }
   },
@@ -115,32 +115,32 @@ const wrapIngredients = {
     'signature-sauce': {
       id: 'signature-sauce',
       name: 'Signature House Salad Sauce',
-      desc: 'Saus salad racikan khas Smoothie Therapy: creamy, gurih, dan ada hint kesegaran citrus.',
+      desc: 'Saus salad racikan yogurt & light citrus mayo (1 sdm / 15ml).',
       color: '#fef08a',
       price: 0,
-      cals: 75,
-      protein: 1,
-      fiber: 0
+      cals: 55,
+      protein: 0.8,
+      fiber: 0.2
     },
     'creamy-caesar': {
       id: 'creamy-caesar',
       name: 'Creamy Garlic Caesar',
-      desc: 'Saus caesar klasik dengan keju gurih, lada hitam, dan bawang putih halus.',
+      desc: 'Saus caesar klasik keju gurih & lada hitam (1 sdm / 15ml).',
       color: '#fef3c7',
       price: 1000,
-      cals: 85,
-      protein: 2,
-      fiber: 0
+      cals: 75,
+      protein: 0.8,
+      fiber: 0.1
     },
     'roasted-sesame': {
       id: 'roasted-sesame',
       name: 'Roasted Sesame (Wijen Sangrai)',
-      desc: 'Saus wijen sangrai ala Jepang dengan aroma kacang gurih manis yang nagih.',
+      desc: 'Saus wijen sangrai gurih ala Jepang (Standar Kewpie: 15ml / 1 sdm).',
       color: '#fed7aa',
       price: 1000,
-      cals: 80,
-      protein: 1,
-      fiber: 1
+      cals: 62,
+      protein: 0.4,
+      fiber: 0.3
     }
   },
 
@@ -148,38 +148,38 @@ const wrapIngredients = {
     'croutons': {
       id: 'croutons',
       name: 'Golden Bread Croutons',
-      desc: 'Roti panggang renyah beraroma herbal ringan.',
+      desc: 'Roti panggang renyah herbal 15g (USDA: 61 kcal, 1.6g protein).',
       price: 1000,
-      cals: 35,
-      protein: 1,
-      fiber: 1
+      cals: 61,
+      protein: 1.6,
+      fiber: 0.8
     },
     'parmesan': {
       id: 'parmesan',
       name: 'Grated Savory Cheese',
-      desc: 'Taburan keju gurih pilihan penambah kelezatan.',
+      desc: 'Taburan keju parmesan gurih 10g / 1 sdm (USDA: 42 kcal, 3.8g protein).',
       price: 2000,
-      cals: 45,
-      protein: 3,
+      cals: 42,
+      protein: 3.8,
       fiber: 0
     },
     'sweet-corn': {
       id: 'sweet-corn',
       name: 'Sweet Golden Corn',
-      desc: 'Bulir jagung manis segar rebus.',
+      desc: 'Bulir jagung manis rebus 30g (USDA: 29 kcal, 1.0g protein, 0.7g serat).',
       price: 1000,
-      cals: 30,
-      protein: 1,
-      fiber: 2
+      cals: 29,
+      protein: 1.0,
+      fiber: 0.7
     },
     'chia-flax': {
       id: 'chia-flax',
       name: 'Chia & Flaxseed Superfood',
-      desc: 'Biji chia & flax kaya serat dan Omega-3 alami.',
+      desc: 'Biji chia & flax 10g kaya Omega-3 dan serat larut (USDA FoodData Central).',
       price: 1000,
-      cals: 25,
-      protein: 1,
-      fiber: 2
+      cals: 50,
+      protein: 1.8,
+      fiber: 3.6
     }
   }
 };
@@ -197,10 +197,10 @@ const signatureWraps = [
     protein: 'boneless-chicken',
     dressing: 'signature-sauce',
     toppings: ['croutons'],
-    desc: 'Menu andalan Smoothie Therapy: Tortilla wrap hangat, boneless chicken empuk, romaine lettuce renyah, dan saus salad istimewa. Praktis dan mengenyangkan!',
-    cals: 410,
-    protein: 32,
-    fiber: 6,
+    desc: 'Menu andalan Smoothie Therapy: Tortilla wrap hangat (130 kcal), boneless chicken 100g (165 kcal, 31g protein), romaine segar, saus signature, dan croutons renyah.',
+    cals: 420,
+    protein: 38,
+    fiber: 4,
     price: 20000,
     isPopular: true
   },
@@ -215,10 +215,10 @@ const signatureWraps = [
     protein: 'double-chicken',
     dressing: 'signature-sauce',
     toppings: ['parmesan'],
-    desc: 'Ekstra porsi ayam dada fillet tanpa tulang untuk asupan energi dan pemulihan stamina saat beraktivitas di sekolah.',
-    cals: 495,
-    protein: 45,
-    fiber: 6,
+    desc: 'Ekstra porsi 150g dada ayam fillet tanpa tulang untuk asupan energi maksimal (53g protein murni standar USDA).',
+    cals: 484,
+    protein: 53,
+    fiber: 3,
     price: 25000,
     isPopular: false
   },
@@ -233,10 +233,10 @@ const signatureWraps = [
     protein: 'boneless-chicken',
     dressing: 'creamy-caesar',
     toppings: ['croutons', 'parmesan'],
-    desc: 'Paduan saus caesar bawang putih gurih dengan taburan keju parut dan croutons garing yang memanjakan lidah.',
-    cals: 460,
-    protein: 35,
-    fiber: 5,
+    desc: 'Paduan saus caesar bawang putih gurih dengan taburan keju parmesan parut dan croutons garing yang memanjakan lidah.',
+    cals: 482,
+    protein: 39,
+    fiber: 4,
     price: 23000,
     isPopular: false
   },
@@ -251,10 +251,10 @@ const signatureWraps = [
     protein: 'boneless-chicken',
     dressing: 'roasted-sesame',
     toppings: ['sweet-corn'],
-    desc: 'Sensasi segar renyah dari kombinasi romaine, lettuce manis, jagung rebus, dan dressing wijen sangrai yang harum.',
-    cals: 380,
-    protein: 29,
-    fiber: 7,
+    desc: 'Sensasi segar renyah dari kombinasi romaine, lettuce manis, jagung rebus, dan dressing wijen sangrai Kewpie.',
+    cals: 398,
+    protein: 36,
+    fiber: 4,
     price: 22000,
     isPopular: false
   }
@@ -467,9 +467,9 @@ function updateNutrition() {
   const fiberEl = document.getElementById('hudFiber');
   const priceEl = document.getElementById('hudPrice');
 
-  if (calsEl) calsEl.textContent = `${cals} kcal`;
-  if (protEl) protEl.textContent = `${prot}g`;
-  if (fiberEl) fiberEl.textContent = `${fiber}g`;
+  if (calsEl) calsEl.textContent = `${Math.round(cals)} kcal`;
+  if (protEl) protEl.textContent = `${Math.round(prot * 10) / 10}g`;
+  if (fiberEl) fiberEl.textContent = `${Math.round(fiber * 10) / 10}g`;
   if (priceEl) priceEl.textContent = formatRupiah(price);
 }
 
