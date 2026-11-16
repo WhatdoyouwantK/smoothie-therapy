@@ -184,82 +184,6 @@ const wrapIngredients = {
   }
 };
 
-// 2. Signature Wraps Menu Dataset (Variasi Menu P8)
-const signatureWraps = [
-  {
-    id: 'original-chicken-wrap',
-    title: 'Signature Chicken Salad Wrap',
-    badge: '⭐ Menu Utama P8',
-    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=700&q=80',
-    tag: 'high-protein',
-    base: 'tortilla',
-    greens: 'romaine',
-    protein: 'boneless-chicken',
-    dressing: 'signature-sauce',
-    toppings: ['croutons'],
-    desc: 'Menu andalan Smoothie Therapy: Tortilla wrap hangat (130 kcal), boneless chicken 100g (165 kcal, 31g protein), romaine segar, saus signature, dan croutons renyah.',
-    cals: 420,
-    protein: 38,
-    fiber: 4,
-    price: 20000,
-    isPopular: true
-  },
-  {
-    id: 'power-double-chicken',
-    title: 'Power Double Chicken Wrap',
-    badge: '⚡ Double Protein Pelajar',
-    image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=700&q=80',
-    tag: 'high-protein',
-    base: 'tortilla',
-    greens: 'romaine',
-    protein: 'double-chicken',
-    dressing: 'signature-sauce',
-    toppings: ['parmesan'],
-    desc: 'Ekstra porsi 150g dada ayam fillet tanpa tulang untuk asupan energi maksimal (53g protein murni standar USDA).',
-    cals: 484,
-    protein: 53,
-    fiber: 3,
-    price: 25000,
-    isPopular: false
-  },
-  {
-    id: 'creamy-caesar-wrap',
-    title: 'Creamy Garlic Caesar Wrap',
-    badge: '🧀 Rich & Crunchy',
-    image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=700&q=80',
-    tag: 'high-protein',
-    base: 'tortilla',
-    greens: 'romaine',
-    protein: 'boneless-chicken',
-    dressing: 'creamy-caesar',
-    toppings: ['croutons', 'parmesan'],
-    desc: 'Paduan saus caesar bawang putih gurih dengan taburan keju parmesan parut dan croutons garing yang memanjakan lidah.',
-    cals: 482,
-    protein: 39,
-    fiber: 4,
-    price: 23000,
-    isPopular: false
-  },
-  {
-    id: 'garden-fresh-wrap',
-    title: 'Garden Fresh Veggie & Corn Wrap',
-    badge: '🌱 Ringan & Renyah',
-    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=700&q=80',
-    tag: 'light',
-    base: 'tortilla',
-    greens: 'duo-lettuce',
-    protein: 'boneless-chicken',
-    dressing: 'roasted-sesame',
-    toppings: ['sweet-corn'],
-    desc: 'Sensasi segar renyah dari kombinasi romaine, lettuce manis, jagung rebus, dan dressing wijen sangrai Kewpie.',
-    cals: 398,
-    protein: 36,
-    fiber: 4,
-    price: 22000,
-    isPopular: false
-  }
-];
-
 // Current State
 let customWrap = {
   base: 'tortilla',
@@ -281,7 +205,6 @@ function init() {
   renderControls();
   renderStage();
   updateNutrition();
-  renderSignatureCards();
   updateBagBadge();
 
   if (window.lucide) {
@@ -499,76 +422,6 @@ function addCustomWrapToBag() {
   orderBag.push(item);
   updateBagBadge();
   notifyGuest(`Ditambahkan ke Keranjang: Custom Wrap (${formatRupiah(price)})`);
-  openCartDrawer();
-}
-
-// 5. Signature Wraps Rendering
-function renderSignatureCards() {
-  const container = document.getElementById('signatureGridContainer');
-  if (!container) return;
-
-  container.innerHTML = signatureWraps.map(wrap => `
-    <div class="signature-card">
-      <div class="signature-img-wrap">
-        <img src="${wrap.image}" alt="${wrap.title}" class="signature-card-img" loading="lazy">
-        <span class="badge-tag">${wrap.badge}</span>
-      </div>
-      <div class="signature-card-body">
-        <div class="signature-card-header">
-          <h3 class="signature-title">${wrap.title}</h3>
-          <span class="signature-price">${formatRupiah(wrap.price)}</span>
-        </div>
-        <p class="signature-desc">${wrap.desc}</p>
-        
-        <div class="signature-macros-row">
-          <span>🔥 ${wrap.cals} kcal</span>
-          <span>💪 ${wrap.protein}g Protein</span>
-          <span>🌿 ${wrap.fiber}g Serat</span>
-        </div>
-
-        <div class="signature-actions">
-          <button class="btn-ghost" onclick="loadSignatureToStudio('${wrap.id}')">Sesuaikan di Studio</button>
-          <button class="btn-gold" onclick="addSignatureToBag('${wrap.id}')">+ Pesan</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function loadSignatureToStudio(id) {
-  const wrap = signatureWraps.find(w => w.id === id);
-  if (!wrap) return;
-
-  customWrap = {
-    base: wrap.base,
-    greens: wrap.greens,
-    protein: wrap.protein,
-    dressing: wrap.dressing,
-    toppings: [...wrap.toppings]
-  };
-
-  renderControls();
-  renderStage();
-  updateNutrition();
-
-  document.getElementById('studio')?.scrollIntoView({ behavior: 'smooth' });
-  notifyGuest(`Memuat resep: ${wrap.title}`);
-}
-
-function addSignatureToBag(id) {
-  const wrap = signatureWraps.find(w => w.id === id);
-  if (!wrap) return;
-
-  orderBag.push({
-    id: 'sig_' + Date.now() + Math.random().toString(36).substr(2, 4),
-    title: wrap.title,
-    details: wrap.desc,
-    toppings: wrap.badge,
-    price: wrap.price
-  });
-
-  updateBagBadge();
-  notifyGuest(`Ditambahkan: ${wrap.title} (${formatRupiah(wrap.price)})`);
   openCartDrawer();
 }
 

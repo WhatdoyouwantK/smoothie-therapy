@@ -7,12 +7,12 @@ function formatRupiah(amount) {
   return 'Rp ' + Number(amount).toLocaleString('id-ID');
 }
 
-// 1. Bowls & Ingredients Master Dataset (Menu Utama P8)
+// 1. Bowls & Ingredients Master Dataset
 const smoothieData = {
   bases: {
     'strawberry-smoothie-bowl': {
       id: 'strawberry-smoothie-bowl',
-      name: 'Strawberry Smoothie Bowl (Menu Utama)',
+      name: 'Strawberry Superfood Bowl Base',
       desc: '120g frozen strawberry, 80g frozen banana, 60g Greek yogurt, & 50ml oat milk (Standar USDA FoodData Central).',
       color: '#f43f5e',
       swirlColor: '#fb7185',
@@ -25,7 +25,7 @@ const smoothieData = {
     },
     'malibu-mango': {
       id: 'malibu-mango',
-      name: 'Malibu Mango Tropical Smoothie (Juice)',
+      name: 'Malibu Mango Tropical Drink Base',
       desc: '120g frozen mango, 60g nanas, 60g pisang, 100ml air kelapa murni, & madu (350ml botol higienis).',
       color: '#f59e0b',
       swirlColor: '#fbbf24',
@@ -401,30 +401,6 @@ function addCustomBowlToBag() {
   openCartDrawer();
 }
 
-function addSignatureBowlToBag(baseId) {
-  const base = smoothieData.bases[baseId];
-  if (!base) return;
-
-  orderBag.push({
-    id: 'sig_' + Date.now() + Math.random().toString(36).substr(2, 4),
-    title: base.name,
-    details: base.desc,
-    price: base.price
-  });
-
-  updateBagBadge();
-  notifyGuest(`Ditambahkan: ${base.name} (${formatRupiah(base.price)})`);
-  openCartDrawer();
-}
-
-function loadSignatureBowlToStudio(baseId) {
-  currentBowl.base = baseId;
-  renderBaseTabs();
-  renderStage();
-  updateNutrition();
-  document.getElementById('studio')?.scrollIntoView({ behavior: 'smooth' });
-}
-
 // ========================================================
 // CART FOLIO & DRAWER
 // ========================================================
@@ -731,7 +707,7 @@ function sendConciergeMessage() {
 
     const lower = text.toLowerCase();
     if (lower.includes('harga') || lower.includes('price')) {
-      botDiv.textContent = "Strawberry Smoothie Bowl seharga Rp 22.000 dan Malibu Mango seharga Rp 18.000, sangat terjangkau!";
+      botDiv.textContent = "Harga smoothie bowl & minuman racikan Malibu Mango berkisar antara Rp 15.000 hingga Rp 25.000 sesuai kustomisasi pilihan Anda!";
     } else if (lower.includes('mango') || lower.includes('malibu')) {
       botDiv.textContent = "Malibu Mango adalah minuman smoothie tropis dalam botol dari campuran mangga, pisang, nanas, santan gurih, madu murni, dan es segar!";
     } else if (lower.includes('batch') || lower.includes('jadwal') || lower.includes('po')) {
