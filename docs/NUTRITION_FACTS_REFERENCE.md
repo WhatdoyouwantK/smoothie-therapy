@@ -21,10 +21,9 @@
 | **Dressing**| Signature House Sauce | 1 tbsp (15 ml) | **55** | **0.8** | **0.2** | 4.2 | Light Yogurt-Citrus Mayo Recipe Standard |
 | **Dressing**| Creamy Garlic Caesar | 1 tbsp (15 ml) | **75** | **0.8** | **0.1** | 7.8 | Standard Commercial Caesar Dressing |
 | **Dressing**| Roasted Sesame (Wijen) | 1 tbsp (15 ml) | **62** | **0.4** | **0.3** | 5.5 | Official Kewpie Roasted Sesame Label |
-| **Topping** | Golden Croutons | 15g portion | **61** | **1.6** | **0.8** | 1.5 | USDA FDC: Seasoned Bread Croutons |
-| **Topping** | Grated Parmesan Cheese | 10g (approx. 1 tbsp) | **42** | **3.8** | **0.0** | 2.9 | USDA FDC: Hard Parmesan Cheese |
-| **Topping** | Sweet Golden Corn | 30g boiled kernels | **29** | **1.0** | **0.7** | 0.4 | USDA FDC: Sweet Yellow Corn |
-| **Topping** | Chia & Flaxseed Blend | 10g dry seeds | **50** | **1.8** | **3.6** | 3.8 | USDA FDC: Chia/Flaxseed |
+| **Ekstra Porsi** | Ekstra Boneless Chicken | +50g dada ayam panggang empuk | **82** | **15.5** | **0.0** | 1.8 | USDA FDC: Cooked Skinless Chicken Breast |
+| **Ekstra Porsi** | Ekstra Selada Romaine Segar | +30g selada segar | **5** | **0.4** | **0.7** | 0.1 | USDA FDC: Romaine Lettuce |
+| **Ekstra Porsi** | Ekstra Saus Salad | +1 tbsp (15 ml) | **55** | **0.8** | **0.2** | 4.2 | Light Yogurt-Citrus Mayo Recipe Standard |
 
 ---
 
@@ -46,11 +45,9 @@
 | **Booster** | Pure Protein Powder | 1 scoop (15g) | **60** | **12.0** | **0.0** | Pure Whey / Plant Isolate Standard |
 | **Booster** | Creamy Oat Milk Splash | 100ml | **45** | **1.0** | **1.0** | Unsweetened Oat Milk Standard |
 | **Booster** | Pure Raw Honey | 1 tbsp (15g) | **45** | **0.1** | **0.0** | USDA FDC: Honey |
-| **Booster** | Organic Chia Seeds | 1 tbsp (12g) | **58** | **2.0** | **4.1** | USDA FDC: Dried Chia Seeds |
 | **Topping** | Toasted Honey Granola | 20g sprinkle | **98** | **2.7** | **1.8** | USDA FDC: Toasted Granola |
 | **Topping** | Fresh Sliced Strawberry | 30g (~2 strawberries) | **10** | **0.2** | **0.6** | Fresh Strawberries |
 | **Topping** | Fresh Banana Slices | 30g (~3-4 slices) | **27** | **0.3** | **0.8** | Fresh Banana |
-| **Topping** | Toasted Coconut Flakes | 10g (1 tbsp) | **66** | **0.7** | **1.6** | USDA FDC: Dried Shredded Coconut |
 
 ---
 

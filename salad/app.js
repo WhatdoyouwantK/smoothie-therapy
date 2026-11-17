@@ -145,41 +145,32 @@ const wrapIngredients = {
   },
 
   toppings: {
-    'croutons': {
-      id: 'croutons',
-      name: 'Golden Bread Croutons',
-      desc: 'Roti panggang renyah herbal 15g (USDA: 61 kcal, 1.6g protein).',
-      price: 1000,
-      cals: 61,
-      protein: 1.6,
-      fiber: 0.8
-    },
-    'parmesan': {
-      id: 'parmesan',
-      name: 'Grated Savory Cheese',
-      desc: 'Taburan keju parmesan gurih 10g / 1 sdm (USDA: 42 kcal, 3.8g protein).',
-      price: 2000,
-      cals: 42,
-      protein: 3.8,
+    'extra-chicken': {
+      id: 'extra-chicken',
+      name: 'Ekstra Boneless Chicken (+50g)',
+      desc: 'Tambahan 50g fillet dada ayam panggang empuk (USDA: 82 kcal, +15.5g protein).',
+      price: 5000,
+      cals: 82,
+      protein: 15.5,
       fiber: 0
     },
-    'sweet-corn': {
-      id: 'sweet-corn',
-      name: 'Sweet Golden Corn',
-      desc: 'Bulir jagung manis rebus 30g (USDA: 29 kcal, 1.0g protein, 0.7g serat).',
+    'extra-greens': {
+      id: 'extra-greens',
+      name: 'Ekstra Selada Romaine Segar (+30g)',
+      desc: 'Tambahan daun selada romaine renyah & higienis (USDA: 5 kcal, +0.4g protein, +0.7g serat).',
       price: 1000,
-      cals: 29,
-      protein: 1.0,
+      cals: 5,
+      protein: 0.4,
       fiber: 0.7
     },
-    'chia-flax': {
-      id: 'chia-flax',
-      name: 'Chia & Flaxseed Superfood',
-      desc: 'Biji chia & flax 10g kaya Omega-3 dan serat larut (USDA FoodData Central).',
+    'extra-dressing': {
+      id: 'extra-dressing',
+      name: 'Ekstra Saus Salad (+15ml)',
+      desc: 'Tambahan 1 sdm saus salad yogurt & citrus mayo (55 kcal, +0.8g protein).',
       price: 1000,
-      cals: 50,
-      protein: 1.8,
-      fiber: 3.6
+      cals: 55,
+      protein: 0.8,
+      fiber: 0.2
     }
   }
 };
@@ -190,7 +181,7 @@ let customWrap = {
   greens: 'romaine',
   protein: 'boneless-chicken',
   dressing: 'signature-sauce',
-  toppings: ['croutons']
+  toppings: []
 };
 
 let orderBag = [];
@@ -459,74 +450,38 @@ function renderStage() {
     `;
   }
 
-  // Dynamic Reactive Toppings Builder
+  // Dynamic Reactive Extra Portion SVG Builder
   let toppingsSvg = '';
   if (customWrap.toppings && customWrap.toppings.length > 0) {
     customWrap.toppings.forEach(tId => {
-      if (tId === 'croutons') {
+      if (tId === 'extra-chicken') {
         toppingsSvg += `
-          <!-- Golden Bread Croutons (Baked Herb Cubes) -->
-          <g class="svg-pop-layer" id="topping-croutons">
-            <g transform="translate(92, 100) rotate(12)">
-              <rect x="0" y="0" width="14" height="12" rx="2" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
-              <rect x="2" y="2" width="10" height="8" rx="1" fill="#fde68a"/>
-              <circle cx="5" cy="6" r="0.8" fill="#15803d"/>
-            </g>
-            <g transform="translate(168, 104) rotate(-16)">
-              <rect x="0" y="0" width="13" height="11" rx="2" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
-              <rect x="2" y="2" width="9" height="7" rx="1" fill="#fde68a"/>
-              <circle cx="6" cy="5" r="0.8" fill="#15803d"/>
-            </g>
-            <g transform="translate(136, 162) rotate(22)">
-              <rect x="0" y="0" width="15" height="13" rx="2" fill="#fbbf24" stroke="#b45309" stroke-width="1.2"/>
-              <rect x="2" y="2" width="11" height="9" rx="1" fill="#fde68a"/>
-              <circle cx="7" cy="7" r="0.9" fill="#15803d"/>
+          <!-- Ekstra Boneless Chicken Cutlets (Juicy Stack) -->
+          <g class="svg-pop-layer" id="extra-chicken-layer">
+            <g transform="rotate(6, 140, 136)">
+              <ellipse cx="140" cy="136" rx="36" ry="18" fill="#f59e0b" stroke="#78350f" stroke-width="1.5" filter="url(#dropShadowSoft)"/>
+              <line x1="128" y1="128" x2="136" y2="142" stroke="#5c2409" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="142" y1="126" x2="150" y2="140" stroke="#5c2409" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M 124 132 Q 140 125 156 132" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" fill="none"/>
             </g>
           </g>
         `;
-      } else if (tId === 'parmesan') {
+      } else if (tId === 'extra-greens') {
         toppingsSvg += `
-          <!-- Grated Savory Cheese Flakes (Parmesan Curls) -->
-          <g class="svg-pop-layer" id="topping-parmesan">
-            <path d="M 115 95 Q 120 90 126 94" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <path d="M 148 98 Q 155 93 160 97" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <path d="M 104 135 Q 109 130 115 133" stroke="#fef08a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-            <path d="M 172 138 Q 177 132 182 137" stroke="#fef08a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-            <path d="M 134 142 Q 140 138 145 142" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <!-- Ekstra Selada Romaine Segar (Crisp Leaf Flare) -->
+          <g class="svg-pop-layer" id="extra-greens-layer">
+            <path d="M 60 115 Q 40 85 68 75 Q 95 90 85 125 Z" fill="#22c55e" stroke="#15803d" stroke-width="1.2" opacity="0.95"/>
+            <path d="M 220 115 Q 240 85 212 75 Q 185 90 195 125 Z" fill="#22c55e" stroke="#15803d" stroke-width="1.2" opacity="0.95"/>
+            <path d="M 68 75 Q 75 100 80 120" stroke="#86efac" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M 212 75 Q 205 100 200 120" stroke="#86efac" stroke-width="1.5" stroke-linecap="round" fill="none"/>
           </g>
         `;
-      } else if (tId === 'sweet-corn') {
+      } else if (tId === 'extra-dressing') {
         toppingsSvg += `
-          <!-- Golden Sweet Corn Kernels -->
-          <g class="svg-pop-layer" id="topping-corn">
-            <ellipse cx="88" cy="115" rx="5" ry="4" fill="#facc15" stroke="#ca8a04" stroke-width="1" transform="rotate(-20, 88, 115)"/>
-            <circle cx="87" cy="114" r="1.2" fill="#fef08a"/>
-            <ellipse cx="148" cy="98" rx="5" ry="4" fill="#facc15" stroke="#ca8a04" stroke-width="1" transform="rotate(15, 148, 98)"/>
-            <circle cx="147" cy="97" r="1.2" fill="#fef08a"/>
-            <ellipse cx="182" cy="122" rx="5" ry="4" fill="#facc15" stroke="#ca8a04" stroke-width="1" transform="rotate(-10, 182, 122)"/>
-            <circle cx="181" cy="121" r="1.2" fill="#fef08a"/>
-            <ellipse cx="112" cy="164" rx="5" ry="4" fill="#facc15" stroke="#ca8a04" stroke-width="1" transform="rotate(30, 112, 164)"/>
-            <circle cx="111" cy="163" r="1.2" fill="#fef08a"/>
-            <ellipse cx="158" cy="166" rx="5" ry="4" fill="#facc15" stroke="#ca8a04" stroke-width="1" transform="rotate(-25, 158, 166)"/>
-            <circle cx="157" cy="165" r="1.2" fill="#fef08a"/>
-          </g>
-        `;
-      } else if (tId === 'chia-flax') {
-        toppingsSvg += `
-          <!-- Organic Superfood Seeds (Chia & Golden Flax Scatter) -->
-          <g class="svg-pop-layer" id="topping-seeds">
-            <!-- Chia Seeds (Dark Glossy Dots) -->
-            <circle cx="98" cy="112" r="1.4" fill="#18181b"/>
-            <circle cx="122" cy="104" r="1.3" fill="#18181b"/>
-            <circle cx="160" cy="108" r="1.4" fill="#18181b"/>
-            <circle cx="178" cy="130" r="1.3" fill="#18181b"/>
-            <circle cx="108" cy="148" r="1.4" fill="#18181b"/>
-            <circle cx="145" cy="154" r="1.3" fill="#18181b"/>
-            <!-- Flax Seeds (Golden Brown Ovals) -->
-            <ellipse cx="104" cy="108" rx="2" ry="1.2" fill="#b45309" transform="rotate(40, 104, 108)"/>
-            <ellipse cx="138" cy="98" rx="2" ry="1.2" fill="#b45309" transform="rotate(-20, 138, 98)"/>
-            <ellipse cx="168" cy="114" rx="2" ry="1.2" fill="#b45309" transform="rotate(30, 168, 114)"/>
-            <ellipse cx="128" cy="158" rx="2" ry="1.2" fill="#b45309" transform="rotate(-45, 128, 158)"/>
+          <!-- Ekstra Saus Salad Drizzle (Rich Swirl) -->
+          <g class="svg-pop-layer" id="extra-dressing-layer">
+            <path d="M 85 142 Q 115 165 140 145 T 195 152" fill="none" stroke="${dressing.color}" stroke-width="7" stroke-linecap="round" opacity="0.95" filter="url(#dropShadowSoft)"/>
+            <path d="M 88 140 Q 115 162 140 143" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
           </g>
         `;
       }

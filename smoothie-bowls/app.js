@@ -65,15 +65,6 @@ const smoothieData = {
       cals: 45,
       protein: 0.1,
       fiber: 0
-    },
-    'chia-seeds': {
-      id: 'chia-seeds',
-      name: 'Superfood Organic Chia Seeds',
-      desc: '1 sdm (12g) biji chia kering (USDA: 58 kcal, 2g protein, 4.1g serat larut).',
-      price: 1000,
-      cals: 58,
-      protein: 2.0,
-      fiber: 4.1
     }
   },
 
@@ -104,15 +95,6 @@ const smoothieData = {
       cals: 27,
       protein: 0.3,
       fiber: 0.8
-    },
-    'coconut-flakes': {
-      id: 'coconut-flakes',
-      name: 'Toasted Coconut Flakes',
-      desc: '10g kelapa sangrai kering harum & gurih (USDA: 66 kcal, 1.6g serat).',
-      price: 1000,
-      cals: 66,
-      protein: 0.7,
-      fiber: 1.6
     }
   }
 };
@@ -268,20 +250,6 @@ function renderStage() {
         <path d="M 84 158 Q 128 184 164 144 T 204 160" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" opacity="0.85"/>
       </g>
     `;
-  } else if (currentBowl.booster === 'chia-seeds') {
-    boosterSvg = `
-      <!-- Organic Chia Superfood Seed Swirl -->
-      <g class="svg-pop-layer" id="boosterLayer">
-        <path d="M 70 138 Q 106 90 140 132 T 210 138" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="85" cy="120" r="1.4" fill="#18181b"/>
-        <circle cx="108" cy="104" r="1.5" fill="#18181b"/>
-        <circle cx="132" cy="125" r="1.4" fill="#18181b"/>
-        <circle cx="156" cy="140" r="1.5" fill="#18181b"/>
-        <circle cx="180" cy="136" r="1.4" fill="#18181b"/>
-        <circle cx="120" cy="158" r="1.4" fill="#18181b"/>
-        <circle cx="168" cy="155" r="1.4" fill="#18181b"/>
-      </g>
-    `;
   } else {
     // Default / protein-powder: Pure Protein Powder Frosted Whey Ribbon
     boosterSvg = `
@@ -294,7 +262,7 @@ function renderStage() {
     `;
   }
 
-  // Dynamic Reactive Toppings Builder
+  // Dynamic Reactive Toppings Builder (Official Ingredients Only)
   let toppingsSvg = '';
   if (currentBowl.toppings && currentBowl.toppings.length > 0) {
     currentBowl.toppings.forEach(tKey => {
@@ -363,17 +331,6 @@ function renderStage() {
             </g>
           </g>
         `;
-      } else if (tKey === 'coconut-flakes') {
-        toppingsSvg += `
-          <!-- Toasted Coconut Flakes (Snow White Ribbons) -->
-          <g class="svg-pop-layer" id="topping-coconut">
-            <path d="M 88 108 Q 94 100 102 105" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
-            <path d="M 136 94 Q 142 88 150 93" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
-            <path d="M 166 104 Q 172 98 180 103" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
-            <path d="M 116 168 Q 124 162 130 167" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
-            <path d="M 148 166 Q 156 160 162 165" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
-          </g>
-        `;
       }
     });
   }
@@ -399,13 +356,13 @@ function renderStage() {
         </g>
       `;
     }
-    if (currentBowl.toppings.includes('granola') || currentBowl.toppings.includes('coconut-flakes')) {
+    if (currentBowl.toppings.includes('granola')) {
       bottleToppingsSvg += `
-        <!-- Toasted Garnish Layer near Top -->
+        <!-- Toasted Granola Crunch Layer near Top -->
         <g class="svg-pop-layer">
           <ellipse cx="140" cy="74" rx="36" ry="6" fill="#fbbf24" opacity="0.6"/>
           <circle cx="125" cy="74" r="2" fill="#d97706"/>
-          <circle cx="145" cy="73" r="2.5" fill="#ffffff"/>
+          <circle cx="145" cy="73" r="2.5" fill="#f59e0b"/>
           <circle cx="155" cy="75" r="2" fill="#d97706"/>
         </g>
       `;
