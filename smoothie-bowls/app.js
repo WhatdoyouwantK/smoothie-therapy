@@ -249,60 +249,246 @@ function renderStage() {
   const base = smoothieData.bases[currentBowl.base] || smoothieData.bases['strawberry-smoothie-bowl'];
   const isMalibuBottle = currentBowl.base === 'malibu-mango';
 
+  // Booster Ribbon/Swirl Builder
+  let boosterSvg = '';
+  if (currentBowl.booster === 'pure-honey') {
+    boosterSvg = `
+      <!-- Pure Honey Golden Amber Drizzle Swirl -->
+      <g class="svg-pop-layer" id="boosterLayer">
+        <path d="M 68 136 Q 104 88 140 132 T 212 136" fill="none" stroke="#f59e0b" stroke-width="5" stroke-linecap="round" opacity="0.9" filter="url(#dropShadowSoft)"/>
+        <path d="M 88 156 Q 130 182 165 142 T 202 158" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+        <path d="M 72 134 Q 104 92 136 130" fill="none" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+      </g>
+    `;
+  } else if (currentBowl.booster === 'oat-milk') {
+    boosterSvg = `
+      <!-- Oat Milk Creamy Swirl Ripple -->
+      <g class="svg-pop-layer" id="boosterLayer">
+        <path d="M 65 138 Q 105 84 140 134 T 215 138" fill="none" stroke="#fef9c3" stroke-width="6.5" stroke-linecap="round" opacity="0.8" filter="url(#dropShadowSoft)"/>
+        <path d="M 84 158 Q 128 184 164 144 T 204 160" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" opacity="0.85"/>
+      </g>
+    `;
+  } else if (currentBowl.booster === 'chia-seeds') {
+    boosterSvg = `
+      <!-- Organic Chia Superfood Seed Swirl -->
+      <g class="svg-pop-layer" id="boosterLayer">
+        <path d="M 70 138 Q 106 90 140 132 T 210 138" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="85" cy="120" r="1.4" fill="#18181b"/>
+        <circle cx="108" cy="104" r="1.5" fill="#18181b"/>
+        <circle cx="132" cy="125" r="1.4" fill="#18181b"/>
+        <circle cx="156" cy="140" r="1.5" fill="#18181b"/>
+        <circle cx="180" cy="136" r="1.4" fill="#18181b"/>
+        <circle cx="120" cy="158" r="1.4" fill="#18181b"/>
+        <circle cx="168" cy="155" r="1.4" fill="#18181b"/>
+      </g>
+    `;
+  } else {
+    // Default / protein-powder: Pure Protein Powder Frosted Whey Ribbon
+    boosterSvg = `
+      <!-- Pure Protein Powder Frosted Whey Ribbon -->
+      <g class="svg-pop-layer" id="boosterLayer">
+        <path d="M 62 138 Q 106 82 140 132 T 218 138" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="6" stroke-linecap="round" filter="url(#dropShadowSoft)"/>
+        <path d="M 82 158 Q 128 184 164 144 T 204 160" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="M 68 136 Q 106 86 138 128" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      </g>
+    `;
+  }
+
+  // Dynamic Reactive Toppings Builder
+  let toppingsSvg = '';
+  if (currentBowl.toppings && currentBowl.toppings.length > 0) {
+    currentBowl.toppings.forEach(tKey => {
+      if (tKey === 'granola') {
+        toppingsSvg += `
+          <!-- Crunchy Toasted Granola Clusters -->
+          <g class="svg-pop-layer" id="topping-granola">
+            <ellipse cx="98" cy="112" rx="6" ry="4" fill="#d97706" transform="rotate(-15, 98, 112)"/>
+            <ellipse cx="96" cy="111" rx="4" ry="2.5" fill="#fbbf24" transform="rotate(-15, 96, 111)"/>
+            <ellipse cx="122" cy="98" rx="7" ry="4.5" fill="#d97706" transform="rotate(25, 122, 98)"/>
+            <ellipse cx="120" cy="97" rx="5" ry="3" fill="#f59e0b" transform="rotate(25, 120, 97)"/>
+            <ellipse cx="152" cy="102" rx="6" ry="4" fill="#b45309" transform="rotate(-10, 152, 102)"/>
+            <ellipse cx="150" cy="101" rx="4.5" ry="2.5" fill="#fbbf24" transform="rotate(-10, 150, 101)"/>
+            <ellipse cx="174" cy="118" rx="6" ry="4.5" fill="#d97706" transform="rotate(35, 174, 118)"/>
+            <ellipse cx="172" cy="117" rx="4" ry="3" fill="#f59e0b" transform="rotate(35, 172, 117)"/>
+            <ellipse cx="108" cy="158" rx="6.5" ry="4" fill="#b45309" transform="rotate(-25, 108, 158)"/>
+            <ellipse cx="106" cy="157" rx="4.5" ry="2.5" fill="#fbbf24" transform="rotate(-25, 106, 157)"/>
+            <ellipse cx="162" cy="164" rx="7" ry="4.5" fill="#d97706" transform="rotate(20, 162, 164)"/>
+            <ellipse cx="160" cy="163" rx="5" ry="3" fill="#f59e0b" transform="rotate(20, 160, 163)"/>
+          </g>
+        `;
+      } else if (tKey === 'fresh-strawberry') {
+        toppingsSvg += `
+          <!-- Fresh Strawberry Heart Medallions -->
+          <g class="svg-pop-layer" id="topping-strawberry">
+            <g transform="translate(80, 126) rotate(-20)">
+              <polygon points="12,0 24,20 0,20" fill="#f43f5e" stroke="#e11d48" stroke-width="1.2"/>
+              <polygon points="12,4 20,17 4,17" fill="#fda4af"/>
+              <circle cx="9" cy="10" r="0.8" fill="#facc15"/>
+              <circle cx="15" cy="10" r="0.8" fill="#facc15"/>
+              <circle cx="12" cy="14" r="0.8" fill="#facc15"/>
+            </g>
+            <g transform="translate(170, 134) rotate(25)">
+              <polygon points="12,0 24,20 0,20" fill="#f43f5e" stroke="#e11d48" stroke-width="1.2"/>
+              <polygon points="12,4 20,17 4,17" fill="#fda4af"/>
+              <circle cx="9" cy="10" r="0.8" fill="#facc15"/>
+              <circle cx="15" cy="10" r="0.8" fill="#facc15"/>
+              <circle cx="12" cy="14" r="0.8" fill="#facc15"/>
+            </g>
+            <g transform="translate(128, 152) rotate(6)">
+              <polygon points="12,0 24,20 0,20" fill="#f43f5e" stroke="#e11d48" stroke-width="1.2"/>
+              <polygon points="12,4 20,17 4,17" fill="#fda4af"/>
+              <circle cx="9" cy="10" r="0.8" fill="#facc15"/>
+              <circle cx="15" cy="10" r="0.8" fill="#facc15"/>
+              <circle cx="12" cy="14" r="0.8" fill="#facc15"/>
+            </g>
+          </g>
+        `;
+      } else if (tKey === 'fresh-banana') {
+        toppingsSvg += `
+          <!-- Fresh Banana Slices (Ambon Medallions) -->
+          <g class="svg-pop-layer" id="topping-banana">
+            <g transform="translate(102, 130) rotate(-10)">
+              <ellipse cx="14" cy="14" rx="14" ry="11" fill="#fef08a" stroke="#ca8a04" stroke-width="1.2"/>
+              <ellipse cx="14" cy="14" rx="10" ry="7" fill="#fffbeb"/>
+              <circle cx="12" cy="14" r="0.8" fill="#78350f"/>
+              <circle cx="15" cy="13" r="0.8" fill="#78350f"/>
+              <circle cx="14" cy="16" r="0.8" fill="#78350f"/>
+            </g>
+            <g transform="translate(145, 126) rotate(18)">
+              <ellipse cx="14" cy="14" rx="14" ry="11" fill="#fef08a" stroke="#ca8a04" stroke-width="1.2"/>
+              <ellipse cx="14" cy="14" rx="10" ry="7" fill="#fffbeb"/>
+              <circle cx="12" cy="14" r="0.8" fill="#78350f"/>
+              <circle cx="15" cy="13" r="0.8" fill="#78350f"/>
+              <circle cx="14" cy="16" r="0.8" fill="#78350f"/>
+            </g>
+          </g>
+        `;
+      } else if (tKey === 'coconut-flakes') {
+        toppingsSvg += `
+          <!-- Toasted Coconut Flakes (Snow White Ribbons) -->
+          <g class="svg-pop-layer" id="topping-coconut">
+            <path d="M 88 108 Q 94 100 102 105" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
+            <path d="M 136 94 Q 142 88 150 93" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
+            <path d="M 166 104 Q 172 98 180 103" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
+            <path d="M 116 168 Q 124 162 130 167" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
+            <path d="M 148 166 Q 156 160 162 165" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#dropShadowSoft)"/>
+          </g>
+        `;
+      }
+    });
+  }
+
   if (isMalibuBottle) {
-    // Render Chilled Tropical Bottle Graphic
+    // Render Chilled Tropical Bottle Graphic with Condensation and Depth
+    let bottleToppingsSvg = '';
+    if (currentBowl.toppings.includes('fresh-strawberry')) {
+      bottleToppingsSvg += `
+        <!-- Floating Chilled Strawberry Infusion -->
+        <g class="svg-pop-layer">
+          <ellipse cx="122" cy="148" rx="7" ry="9" fill="#f43f5e" stroke="#e11d48" stroke-width="0.8" transform="rotate(-15, 122, 148)"/>
+          <ellipse cx="158" cy="180" rx="6" ry="8" fill="#f43f5e" stroke="#e11d48" stroke-width="0.8" transform="rotate(20, 158, 180)"/>
+        </g>
+      `;
+    }
+    if (currentBowl.toppings.includes('fresh-banana')) {
+      bottleToppingsSvg += `
+        <!-- Floating Banana Medallions -->
+        <g class="svg-pop-layer">
+          <circle cx="154" cy="120" r="7" fill="#fef08a" stroke="#ca8a04" stroke-width="0.8"/>
+          <circle cx="126" cy="195" r="7" fill="#fef08a" stroke="#ca8a04" stroke-width="0.8"/>
+        </g>
+      `;
+    }
+    if (currentBowl.toppings.includes('granola') || currentBowl.toppings.includes('coconut-flakes')) {
+      bottleToppingsSvg += `
+        <!-- Toasted Garnish Layer near Top -->
+        <g class="svg-pop-layer">
+          <ellipse cx="140" cy="74" rx="36" ry="6" fill="#fbbf24" opacity="0.6"/>
+          <circle cx="125" cy="74" r="2" fill="#d97706"/>
+          <circle cx="145" cy="73" r="2.5" fill="#ffffff"/>
+          <circle cx="155" cy="75" r="2" fill="#d97706"/>
+        </g>
+      `;
+    }
+
     stage.innerHTML = `
-      <svg viewBox="0 0 280 280" style="width: 100%; height: 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.7));">
+      <svg viewBox="0 0 280 280" class="svg-bowl-stage" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.75));">
         <defs>
           <linearGradient id="juiceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#fef08a"/>
-            <stop offset="40%" stop-color="#f59e0b"/>
-            <stop offset="100%" stop-color="#d97706"/>
+            <stop offset="35%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#b45309"/>
           </linearGradient>
           <linearGradient id="bottleGlass" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
-            <stop offset="20%" stop-color="rgba(255,255,255,0.1)"/>
+            <stop offset="0%" stop-color="rgba(255,255,255,0.45)"/>
+            <stop offset="20%" stop-color="rgba(255,255,255,0.12)"/>
             <stop offset="80%" stop-color="rgba(255,255,255,0.05)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0.3)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0.35)"/>
           </linearGradient>
+          <filter id="dropShadowSoft" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-opacity="0.35"/>
+          </filter>
         </defs>
 
+        <!-- Eco Straw Angled from Opening -->
+        <line x1="152" y1="52" x2="182" y2="15" stroke="#d4af37" stroke-width="4.5" stroke-linecap="round"/>
+        <line x1="152" y1="52" x2="182" y2="15" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+
         <!-- Plastic Bottle Body -->
-        <rect x="95" y="65" width="90" height="170" rx="20" fill="url(#juiceGrad)" stroke="#d4af37" stroke-width="2"/>
-        <rect x="95" y="65" width="90" height="170" rx="20" fill="url(#bottleGlass)"/>
+        <rect x="94" y="65" width="92" height="172" rx="22" fill="url(#juiceGrad)" stroke="#d4af37" stroke-width="2"/>
+        <rect x="94" y="65" width="92" height="172" rx="22" fill="url(#bottleGlass)"/>
 
-        <!-- Bottle Cap -->
-        <rect x="115" y="42" width="50" height="23" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Liquid Surface Top Wave -->
+        <ellipse cx="140" cy="74" rx="42" ry="8" fill="#fef08a" opacity="0.85"/>
 
-        <!-- Frost / Ice Drops -->
-        <circle cx="115" cy="110" r="4" fill="rgba(255,255,255,0.7)"/>
-        <circle cx="160" cy="140" r="3" fill="rgba(255,255,255,0.7)"/>
-        <circle cx="130" cy="180" r="5" fill="rgba(255,255,255,0.7)"/>
-        <circle cx="150" cy="90" r="3" fill="rgba(255,255,255,0.6)"/>
+        <!-- Infusion Inclusions -->
+        ${bottleToppingsSvg}
 
-        <!-- Label Badge -->
-        <rect x="105" y="115" width="70" height="45" rx="6" fill="#141210" stroke="#d4af37" stroke-width="1"/>
-        <text x="140" y="132" font-size="9" font-weight="bold" fill="#f59e0b" text-anchor="middle">MALIBU</text>
-        <text x="140" y="145" font-size="8" fill="#ffffff" text-anchor="middle">MANGO</text>
-        <text x="140" y="153" font-size="6" fill="#94a3b8" text-anchor="middle">SMOOTHIE THERAPY</text>
+        <!-- Bottle Neck & Cap -->
+        <rect x="118" y="55" width="44" height="12" fill="#d4af37" rx="2"/>
+        <rect x="114" y="40" width="52" height="17" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+        <line x1="124" y1="42" x2="124" y2="55" stroke="#cbd5e1" stroke-width="1.2"/>
+        <line x1="132" y1="42" x2="132" y2="55" stroke="#cbd5e1" stroke-width="1.2"/>
+        <line x1="140" y1="42" x2="140" y2="55" stroke="#cbd5e1" stroke-width="1.2"/>
+        <line x1="148" y1="42" x2="148" y2="55" stroke="#cbd5e1" stroke-width="1.2"/>
+        <line x1="156" y1="42" x2="156" y2="55" stroke="#cbd5e1" stroke-width="1.2"/>
+
+        <!-- Chilled Frost / Condensation Water Drops -->
+        <circle cx="112" cy="108" r="4" fill="rgba(255,255,255,0.75)"/>
+        <circle cx="166" cy="138" r="3.2" fill="rgba(255,255,255,0.75)"/>
+        <circle cx="128" cy="178" r="4.5" fill="rgba(255,255,255,0.75)"/>
+        <circle cx="158" cy="94" r="3" fill="rgba(255,255,255,0.65)"/>
+        <circle cx="110" cy="192" r="3" fill="rgba(255,255,255,0.65)"/>
+
+        <!-- Gold Atelier Label Badge -->
+        <rect x="104" y="116" width="72" height="46" rx="6" fill="#141210" stroke="#d4af37" stroke-width="1.2"/>
+        <text x="140" y="132" font-size="9" font-weight="bold" fill="#f59e0b" text-anchor="middle" letter-spacing="1">MALIBU</text>
+        <text x="140" y="145" font-size="8" font-weight="600" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">MANGO</text>
+        <text x="140" y="154" font-size="5.5" fill="#94a3b8" text-anchor="middle" letter-spacing="0.8">SMOOTHIE THERAPY</text>
       </svg>
     `;
     return;
   }
 
-  // Render Paper Bowl Graphic
+  // Render Premium Eco Bowl Graphic with Tactile Depth
   stage.innerHTML = `
-    <svg viewBox="0 0 280 280" style="width: 100%; height: 100%; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.7));">
+    <svg viewBox="0 0 280 280" class="svg-bowl-stage" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.75));">
       <defs>
+        <!-- Gelato Smoothie Radial Gradient -->
         <radialGradient id="bowlInnerGrad" cx="45%" cy="40%" r="65%">
           <stop offset="0%" stop-color="${base.swirlColor}"/>
-          <stop offset="65%" stop-color="${base.color}"/>
+          <stop offset="55%" stop-color="${base.color}"/>
           <stop offset="100%" stop-color="${base.bowlFill}"/>
         </radialGradient>
+        <!-- Bowl Rim Gradient -->
         <linearGradient id="bowlRimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#ffffff"/>
           <stop offset="100%" stop-color="#94a3b8"/>
         </linearGradient>
+        <!-- Soft Drop Shadow Filter -->
+        <filter id="dropShadowSoft" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="3" stdDeviation="3" flood-opacity="0.35"/>
+        </filter>
       </defs>
 
       <!-- Eco Paper Bowl Outer -->
@@ -316,26 +502,16 @@ function renderStage() {
       <path d="M 60 140 Q 110 75 140 135 T 220 140" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="5" stroke-linecap="round"/>
       <path d="M 80 160 Q 130 185 165 145 T 205 160" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="4" stroke-linecap="round"/>
 
-      <!-- Granola & Strawberry Topping Scatter -->
-      <g>
-        <!-- Granola pieces -->
-        <circle cx="100" cy="115" r="4" fill="#fbbf24"/>
-        <circle cx="120" cy="100" r="5" fill="#f59e0b"/>
-        <circle cx="150" cy="105" r="4" fill="#fbbf24"/>
-        <circle cx="170" cy="120" r="5" fill="#d97706"/>
-        <circle cx="110" cy="155" r="4" fill="#fbbf24"/>
-        <circle cx="160" cy="165" r="4" fill="#f59e0b"/>
+      <!-- Active Superfood Booster Swirl Ribbon -->
+      ${boosterSvg}
 
-        <!-- Strawberry cuts -->
-        <polygon points="85,125 95,140 75,140" fill="#f43f5e" stroke="#e11d48" stroke-width="1"/>
-        <polygon points="175,135 185,150 165,150" fill="#f43f5e" stroke="#e11d48" stroke-width="1"/>
-        <polygon points="135,160 145,175 125,175" fill="#f43f5e" stroke="#e11d48" stroke-width="1"/>
-      </g>
+      <!-- Dynamic Selected Toppings Scatter -->
+      ${toppingsSvg}
     </svg>
   `;
 }
 
-// 3. Nutrition & Price Calculations
+// 3. Nutrition & Price Calculations with Animated Gauges
 function updateNutrition() {
   const base = smoothieData.bases[currentBowl.base] || smoothieData.bases['strawberry-smoothie-bowl'];
   const booster = smoothieData.boosters[currentBowl.booster];
@@ -371,6 +547,24 @@ function updateNutrition() {
   if (protEl) protEl.textContent = `${Math.round(prot * 10) / 10}g`;
   if (fiberEl) fiberEl.textContent = `${Math.round(fiber * 10) / 10}g`;
   if (priceEl) priceEl.textContent = formatRupiah(price);
+
+  // Animated Nutrient Gauges
+  const calsBar = document.getElementById('hudCalsBar');
+  const protBar = document.getElementById('hudProteinBar');
+  const fiberBar = document.getElementById('hudFiberBar');
+
+  if (calsBar) {
+    const calsPct = Math.min(100, Math.max(12, Math.round((cals / 450) * 100)));
+    calsBar.style.width = `${calsPct}%`;
+  }
+  if (protBar) {
+    const protPct = Math.min(100, Math.max(12, Math.round((prot / 25) * 100)));
+    protBar.style.width = `${protPct}%`;
+  }
+  if (fiberBar) {
+    const fiberPct = Math.min(100, Math.max(12, Math.round((fiber / 14) * 100)));
+    fiberBar.style.width = `${fiberPct}%`;
+  }
 }
 
 // 4. Add Custom Bowl to Bag
