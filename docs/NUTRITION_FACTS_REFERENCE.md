@@ -10,20 +10,15 @@
 | Category | Ingredient | Standard Portion | Calories (kcal) | Protein (g) | Fiber (g) | Fat (g) | Source / Reference Standard |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Base** | Classic Flour Tortilla | 1 wrap (8-inch, ~45g) | **130** | **3.5** | **1.8** | 2.5 | USDA FDC: Flour Tortilla |
-| **Base** | Spinach & Herb Tortilla | 1 wrap (8-inch, ~49g) | **130** | **4.0** | **2.0** | 2.5 | Mission Spinach Herb Standard |
-| **Base** | Whole Wheat Tortilla | 1 wrap (8-inch, ~45g) | **110** | **4.0** | **5.0** | 2.0 | Mission Soft Taco Whole Wheat |
 | **Greens** | Romaine Lettuce | 50g fresh chopped | **9** | **0.6** | **1.1** | 0.2 | USDA FDC: Romaine Lettuce (17 kcal/100g) |
 | **Greens** | Fresh Crisp Lettuce | 50g fresh chopped | **7** | **0.5** | **0.7** | 0.1 | USDA FDC: Iceberg/Butterhead Lettuce |
 | **Greens** | Duo Mix (Romaine + Lettuce) | 70g fresh mix | **12** | **0.8** | **1.4** | 0.2 | Blend standard |
-| **Protein** | Boneless Grilled Chicken | 100g cooked breast fillet | **165** | **31.0** | **0.0** | 3.6 | USDA FDC: Cooked Skinless Chicken Breast |
-| **Protein** | Double Chicken Portion | 150g cooked breast fillet | **248** | **46.5** | **0.0** | 5.4 | USDA FDC: 1.5x portion |
-| **Protein** | Chicken + Boiled Egg | 80g chicken + 1 large egg (50g) | **206** | **31.1** | **0.0** | 8.2 | USDA FDC: 80g Chicken (132 kcal, 25g P) + 1 Egg (74 kcal, 6.3g P) |
-| **Dressing**| Signature House Sauce | 1 tbsp (15 ml) | **55** | **0.8** | **0.2** | 4.2 | Light Yogurt-Citrus Mayo Recipe Standard |
-| **Dressing**| Creamy Garlic Caesar | 1 tbsp (15 ml) | **75** | **0.8** | **0.1** | 7.8 | Standard Commercial Caesar Dressing |
+| **Protein** | Boneless Grilled Chicken (Included) | 100g cooked breast fillet | **165** | **31.0** | **0.0** | 3.6 | USDA FDC: Cooked Skinless Chicken Breast |
+| **Dressing**| Thousand Island Dressing | 1 tbsp (15 ml) | **59** | **0.2** | **0.0** | 5.6 | USDA FDC: Thousand Island Dressing |
 | **Dressing**| Roasted Sesame (Wijen) | 1 tbsp (15 ml) | **62** | **0.4** | **0.3** | 5.5 | Official Kewpie Roasted Sesame Label |
 | **Ekstra Porsi** | Ekstra Boneless Chicken | +50g dada ayam panggang empuk | **82** | **15.5** | **0.0** | 1.8 | USDA FDC: Cooked Skinless Chicken Breast |
 | **Ekstra Porsi** | Ekstra Selada Romaine Segar | +30g selada segar | **5** | **0.4** | **0.7** | 0.1 | USDA FDC: Romaine Lettuce |
-| **Ekstra Porsi** | Ekstra Saus Salad | +1 tbsp (15 ml) | **55** | **0.8** | **0.2** | 4.2 | Light Yogurt-Citrus Mayo Recipe Standard |
+| **Ekstra Porsi** | Ekstra Saus Salad | +1 tbsp (15 ml) | **59** | **0.2** | **0.0** | 5.6 | Thousand Island / Roasted Sesame |
 
 ---
 

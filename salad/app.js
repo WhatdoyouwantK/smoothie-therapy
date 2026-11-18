@@ -20,28 +20,6 @@ const wrapIngredients = {
       cals: 130,
       protein: 3.5,
       fiber: 1.8
-    },
-    'spinach-tortilla': {
-      id: 'spinach-tortilla',
-      name: 'Spinach & Herb Tortilla',
-      desc: 'Tortilla bayam hijau 8-inci kaya zat besi & serat (Standar Mission/USDA: ~49g).',
-      color: '#15803d',
-      dark: '#14532d',
-      price: 2000,
-      cals: 130,
-      protein: 4.0,
-      fiber: 2.0
-    },
-    'whole-wheat': {
-      id: 'whole-wheat',
-      name: 'Whole Wheat High-Fiber Wrap',
-      desc: 'Tortilla gandum utuh 8-inci tinggi serat larut (Standar USDA: ~45g).',
-      color: '#b45309',
-      dark: '#78350f',
-      price: 2000,
-      cals: 110,
-      protein: 4.0,
-      fiber: 5.0
     }
   },
 
@@ -88,49 +66,19 @@ const wrapIngredients = {
       cals: 165,
       protein: 31.0,
       fiber: 0
-    },
-    'double-chicken': {
-      id: 'double-chicken',
-      name: 'Double Boneless Chicken Portion',
-      desc: '150g dada ayam panggang empuk untuk nutrisi pembentukan otot maksimal.',
-      color: '#d97706',
-      price: 5000,
-      cals: 248,
-      protein: 46.5,
-      fiber: 0
-    },
-    'egg-chicken': {
-      id: 'egg-chicken',
-      name: 'Boneless Chicken + Rebusan Telur',
-      desc: '80g dada ayam panggang (132 kcal, 25g P) + 1 butir telur rebus 50g (74 kcal, 6.3g P).',
-      color: '#fbbf24',
-      price: 3000,
-      cals: 206,
-      protein: 31.1,
-      fiber: 0
     }
   },
 
   dressings: {
-    'signature-sauce': {
-      id: 'signature-sauce',
-      name: 'Signature House Salad Sauce',
-      desc: 'Saus salad racikan yogurt & light citrus mayo (1 sdm / 15ml).',
-      color: '#fef08a',
+    'thousand-island': {
+      id: 'thousand-island',
+      name: 'Thousand Island Dressing',
+      desc: 'Saus Thousand Island creamy segar asam-manis klasik (1 sdm / 15ml, USDA: 59 kcal).',
+      color: '#fca5a5',
       price: 0,
-      cals: 55,
-      protein: 0.8,
-      fiber: 0.2
-    },
-    'creamy-caesar': {
-      id: 'creamy-caesar',
-      name: 'Creamy Garlic Caesar',
-      desc: 'Saus caesar klasik keju gurih & lada hitam (1 sdm / 15ml).',
-      color: '#fef3c7',
-      price: 1000,
-      cals: 75,
-      protein: 0.8,
-      fiber: 0.1
+      cals: 59,
+      protein: 0.2,
+      fiber: 0
     },
     'roasted-sesame': {
       id: 'roasted-sesame',
@@ -166,11 +114,11 @@ const wrapIngredients = {
     'extra-dressing': {
       id: 'extra-dressing',
       name: 'Ekstra Saus Salad (+15ml)',
-      desc: 'Tambahan 1 sdm saus salad yogurt & citrus mayo (55 kcal, +0.8g protein).',
+      desc: 'Tambahan 1 sdm saus pilihan (Thousand Island / Roasted Sesame) (+59 kcal).',
       price: 1000,
-      cals: 55,
-      protein: 0.8,
-      fiber: 0.2
+      cals: 59,
+      protein: 0.2,
+      fiber: 0
     }
   }
 };
@@ -180,7 +128,7 @@ let customWrap = {
   base: 'tortilla',
   greens: 'romaine',
   protein: 'boneless-chicken',
-  dressing: 'signature-sauce',
+  dressing: 'thousand-island',
   toppings: []
 };
 
@@ -213,7 +161,6 @@ if (document.readyState === 'loading') {
 function renderControls() {
   renderRadioGroup('baseOptionsContainer', wrapIngredients.bases, customWrap.base, 'setWrapBase');
   renderRadioGroup('greensOptionsContainer', wrapIngredients.greens, customWrap.greens, 'setWrapGreens');
-  renderRadioGroup('proteinOptionsContainer', wrapIngredients.proteins, customWrap.protein, 'setWrapProtein');
   renderRadioGroup('dressingOptionsContainer', wrapIngredients.dressings, customWrap.dressing, 'setWrapDressing');
   renderToppingsCheckboxes();
 }
@@ -274,13 +221,6 @@ function setWrapGreens(key) {
   updateNutrition();
 }
 
-function setWrapProtein(key) {
-  customWrap.protein = key;
-  renderControls();
-  renderStage();
-  updateNutrition();
-}
-
 function setWrapDressing(key) {
   customWrap.dressing = key;
   renderControls();
@@ -307,124 +247,38 @@ function renderStage() {
 
   const base = wrapIngredients.bases[customWrap.base] || wrapIngredients.bases['tortilla'];
   const greens = wrapIngredients.greens[customWrap.greens] || wrapIngredients.greens['romaine'];
-  const protein = wrapIngredients.proteins[customWrap.protein] || wrapIngredients.proteins['boneless-chicken'];
-  const dressing = wrapIngredients.dressings[customWrap.dressing] || wrapIngredients.dressings['signature-sauce'];
+  const dressing = wrapIngredients.dressings[customWrap.dressing] || wrapIngredients.dressings['thousand-island'];
 
-  // Protein SVG Builder based on selected cut
-  let proteinSvg = '';
-  if (customWrap.protein === 'double-chicken') {
-    proteinSvg = `
-      <!-- Double Boneless Chicken Mountain (High Protein) -->
-      <g class="svg-pop-layer" id="proteinLayer">
-        <!-- Base Fillets -->
-        <g transform="rotate(-12, 105, 128)">
-          <path d="M 80 128 Q 105 110 130 128 Q 115 146 80 128 Z" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="90" y1="120" x2="98" y2="134" stroke="#451a03" stroke-width="2" stroke-linecap="round"/>
-          <line x1="104" y1="118" x2="112" y2="132" stroke="#451a03" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <g transform="rotate(14, 172, 130)">
-          <path d="M 148 130 Q 172 112 198 130 Q 182 148 148 130 Z" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="160" y1="122" x2="168" y2="136" stroke="#451a03" stroke-width="2" stroke-linecap="round"/>
-          <line x1="174" y1="120" x2="182" y2="134" stroke="#451a03" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <!-- Center Stack Fillets -->
-        <g transform="rotate(-4, 138, 120)">
-          <path d="M 112 120 Q 138 98 165 120 Q 150 140 112 120 Z" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <path d="M 116 117 Q 138 102 160 117" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
-          <line x1="125" y1="110" x2="133" y2="126" stroke="#5c2409" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="140" y1="108" x2="148" y2="124" stroke="#5c2409" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="152" y1="112" x2="159" y2="124" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <!-- Foreground Overlapping Fillets -->
-        <g transform="rotate(8, 126, 146)">
-          <ellipse cx="126" cy="146" rx="34" ry="17" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="112" y1="140" x2="120" y2="154" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="128" y1="138" x2="136" y2="152" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <g transform="rotate(-8, 160, 150)">
-          <ellipse cx="160" cy="150" rx="32" ry="16" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="148" y1="144" x2="156" y2="157" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="164" y1="142" x2="171" y2="155" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
+  // Standard Savory Boneless Grilled Chicken (Included)
+  const proteinSvg = `
+    <!-- Savory Boneless Grilled Chicken (Triple Seared Fillets) -->
+    <g class="svg-pop-layer" id="proteinLayer">
+      <!-- Upper Cutlet -->
+      <g transform="rotate(-6, 140, 118)">
+        <ellipse cx="140" cy="118" rx="42" ry="22" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
+        <path d="M 118 116 Q 140 106 162 116" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
+        <line x1="126" y1="110" x2="134" y2="126" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
+        <line x1="140" y1="108" x2="148" y2="124" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
+        <line x1="154" y1="110" x2="161" y2="124" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
       </g>
-    `;
-  } else if (customWrap.protein === 'egg-chicken') {
-    proteinSvg = `
-      <!-- Boneless Chicken + Boiled Egg Duet -->
-      <g class="svg-pop-layer" id="proteinLayer">
-        <!-- Grilled Chicken Cuts (Right & Center) -->
-        <g transform="rotate(-6, 155, 122)">
-          <ellipse cx="155" cy="122" rx="38" ry="20" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <path d="M 135 120 Q 155 110 175 120" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
-          <line x1="144" y1="113" x2="151" y2="128" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="158" y1="112" x2="165" y2="127" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <g transform="rotate(10, 156, 152)">
-          <ellipse cx="156" cy="152" rx="32" ry="17" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="146" y1="145" x2="153" y2="158" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="160" y1="144" x2="167" y2="157" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <!-- Perfect Halved Boiled Eggs (Left) -->
-        <!-- Egg Half 1 -->
-        <g transform="rotate(-12, 106, 124)">
-          <ellipse cx="106" cy="124" rx="25" ry="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-          <ellipse cx="109" cy="124" rx="14" ry="12" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
-          <circle cx="106" cy="121" r="3.5" fill="#fef08a" opacity="0.9"/>
-        </g>
-        <!-- Egg Half 2 -->
-        <g transform="rotate(16, 114, 156)">
-          <ellipse cx="114" cy="156" rx="24" ry="17" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
-          <ellipse cx="112" cy="156" rx="13" ry="11" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
-          <circle cx="110" cy="153" r="3" fill="#fef08a" opacity="0.9"/>
-        </g>
+      <!-- Lower Left Cutlet -->
+      <g transform="rotate(12, 118, 146)">
+        <ellipse cx="118" cy="146" rx="38" ry="19" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
+        <line x1="106" y1="140" x2="114" y2="153" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
+        <line x1="120" y1="138" x2="128" y2="151" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
       </g>
-    `;
-  } else {
-    // Default: Savory Boneless Grilled Chicken (Standard Portion)
-    proteinSvg = `
-      <!-- Savory Boneless Grilled Chicken (Triple Seared Fillets) -->
-      <g class="svg-pop-layer" id="proteinLayer">
-        <!-- Upper Cutlet -->
-        <g transform="rotate(-6, 140, 118)">
-          <ellipse cx="140" cy="118" rx="42" ry="22" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <path d="M 118 116 Q 140 106 162 116" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
-          <line x1="126" y1="110" x2="134" y2="126" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="140" y1="108" x2="148" y2="124" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="154" y1="110" x2="161" y2="124" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <!-- Lower Left Cutlet -->
-        <g transform="rotate(12, 118, 146)">
-          <ellipse cx="118" cy="146" rx="38" ry="19" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="106" y1="140" x2="114" y2="153" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="120" y1="138" x2="128" y2="151" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <!-- Lower Right Cutlet -->
-        <g transform="rotate(-15, 162, 150)">
-          <ellipse cx="162" cy="150" rx="36" ry="18" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="150" y1="143" x2="158" y2="156" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-          <line x1="165" y1="142" x2="172" y2="155" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
-        </g>
+      <!-- Lower Right Cutlet -->
+      <g transform="rotate(-15, 162, 150)">
+        <ellipse cx="162" cy="150" rx="36" ry="18" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
+        <line x1="150" y1="143" x2="158" y2="156" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
+        <line x1="165" y1="142" x2="172" y2="155" stroke="#5c2409" stroke-width="2" stroke-linecap="round"/>
       </g>
-    `;
-  }
+    </g>
+  `;
 
   // Dressing SVG Builder based on selected profile
   let dressingSvg = '';
-  if (customWrap.dressing === 'creamy-caesar') {
-    dressingSvg = `
-      <!-- Creamy Garlic Caesar Dressing with Cracked Black Pepper -->
-      <g class="svg-pop-layer" id="dressingLayer">
-        <path d="M 72 130 Q 108 92 140 126 T 208 144" fill="none" stroke="${dressing.color}" stroke-width="8" stroke-linecap="round" opacity="0.94" filter="url(#dropShadowSoft)"/>
-        <path d="M 94 156 Q 130 176 166 138 T 198 164" fill="none" stroke="${dressing.color}" stroke-width="6.5" stroke-linecap="round" opacity="0.92"/>
-        <!-- Cracked Black Pepper Flakes -->
-        <circle cx="95" cy="118" r="1.2" fill="#18181b"/>
-        <circle cx="120" cy="110" r="1.4" fill="#18181b"/>
-        <circle cx="152" cy="132" r="1.3" fill="#18181b"/>
-        <circle cx="180" cy="142" r="1.2" fill="#18181b"/>
-        <circle cx="132" cy="158" r="1.4" fill="#18181b"/>
-      </g>
-    `;
-  } else if (customWrap.dressing === 'roasted-sesame') {
+  if (customWrap.dressing === 'roasted-sesame') {
     dressingSvg = `
       <!-- Roasted Sesame Dressing with Toasted Sesame Seed Garnish -->
       <g class="svg-pop-layer" id="dressingLayer">
@@ -439,13 +293,19 @@ function renderStage() {
       </g>
     `;
   } else {
-    // Signature House Sauce (Creamy Citrus Light Mayo)
+    // Thousand Island Dressing (Creamy Tangy Coral-Peach Ribbon with Relish Specks)
     dressingSvg = `
-      <!-- Signature House Salad Dressing Ribbon -->
+      <!-- Thousand Island Dressing Ribbon -->
       <g class="svg-pop-layer" id="dressingLayer">
-        <path d="M 72 130 Q 108 92 140 126 T 208 144" fill="none" stroke="${dressing.color}" stroke-width="8" stroke-linecap="round" opacity="0.95" filter="url(#dropShadowSoft)"/>
+        <path d="M 72 130 Q 108 92 140 126 T 208 144" fill="none" stroke="${dressing.color}" stroke-width="8.5" stroke-linecap="round" opacity="0.95" filter="url(#dropShadowSoft)"/>
         <path d="M 94 156 Q 130 176 166 138 T 198 164" fill="none" stroke="${dressing.color}" stroke-width="6.5" stroke-linecap="round" opacity="0.92"/>
-        <path d="M 78 128 Q 108 96 138 124" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <path d="M 78 128 Q 108 96 138 124" fill="none" stroke="#ffedd5" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+        <!-- Fine Relish & Paprika Specks -->
+        <circle cx="96" cy="117" r="1.3" fill="#dc2626"/>
+        <circle cx="122" cy="112" r="1.3" fill="#15803d"/>
+        <circle cx="154" cy="133" r="1.3" fill="#dc2626"/>
+        <circle cx="182" cy="143" r="1.3" fill="#15803d"/>
+        <circle cx="130" cy="160" r="1.3" fill="#dc2626"/>
       </g>
     `;
   }
@@ -549,7 +409,7 @@ function updateNutrition() {
   const base = wrapIngredients.bases[customWrap.base] || wrapIngredients.bases['tortilla'];
   const greens = wrapIngredients.greens[customWrap.greens] || wrapIngredients.greens['romaine'];
   const protein = wrapIngredients.proteins[customWrap.protein] || wrapIngredients.proteins['boneless-chicken'];
-  const dressing = wrapIngredients.dressings[customWrap.dressing] || wrapIngredients.dressings['signature-sauce'];
+  const dressing = wrapIngredients.dressings[customWrap.dressing] || wrapIngredients.dressings['thousand-island'];
 
   let cals = base.cals + greens.cals + protein.cals + dressing.cals;
   let prot = base.protein + greens.protein + protein.protein + dressing.protein;
@@ -600,7 +460,7 @@ function addCustomWrapToBag() {
   const base = wrapIngredients.bases[customWrap.base] || wrapIngredients.bases['tortilla'];
   const greens = wrapIngredients.greens[customWrap.greens] || wrapIngredients.greens['romaine'];
   const protein = wrapIngredients.proteins[customWrap.protein] || wrapIngredients.proteins['boneless-chicken'];
-  const dressing = wrapIngredients.dressings[customWrap.dressing] || wrapIngredients.dressings['signature-sauce'];
+  const dressing = wrapIngredients.dressings[customWrap.dressing] || wrapIngredients.dressings['thousand-island'];
 
   let price = 20000 + base.price + greens.price + protein.price + dressing.price;
   const toppingsList = customWrap.toppings.map(tId => wrapIngredients.toppings[tId]?.name).filter(Boolean);
