@@ -715,7 +715,7 @@ button {
 /* Selection Cards Grid */
 .ingredient-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   gap: 12px;
 }
 .ingredient-card {
