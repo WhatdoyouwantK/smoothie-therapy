@@ -13,49 +13,40 @@ const smoothieData = {
     'strawberry-smoothie-bowl': {
       id: 'strawberry-smoothie-bowl',
       name: 'Strawberry Superfood Bowl Base',
-      desc: '120g frozen strawberry, 80g frozen banana, 60g Greek yogurt, & 50ml oat milk (Standar USDA FoodData Central).',
+      desc: '120g frozen strawberry, 80g frozen banana, 60g Greek yogurt, & 50ml susu segar (Fresh Milk) (Standar USDA FoodData Central).',
       color: '#f43f5e',
       swirlColor: '#fb7185',
       bowlFill: '#e11d48',
       price: 22000,
-      cals: 169,
-      protein: 8.2,
-      fiber: 5.0,
+      cals: 175,
+      protein: 9.3,
+      fiber: 4.5,
       tag: 'Antioxidant & Creamy'
     },
     'malibu-mango': {
       id: 'malibu-mango',
       name: 'Malibu Mango Tropical Drink Base',
-      desc: '120g frozen mango, 60g nanas, 60g pisang, 100ml air kelapa murni, & madu (350ml botol higienis).',
+      desc: '120g frozen mango, 60g nanas, 60g pisang, 100ml santan kelapa (coconut milk), & madu (350ml botol higienis).',
       color: '#f59e0b',
       swirlColor: '#fbbf24',
       bowlFill: '#d97706',
       price: 18000,
-      cals: 195,
-      protein: 2.6,
-      fiber: 5.6,
+      cals: 231,
+      protein: 2.4,
+      fiber: 4.5,
       tag: 'Tropical Hydration & Vitamin C'
     }
   },
 
   boosters: {
-    'protein-powder': {
-      id: 'protein-powder',
-      name: 'Pure Protein Powder Boost',
-      desc: '1 scoop (15g) protein isolate murni (USDA: 60 kcal, +12g protein).',
-      price: 3000,
-      cals: 60,
-      protein: 12.0,
-      fiber: 0
-    },
-    'oat-milk': {
-      id: 'oat-milk',
-      name: 'Oat Milk Creamy (Bahan Segar P8)',
-      desc: '100ml susu gandum nabati murni (USDA: 45 kcal, 1g protein, 1g serat).',
+    'fresh-milk': {
+      id: 'fresh-milk',
+      name: 'Fresh Milk Creamy (Susu Segar)',
+      desc: '100ml susu segar murni (Fresh Milk) (USDA: 61 kcal, 3.2g protein).',
       price: 2000,
-      cals: 45,
-      protein: 1.0,
-      fiber: 1.0
+      cals: 61,
+      protein: 3.2,
+      fiber: 0
     },
     'pure-honey': {
       id: 'pure-honey',
@@ -102,7 +93,7 @@ const smoothieData = {
 // State
 let currentBowl = {
   base: 'strawberry-smoothie-bowl',
-  booster: 'protein-powder',
+  booster: null,
   toppings: ['granola', 'fresh-strawberry']
 };
 
@@ -187,8 +178,9 @@ function renderBoosters() {
 }
 
 function selectBooster(key) {
-  currentBowl.booster = key;
+  currentBowl.booster = (currentBowl.booster === key) ? null : key;
   renderBoosters();
+  renderStage();
   updateNutrition();
 }
 
@@ -242,22 +234,12 @@ function renderStage() {
         <path d="M 72 134 Q 104 92 136 130" fill="none" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
       </g>
     `;
-  } else if (currentBowl.booster === 'oat-milk') {
+  } else if (currentBowl.booster === 'fresh-milk') {
     boosterSvg = `
-      <!-- Oat Milk Creamy Swirl Ripple -->
+      <!-- Fresh Milk Creamy Swirl Ripple -->
       <g class="svg-pop-layer" id="boosterLayer">
-        <path d="M 65 138 Q 105 84 140 134 T 215 138" fill="none" stroke="#fef9c3" stroke-width="6.5" stroke-linecap="round" opacity="0.8" filter="url(#dropShadowSoft)"/>
-        <path d="M 84 158 Q 128 184 164 144 T 204 160" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" opacity="0.85"/>
-      </g>
-    `;
-  } else {
-    // Default / protein-powder: Pure Protein Powder Frosted Whey Ribbon
-    boosterSvg = `
-      <!-- Pure Protein Powder Frosted Whey Ribbon -->
-      <g class="svg-pop-layer" id="boosterLayer">
-        <path d="M 62 138 Q 106 82 140 132 T 218 138" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="6" stroke-linecap="round" filter="url(#dropShadowSoft)"/>
-        <path d="M 82 158 Q 128 184 164 144 T 204 160" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="4.5" stroke-linecap="round"/>
-        <path d="M 68 136 Q 106 86 138 128" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+        <path d="M 65 138 Q 105 84 140 134 T 215 138" fill="none" stroke="#f8fafc" stroke-width="6.5" stroke-linecap="round" opacity="0.85" filter="url(#dropShadowSoft)"/>
+        <path d="M 84 158 Q 128 184 164 144 T 204 160" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" opacity="0.9"/>
       </g>
     `;
   }

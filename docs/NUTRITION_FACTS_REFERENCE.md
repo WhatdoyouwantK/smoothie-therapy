@@ -29,16 +29,15 @@
 | **Strawberry Bowl Base** | Frozen Strawberries | 120g | 38 | 0.8 | 2.4 | USDA FDC: Strawberries |
 | | Frozen Banana | 80g | 71 | 0.9 | 2.1 | USDA FDC: Bananas |
 | | Unsweetened Greek Yogurt | 60g | 35 | 6.0 | 0.0 | Plain Non-Fat Greek Yogurt |
-| | Unsweetened Oat Milk | 50ml | 25 | 0.5 | 0.5 | Commercial Oat Milk |
-| | **Base Subtotal** | **310g total** | **169** | **8.2** | **5.0** | Natural fruit & yogurt base |
+| | Fresh Milk (Susu Segar) | 50ml | 31 | 1.6 | 0.0 | USDA FDC: Whole / Fresh Milk |
+| | **Base Subtotal** | **310g total** | **175** | **9.3** | **4.5** | Natural fruit, yogurt & fresh milk base |
 | **Malibu Mango Smoothie**| Frozen Mango | 120g | 72 | 1.0 | 2.0 | USDA FDC: Mango |
 | | Fresh Pineapple | 60g | 30 | 0.3 | 0.9 | USDA FDC: Pineapple |
 | | Ripe Banana | 60g | 53 | 0.6 | 1.6 | USDA FDC: Bananas |
-| | Pure Coconut Water | 100ml | 19 | 0.7 | 1.1 | USDA FDC: Coconut Water |
+| | Coconut Milk (Santan Kelapa) | 100ml | 55 | 0.5 | 0.0 | Light / Beverage Coconut Milk Standard |
 | | Raw Pure Honey | 1 tsp (7g) | 21 | 0.0 | 0.0 | USDA FDC: Honey |
-| | **Bottle Subtotal** | **347ml total** | **195** | **2.6** | **5.6** | 100% real fruit & electrolyte hydration |
-| **Booster** | Pure Protein Powder | 1 scoop (15g) | **60** | **12.0** | **0.0** | Pure Whey / Plant Isolate Standard |
-| **Booster** | Creamy Oat Milk Splash | 100ml | **45** | **1.0** | **1.0** | Unsweetened Oat Milk Standard |
+| | **Bottle Subtotal** | **347ml total** | **231** | **2.4** | **4.5** | 100% real fruit & creamy tropical coconut milk |
+| **Booster** | Fresh Milk Splash (Susu Segar) | 100ml | **61** | **3.2** | **0.0** | USDA FDC: Fresh Milk Standard |
 | **Booster** | Pure Raw Honey | 1 tbsp (15g) | **45** | **0.1** | **0.0** | USDA FDC: Honey |
 | **Topping** | Toasted Honey Granola | 20g sprinkle | **98** | **2.7** | **1.8** | USDA FDC: Toasted Granola |
 | **Topping** | Fresh Sliced Strawberry | 30g (~2 strawberries) | **10** | **0.2** | **0.6** | Fresh Strawberries |
