@@ -48,8 +48,8 @@
           <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
           <span>Menu Utama</span>
         </a>
-        <button class="btn-folio-cart" onclick="openCartDrawer()" title="Lihat Keranjang Pesanan">
-          <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i>
+        <button class="btn-folio-cart" onclick="openCartDrawer()" title="Lihat Keranjang Pesanan" aria-label="Lihat Keranjang Pesanan">
+          <i data-lucide="shopping-bag" style="width: 16px; height: 16px;" aria-hidden="true"></i>
           <span>Keranjang PO</span>
           <span class="cart-badge" id="cartBadgeCount">0</span>
         </button>
@@ -120,7 +120,7 @@
           <span>Interactive Studio</span>
         </div>
         <h2 class="section-title">The Smoothie <em>Studio</em></h2>
-        <p class="section-subtext">Pilih basis smoothie bowl atau minuman tropis Malibu Mango, tambahkan superfood booster, dan taburan topping renyah.</p>
+        <p class="section-subtext">Pilih basis smoothie bowl atau minuman tropis Malibu Mango, tambahkan booster susu segar atau madu murni, serta topping granola &amp; buah segar.</p>
       </div>
 
       <div class="studio-workspace-grid">
@@ -184,7 +184,7 @@
               </div>
               <span class="control-hint">Pilih 1 Basis</span>
             </div>
-            <div class="base-selector-grid" id="baseSelectorContainer"></div>
+            <div class="base-selector-grid" id="baseSelectorContainer" role="radiogroup" aria-label="Pilihan Basis Racikan"></div>
           </div>
 
           <!-- Step 2: Superfood Booster -->
@@ -196,7 +196,7 @@
               </div>
               <span class="control-hint">Pilih 1 Booster (Opsional)</span>
             </div>
-            <div class="boosters-grid" id="boostersContainer"></div>
+            <div class="boosters-grid" id="boostersContainer" role="group" aria-label="Booster Nutrisi Tambahan"></div>
           </div>
 
           <!-- Step 3: Topping Granola & Potongan Buah Resmi -->
@@ -208,7 +208,7 @@
               </div>
               <span class="control-hint">Bahan Resmi (Opsional)</span>
             </div>
-            <div class="ingredient-cards-grid" id="toppingsContainer"></div>
+            <div class="ingredient-cards-grid" id="toppingsContainer" role="group" aria-label="Topping Granola dan Potongan Buah"></div>
           </div>
         </div>
       </div>
@@ -263,13 +263,13 @@
        CART FOLIO DRAWER
        ======================================================== -->
   <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="closeCartDrawer()"></div>
-  <aside class="cart-drawer" id="cartDrawer">
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Keranjang Pre-Order">
     <div class="drawer-header">
       <div>
         <h3>Keranjang Pre-Order</h3>
         <span style="font-size: 0.72rem; color: #fb7185; text-transform: uppercase; letter-spacing: 1px;">Smoothie Therapy</span>
       </div>
-      <button class="drawer-close-btn" onclick="closeCartDrawer()">✕</button>
+      <button class="drawer-close-btn" onclick="closeCartDrawer()" aria-label="Tutup keranjang">✕</button>
     </div>
 
     <div class="drawer-items-list" id="cartDrawerItemsList"></div>
@@ -293,18 +293,18 @@
   <!-- ========================================================
        SLEEK MINIMALIST PRE-ORDER MODAL
        ======================================================== -->
-  <div class="modal-overlay" id="checkoutModal">
+  <div class="modal-overlay" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
     <div class="sleek-checkout-sheet">
       <div class="checkout-sheet-header">
         <div class="sheet-title-group">
-          <h3>Konfirmasi Smoothie</h3>
+          <h3 id="checkoutModalTitle">Konfirmasi Smoothie</h3>
           <div class="sheet-summary-badge ruby-badge">
             <span id="checkoutBadgeCount">1 Menu</span>
             <span>•</span>
             <span id="checkoutBadgeTotal">Rp 22.000</span>
           </div>
         </div>
-        <button class="sheet-close-btn" onclick="closeCheckoutModal()">✕</button>
+        <button class="sheet-close-btn" onclick="closeCheckoutModal()" aria-label="Tutup">✕</button>
       </div>
 
       <!-- Quick Item Chips Preview -->
@@ -313,32 +313,32 @@
       <!-- Compact 2-Col Input for Name & Address -->
       <div class="checkout-grid-2col">
         <div class="sleek-input-field">
-          <label>Nama Pemesan *</label>
-          <input type="text" id="recipientNameInput" placeholder="Nama lengkap">
+          <label for="recipientNameInput">Nama Pemesan *</label>
+          <input type="text" id="recipientNameInput" autocomplete="name" required placeholder="Nama lengkap">
         </div>
         <div class="sleek-input-field">
-          <label>Alamat Pengiriman *</label>
-          <input type="text" id="deliveryAddressInput" placeholder="Alamat jalan / no. rumah">
+          <label for="deliveryAddressInput">Alamat Pengiriman *</label>
+          <input type="text" id="deliveryAddressInput" autocomplete="street-address" required placeholder="Alamat jalan / no. rumah">
         </div>
       </div>
 
       <!-- Optional Catatan -->
       <div class="sleek-input-field">
-        <label>Catatan (Opsional)</label>
+        <label for="orderNotesInput">Catatan (Opsional)</label>
         <input type="text" id="orderNotesInput" placeholder="Misal: ekstra sendok, madu agak banyak">
       </div>
 
       <!-- Segmented Payment Selector -->
       <div class="sleek-control-group">
-        <label>Metode Pembayaran</label>
-        <div class="sleek-segmented-row">
-          <button type="button" class="sleek-segment-item active" id="pay_qris" onclick="setPaymentMethod('qris')">
+        <label id="payMethodGroupLabel">Metode Pembayaran</label>
+        <div class="sleek-segmented-row" role="radiogroup" aria-labelledby="payMethodGroupLabel">
+          <button type="button" role="radio" aria-checked="true" class="sleek-segment-item active" id="pay_qris" onclick="setPaymentMethod('qris')">
             <span class="seg-title">⚡ QRIS</span>
           </button>
-          <button type="button" class="sleek-segment-item" id="pay_transfer" onclick="setPaymentMethod('transfer')">
+          <button type="button" role="radio" aria-checked="false" class="sleek-segment-item" id="pay_transfer" onclick="setPaymentMethod('transfer')">
             <span class="seg-title">🏦 Transfer</span>
           </button>
-          <button type="button" class="sleek-segment-item" id="pay_cash" onclick="setPaymentMethod('cash')">
+          <button type="button" role="radio" aria-checked="false" class="sleek-segment-item" id="pay_cash" onclick="setPaymentMethod('cash')">
             <span class="seg-title">💵 Tunai (Sekolah)</span>
           </button>
         </div>
@@ -358,14 +358,14 @@
   <!-- ========================================================
        ORDER SUCCESS TICKET MODAL
        ======================================================== -->
-  <div class="modal-overlay" id="trackerModal">
+  <div class="modal-overlay" id="trackerModal" role="dialog" aria-modal="true" aria-labelledby="trackerModalTitle">
     <div class="modal-card" style="max-width: 480px; text-align: center;">
-      <button class="modal-close-x" onclick="closeTrackerModal()">✕</button>
+      <button class="modal-close-x" onclick="closeTrackerModal()" aria-label="Tutup">✕</button>
       <div class="section-tag ruby" style="margin-bottom: 8px;">
-        <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i>
+        <i data-lucide="check-circle" style="width: 12px; height: 12px;" aria-hidden="true"></i>
         <span>Pre-Order Terkirim!</span>
       </div>
-      <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: #ffffff; margin-bottom: 4px;">Tiket Pesanan Smoothie</h3>
+      <h3 id="trackerModalTitle" style="font-family: var(--font-serif); font-size: 1.6rem; color: #ffffff; margin-bottom: 4px;">Tiket Pesanan Smoothie</h3>
       <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">WhatsApp telah dibuka untuk konfirmasi langsung ke panitia P8.</p>
 
       <div style="background: rgba(255,255,255,0.02); border: 1.5px dashed #fb7185; border-radius: 12px; padding: 14px; text-align: left; font-size: 0.82rem; margin-bottom: 18px;">
@@ -396,8 +396,8 @@
   <!-- ========================================================
        CONCIERGE CHATBOX (WHATSAPP & FAQ)
        ======================================================== -->
-  <div class="concierge-floating-pill" onclick="toggleConcierge()" title="Buka Concierge P8">
-    <div class="concierge-live-dot" style="background: #fb7185;"></div>
+  <div class="concierge-floating-pill" role="button" tabindex="0" aria-label="Buka Tanya Panitia P8" onclick="toggleConcierge()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConcierge();}" title="Tanya Panitia P8">
+    <div class="concierge-live-dot" style="background: #fb7185;" aria-hidden="true"></div>
     <span style="font-size: 0.82rem; font-weight: 700; color: #ffffff;">Tanya Panitia P8</span>
   </div>
 
@@ -405,9 +405,9 @@
     <div class="concierge-header">
       <div>
         <h4 style="font-size: 0.95rem; font-weight: 700; color: #ffffff;">Smoothie Therapy Concierge</h4>
-        <span style="font-size: 0.68rem; color: #fb7185;">● Tim Customer Care Standby</span>
+        <span style="font-size: 0.68rem; color: #fb7185;">● Tim Panitia P8 Siaga</span>
       </div>
-      <button onclick="toggleConcierge()" style="color: var(--text-muted); font-size: 1rem;">✕</button>
+      <button onclick="toggleConcierge()" aria-label="Tutup chat" style="color: var(--text-muted); font-size: 1rem;">✕</button>
     </div>
 
     <!-- Direct Social Connections -->
@@ -429,7 +429,7 @@
 
     <!-- Input Row -->
     <div class="concierge-input-row">
-      <input type="text" class="concierge-chat-input" id="conciergeChatInput" placeholder="Tanya tentang rasa, harga, pengiriman..." onkeydown="handleConciergeKey(event)">
+      <input type="text" class="concierge-chat-input" id="conciergeChatInput" aria-label="Tulis pesan pertanyaan" placeholder="Tanya tentang rasa, harga, pengiriman..." onkeydown="handleConciergeKey(event)">
       <button onclick="sendConciergeMessage()" style="color: #fb7185; font-size: 0.82rem; font-weight: 700;">Kirim</button>
     </div>
   </div>

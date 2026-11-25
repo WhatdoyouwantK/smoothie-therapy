@@ -175,7 +175,7 @@ function renderRadioGroup(containerId, dataset, selectedKey, callbackFnName) {
     const priceTag = item.price > 0 ? `+${formatRupiah(item.price)}` : 'Termasuk (Rp 0)';
 
     return `
-      <div class="ingredient-card ${isSelected ? 'selected' : ''}" onclick="${callbackFnName}('${key}')">
+      <div class="ingredient-card ${isSelected ? 'selected' : ''}" role="radio" tabindex="0" aria-checked="${isSelected}" onclick="${callbackFnName}('${key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${callbackFnName}('${key}');}">
         <div class="ingredient-info">
           <span class="ingredient-name">${item.name}</span>
           <span class="ingredient-desc">${item.desc}</span>
@@ -195,7 +195,7 @@ function renderToppingsCheckboxes() {
     const isChecked = customWrap.toppings.includes(key);
 
     return `
-      <div class="ingredient-card ${isChecked ? 'selected' : ''}" onclick="toggleWrapTopping('${key}')">
+      <div class="ingredient-card ${isChecked ? 'selected' : ''}" role="checkbox" tabindex="0" aria-checked="${isChecked}" onclick="toggleWrapTopping('${key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleWrapTopping('${key}');}">
         <div class="ingredient-info">
           <span class="ingredient-name">${item.name}</span>
           <span class="ingredient-desc">${item.desc}</span>
@@ -376,8 +376,9 @@ function renderStage() {
     });
   }
 
+  const stageLabel = `Preview wrap: ${base.name}, ${greens.name}, Boneless Chicken, ${dressing.name}`;
   stage.innerHTML = `
-    <svg viewBox="0 0 280 280" class="wrap-svg-graphic" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 32px rgba(0,0,0,0.65));">
+    <svg viewBox="0 0 280 280" role="img" aria-label="${stageLabel}" class="wrap-svg-graphic" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 32px rgba(0,0,0,0.65));">
       <defs>
         <!-- Tortilla Wrap Skin Gradient -->
         <radialGradient id="wrapSkinGrad" cx="45%" cy="40%" r="65%">
@@ -579,12 +580,12 @@ function renderCartDrawer() {
         <span class="cart-item-price">${formatRupiah(item.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(item.unitPrice)}/wrap)</span></span>
         <div style="display: flex; align-items: center; gap: 8px;">
           <div class="qty-stepper">
-            <button class="qty-btn" onclick="changeWrapQty('${item.id}', -1)" title="Kurangi">−</button>
+            <button class="qty-btn" onclick="changeWrapQty('${item.id}', -1)" title="Kurangi" aria-label="Kurangi jumlah">−</button>
             <span class="qty-val">${item.qty || 1}</span>
-            <button class="qty-btn" onclick="changeWrapQty('${item.id}', 1)" title="Tambah">+</button>
+            <button class="qty-btn" onclick="changeWrapQty('${item.id}', 1)" title="Tambah" aria-label="Tambah jumlah">+</button>
           </div>
-          <button class="btn-remove-item" onclick="removeFromBag('${item.id}')" title="Hapus menu">
-            <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+          <button class="btn-remove-item" onclick="removeFromBag('${item.id}')" title="Hapus menu" aria-label="Hapus menu">
+            <i data-lucide="trash-2" style="width: 12px; height: 12px;" aria-hidden="true"></i>
           </button>
         </div>
       </div>
@@ -633,9 +634,9 @@ function renderCheckoutMiniList() {
           <div class="checkout-item-price">${formatRupiah(it.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(it.unitPrice)}/porsi)</span></div>
         </div>
         <div class="qty-stepper">
-          <button type="button" class="qty-btn" onclick="changeWrapQty('${it.id}', -1)" title="Kurangi porsi">−</button>
+          <button type="button" class="qty-btn" onclick="changeWrapQty('${it.id}', -1)" title="Kurangi porsi" aria-label="Kurangi porsi">−</button>
           <span class="qty-val">${it.qty || 1}</span>
-          <button type="button" class="qty-btn" onclick="changeWrapQty('${it.id}', 1)" title="Tambah porsi">+</button>
+          <button type="button" class="qty-btn" onclick="changeWrapQty('${it.id}', 1)" title="Tambah porsi" aria-label="Tambah porsi">+</button>
         </div>
       </div>
     `).join('');
@@ -661,8 +662,9 @@ function setPaymentMethod(method) {
   ['qris', 'transfer', 'cash'].forEach(m => {
     const el = document.getElementById(`pay_${m}`);
     if (el) {
-      if (m === method) el.classList.add('active');
-      else el.classList.remove('active');
+      const active = m === method;
+      el.classList.toggle('active', active);
+      el.setAttribute('aria-checked', String(active));
     }
   });
 
@@ -822,15 +824,15 @@ function sendConciergeMessage() {
 
     const lower = text.toLowerCase();
     if (lower.includes('harga') || lower.includes('price')) {
-      botDiv.textContent = "Chicken Salad Wrap kami dibanderol seharga Rp 20.000 (varian standar) hingga Rp 25.000 (double chicken), sangat terjangkau!";
-    } else if (lower.includes('batch') || lower.includes('jadwal') || lower.includes('po')) {
-      botDiv.textContent = "Pesanan disiapkan segar setiap hari menggunakan bahan baku higienis dan terstandarisasi.";
+      botDiv.textContent = "Chicken Salad Wrap kami dibanderol mulai Rp 20.000 (varian standar); tambahan ekstra ayam +Rp 5.000, ekstra sayur atau saus +Rp 1.000!";
+    } else if (lower.includes('batch') || lower.includes('jadwal') || /\bpo\b/.test(lower)) {
+      botDiv.textContent = "Pesanan disiapkan segar per batch Pre-Order menggunakan bahan baku higienis dan terstandarisasi.";
     } else if (lower.includes('qris') || lower.includes('bayar')) {
       botDiv.textContent = "Kami menerima pembayaran melalui QRIS (GoPay, OVO, Dana, BCA, Livin), Transfer Bank, dan Tunai (Cash) langsung di sekolah!";
     } else if (lower.includes('protein') || lower.includes('ayam')) {
-      botDiv.textContent = "Kami menggunakan 100% daging dada ayam fillet tanpa tulang (boneless chicken) yang dipanggang dengan bumbu rempah lezat dan tinggi protein!";
+      botDiv.textContent = "Kami menggunakan 100% daging dada ayam fillet tanpa tulang (boneless chicken) yang dipanggang dengan bumbu rempah dan kaya protein!";
     } else {
-      botDiv.textContent = "Halo! Kamu bisa memesan Chicken Salad Wrap langsung lewat form Pre-Order atau chat panitia kami di WhatsApp!";
+      botDiv.textContent = "Halo! Kamu bisa memesan Chicken Salad Wrap langsung lewat form Pre-Order atau chat panitia P8 kami di WhatsApp!";
     }
 
     body.appendChild(botDiv);

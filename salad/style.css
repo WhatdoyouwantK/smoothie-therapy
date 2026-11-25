@@ -86,8 +86,17 @@ button {
   font-family: inherit;
   cursor: pointer;
   border: none;
-  outline: none;
   background: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+[role="radio"]:focus-visible,
+[role="checkbox"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 /* Typography & Utilities */
@@ -874,6 +883,7 @@ button {
   width: 100%;
   max-width: 440px;
   height: 100vh;
+  height: 100dvh;
   background: #110f0d;
   border-left: 1px solid var(--border);
   z-index: 1000;
@@ -1274,160 +1284,6 @@ footer {
   font-size: 0.82rem;
 }
 
-/* Responsive & Mobile Enhancements */
-@media (max-width: 900px) {
-  .hero-wrap {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 30px;
-  }
-  .hero-content p {
-    margin: 0 auto 30px;
-  }
-  .hero-badges-strip {
-    justify-content: center;
-  }
-  .studio-grid,
-  .studio-workspace-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .stage-column,
-  .studio-visualizer-card {
-    position: static;
-  }
-  .philosophy-grid {
-    grid-template-columns: 1fr;
-  }
-  .nav-links {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 18px;
-  }
-  .nav-inner {
-    height: 64px;
-  }
-  .brand-text-name {
-    font-size: 1.15rem;
-  }
-  .brand-text-sub {
-    font-size: 0.62rem;
-  }
-  .hero-section {
-    padding: 40px 0 35px;
-  }
-  .hero-content h1 {
-    font-size: 2.1rem;
-    line-height: 1.25;
-  }
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
-  }
-  .hero-actions a,
-  .hero-actions button {
-    width: 100%;
-    justify-content: center;
-    min-height: 48px;
-  }
-}
-
-@media (max-width: 560px) {
-  .container {
-    padding: 0 14px;
-  }
-  .nav-inner {
-    gap: 8px;
-  }
-  .nav-actions {
-    gap: 6px;
-  }
-  .btn-back-main {
-    padding: 6px 10px;
-    font-size: 0.72rem;
-    gap: 4px;
-  }
-  .btn-folio-cart {
-    padding: 6px 10px;
-    font-size: 0.72rem;
-    gap: 5px;
-  }
-  .hero-content h1 {
-    font-size: 1.8rem;
-  }
-  .hero-badges-strip {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .stage-view-canvas,
-  .studio-stage-box {
-    height: 240px;
-  }
-  .macro-hud-bar,
-  .studio-hud-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  .ingredient-cards-grid {
-    grid-template-columns: 1fr;
-  }
-  .control-group-block {
-    padding: 16px 14px;
-  }
-  .checkout-grid-2col {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .sleek-checkout-sheet {
-    width: 100%;
-    max-width: calc(100vw - 20px);
-    padding: 16px 14px;
-    margin: 6px;
-    max-height: 92vh;
-  }
-  .sleek-input-field input {
-    font-size: 16px; /* Prevents auto-zoom on mobile Safari */
-    padding: 10px 12px;
-    min-height: 44px;
-  }
-  .sleek-segmented-row {
-    gap: 4px;
-  }
-  .sleek-segment-item {
-    padding: 7px 2px;
-  }
-  .sleek-segment-item .seg-title {
-    font-size: 0.72rem;
-  }
-  .btn-sleek-checkout {
-    min-height: 48px;
-    padding: 12px 14px;
-    font-size: 0.88rem;
-  }
-  .cart-drawer {
-    width: 100%;
-    max-width: 100vw;
-  }
-  .concierge-floating-pill {
-    bottom: 16px;
-    right: 12px;
-    padding: 9px 13px;
-    font-size: 0.76rem;
-  }
-  .concierge-window {
-    width: calc(100vw - 24px);
-    right: 12px;
-    bottom: 70px;
-    max-height: 75vh;
-  }
-}
-
-
 /* --- SLEEK MINIMALIST CHECKOUT SHEET --- */
 .modal-overlay {
   position: fixed;
@@ -1762,4 +1618,182 @@ footer {
 .quick-pick-btn.ruby:hover {
   background: #fb7185;
   color: #fff;
+}
+
+/* ========================================================
+   RESPONSIVE & MOBILE ENHANCEMENTS (placed last for cascade)
+   ======================================================== */
+@media (max-width: 900px) {
+  .hero-wrap {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 30px;
+  }
+  .hero-content p {
+    margin: 0 auto 30px;
+  }
+  .hero-badges-strip {
+    justify-content: center;
+  }
+  .studio-grid,
+  .studio-workspace-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .stage-column,
+  .studio-visualizer-card {
+    position: static;
+  }
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+  }
+  .nav-links {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 18px;
+  }
+  .nav-inner {
+    height: 64px;
+  }
+  .brand-text-name {
+    font-size: 1.15rem;
+  }
+  .brand-text-sub {
+    font-size: 0.62rem;
+  }
+  .hero-section {
+    padding: 40px 0 35px;
+  }
+  .hero-content h1 {
+    font-size: 2.1rem;
+    line-height: 1.25;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  .hero-actions a,
+  .hero-actions button {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 560px) {
+  .container {
+    padding: 0 14px;
+  }
+  footer {
+    padding-bottom: 84px;
+  }
+  .nav-inner {
+    gap: 8px;
+  }
+  .nav-actions {
+    gap: 6px;
+  }
+  .btn-back-main {
+    padding: 6px 10px;
+    min-height: 40px;
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+  .btn-folio-cart {
+    padding: 6px 10px;
+    min-height: 40px;
+    font-size: 0.72rem;
+    gap: 5px;
+  }
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .hero-badges-strip {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stage-view-canvas,
+  .studio-stage-box {
+    height: 240px;
+  }
+  .macro-hud-bar,
+  .studio-hud-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .ingredient-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .quick-pick-btn {
+    min-height: 44px;
+    white-space: normal;
+    line-height: 1.2;
+  }
+  .control-group-block {
+    padding: 16px 14px;
+  }
+  .checkout-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .sleek-checkout-sheet {
+    width: 100%;
+    max-width: calc(100vw - 20px);
+    padding: 16px 14px;
+    margin: 6px;
+    max-height: 92vh;
+  }
+  .sleek-input-field input {
+    font-size: 16px; /* Prevents auto-zoom on mobile Safari */
+    padding: 10px 12px;
+    min-height: 44px;
+  }
+  .sleek-segmented-row {
+    gap: 4px;
+  }
+  .sleek-segment-item {
+    padding: 7px 2px;
+  }
+  .sleek-segment-item .seg-title {
+    font-size: 0.72rem;
+  }
+  .btn-sleek-checkout {
+    min-height: 48px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+  }
+  .cart-drawer {
+    width: 100%;
+    max-width: 100vw;
+  }
+  .concierge-floating-pill {
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    right: 12px;
+    padding: 9px 13px;
+    min-height: 44px;
+    font-size: 0.76rem;
+  }
+  .concierge-window {
+    width: calc(100vw - 24px);
+    right: 12px;
+    bottom: 70px;
+    max-height: calc(100dvh - 100px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .svg-pop-layer {
+    animation: none !important;
+  }
 }

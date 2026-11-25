@@ -137,7 +137,7 @@ function renderBaseTabs() {
     const b = smoothieData.bases[key];
     const isActive = key === currentBowl.base;
     return `
-      <div class="base-tab-card ${isActive ? 'active' : ''}" onclick="selectBase('${key}')">
+      <div class="base-tab-card ${isActive ? 'active' : ''}" role="radio" tabindex="0" aria-checked="${isActive}" onclick="selectBase('${key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectBase('${key}');}">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
           <h4 style="font-weight: 700; color: #ffffff; font-size: 0.95rem;">${b.name}</h4>
           <span style="font-weight: 800; color: ${b.color}; font-size: 0.9rem;">${formatRupiah(b.price)}</span>
@@ -192,7 +192,7 @@ function renderBoosters() {
     const item = smoothieData.boosters[key];
     const isSelected = key === currentBowl.booster;
     return `
-      <div class="booster-chip ${isSelected ? 'selected' : ''}" onclick="selectBooster('${key}')">
+      <div class="booster-chip ${isSelected ? 'selected' : ''}" role="checkbox" tabindex="0" aria-checked="${isSelected}" onclick="selectBooster('${key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectBooster('${key}');}">
         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
           <span style="font-weight: 600; font-size: 0.84rem; color: #ffffff;">${item.name}</span>
           <span style="font-size: 0.78rem; color: var(--gold); font-weight: 700;">+${formatRupiah(item.price)}</span>
@@ -218,7 +218,7 @@ function renderToppings() {
     const item = smoothieData.toppings[key];
     const isChecked = currentBowl.toppings.includes(key);
     return `
-      <div class="topping-toggle-card ${isChecked ? 'active' : ''}" onclick="toggleTopping('${key}')">
+      <div class="topping-toggle-card ${isChecked ? 'active' : ''}" role="checkbox" tabindex="0" aria-checked="${isChecked}" onclick="toggleTopping('${key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleTopping('${key}');}">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-weight: 600; font-size: 0.85rem; color: #ffffff;">${item.name}</span>
           <span style="font-size: 0.78rem; color: #fb7185; font-weight: 700;">+${formatRupiah(item.price)}</span>
@@ -377,7 +377,7 @@ function renderStage() {
     }
 
     stage.innerHTML = `
-      <svg viewBox="0 0 280 280" class="svg-bowl-stage" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.75));">
+      <svg viewBox="0 0 280 280" role="img" aria-label="Preview botol dingin Malibu Mango" class="svg-bowl-stage" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.75));">
         <defs>
           <linearGradient id="juiceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#fef08a"/>
@@ -437,7 +437,7 @@ function renderStage() {
 
   // Render Premium Eco Bowl Graphic with Tactile Depth
   stage.innerHTML = `
-    <svg viewBox="0 0 280 280" class="svg-bowl-stage" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.75));">
+    <svg viewBox="0 0 280 280" role="img" aria-label="Preview ${base.name}" class="svg-bowl-stage" style="width: 100%; height: 100%; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.75));">
       <defs>
         <!-- Gelato Smoothie Radial Gradient -->
         <radialGradient id="bowlInnerGrad" cx="45%" cy="40%" r="65%">
@@ -626,12 +626,12 @@ function renderCartDrawer() {
         <span class="cart-item-price" style="color: #fb7185;">${formatRupiah(item.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(item.unitPrice)}/porsi)</span></span>
         <div style="display: flex; align-items: center; gap: 8px;">
           <div class="qty-stepper">
-            <button class="qty-btn" onclick="changeBowlQty('${item.id}', -1)" title="Kurangi">−</button>
+            <button class="qty-btn" onclick="changeBowlQty('${item.id}', -1)" title="Kurangi" aria-label="Kurangi jumlah">−</button>
             <span class="qty-val">${item.qty || 1}</span>
-            <button class="qty-btn" onclick="changeBowlQty('${item.id}', 1)" title="Tambah">+</button>
+            <button class="qty-btn" onclick="changeBowlQty('${item.id}', 1)" title="Tambah" aria-label="Tambah jumlah">+</button>
           </div>
-          <button class="btn-remove-item" onclick="removeFromBag('${item.id}')" title="Hapus menu">
-            <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+          <button class="btn-remove-item" onclick="removeFromBag('${item.id}')" title="Hapus menu" aria-label="Hapus menu">
+            <i data-lucide="trash-2" style="width: 12px; height: 12px;" aria-hidden="true"></i>
           </button>
         </div>
       </div>
@@ -680,9 +680,9 @@ function renderCheckoutMiniList() {
           <div class="checkout-item-price">${formatRupiah(it.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(it.unitPrice)}/porsi)</span></div>
         </div>
         <div class="qty-stepper">
-          <button type="button" class="qty-btn" onclick="changeBowlQty('${it.id}', -1)" title="Kurangi porsi">−</button>
+          <button type="button" class="qty-btn" onclick="changeBowlQty('${it.id}', -1)" title="Kurangi porsi" aria-label="Kurangi porsi">−</button>
           <span class="qty-val">${it.qty || 1}</span>
-          <button type="button" class="qty-btn" onclick="changeBowlQty('${it.id}', 1)" title="Tambah porsi">+</button>
+          <button type="button" class="qty-btn" onclick="changeBowlQty('${it.id}', 1)" title="Tambah porsi" aria-label="Tambah porsi">+</button>
         </div>
       </div>
     `).join('');
@@ -708,8 +708,9 @@ function setPaymentMethod(method) {
   ['qris', 'transfer', 'cash'].forEach(m => {
     const el = document.getElementById(`pay_${m}`);
     if (el) {
-      if (m === method) el.classList.add('active');
-      else el.classList.remove('active');
+      const active = m === method;
+      el.classList.toggle('active', active);
+      el.setAttribute('aria-checked', String(active));
     }
   });
 
@@ -869,8 +870,8 @@ function sendConciergeMessage() {
       botDiv.textContent = "Harga smoothie bowl & minuman racikan Malibu Mango berkisar antara Rp 15.000 hingga Rp 25.000 sesuai kustomisasi pilihan Anda!";
     } else if (lower.includes('mango') || lower.includes('malibu')) {
       botDiv.textContent = "Malibu Mango adalah minuman smoothie tropis dalam botol dari campuran mangga, pisang, nanas, santan gurih, madu murni, dan es segar!";
-    } else if (lower.includes('batch') || lower.includes('jadwal') || lower.includes('po')) {
-      botDiv.textContent = "Pesanan disiapkan segar setiap hari menggunakan 100% buah beku asli dan madu murni alami.";
+    } else if (lower.includes('batch') || lower.includes('jadwal') || /\bpo\b/.test(lower)) {
+      botDiv.textContent = "Pesanan disiapkan segar per batch Pre-Order menggunakan 100% buah beku asli dan madu murni alami.";
     } else if (lower.includes('buah') || lower.includes('bahan')) {
       botDiv.textContent = "Kami menggunakan 100% buah beku asli (frozen strawberry, banana, mango, pineapple) tanpa pemanis buatan berlebih atau bahan pengawet!";
     } else {
