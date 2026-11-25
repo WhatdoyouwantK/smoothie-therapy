@@ -151,6 +151,32 @@ function renderBaseTabs() {
   }).join('');
 }
 
+// Quick-pick helpers (official ingredients only)
+function pickRandomKey(obj) {
+  const keys = Object.keys(obj);
+  return keys[Math.floor(Math.random() * keys.length)];
+}
+
+function refreshBowlStudio() {
+  renderControls();
+  renderStage();
+  updateNutrition();
+}
+
+function surpriseMeBowl() {
+  currentBowl.base = pickRandomKey(smoothieData.bases);
+  currentBowl.booster = Math.random() < 0.6 ? pickRandomKey(smoothieData.boosters) : null;
+  currentBowl.toppings = Object.keys(smoothieData.toppings).filter(() => Math.random() < 0.5);
+  refreshBowlStudio();
+}
+
+function healthiestBowl() {
+  currentBowl.base = 'strawberry-smoothie-bowl';
+  currentBowl.booster = 'fresh-milk';
+  currentBowl.toppings = ['fresh-strawberry', 'fresh-banana'];
+  refreshBowlStudio();
+}
+
 function selectBase(key) {
   currentBowl.base = key;
   renderBaseTabs();

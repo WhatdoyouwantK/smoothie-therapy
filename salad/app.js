@@ -207,6 +207,34 @@ function renderToppingsCheckboxes() {
 }
 
 // Handlers for Custom Wrap Updates
+// Quick-pick helpers (official ingredients only)
+function pickRandom(obj) {
+  const keys = Object.keys(obj);
+  return keys[Math.floor(Math.random() * keys.length)];
+}
+
+function refreshWrapStudio() {
+  renderControls();
+  renderStage();
+  updateNutrition();
+}
+
+function surpriseMeWrap() {
+  customWrap.base = pickRandom(wrapIngredients.bases);
+  customWrap.greens = pickRandom(wrapIngredients.greens);
+  customWrap.dressing = pickRandom(wrapIngredients.dressings);
+  customWrap.toppings = Object.keys(wrapIngredients.toppings).filter(() => Math.random() < 0.4);
+  refreshWrapStudio();
+}
+
+function healthiestWrap() {
+  customWrap.base = 'tortilla';
+  customWrap.greens = 'duo-lettuce';
+  customWrap.dressing = 'thousand-island';
+  customWrap.toppings = ['extra-chicken', 'extra-greens'];
+  refreshWrapStudio();
+}
+
 function setWrapBase(key) {
   customWrap.base = key;
   renderControls();

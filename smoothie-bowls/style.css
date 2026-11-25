@@ -1800,3 +1800,27 @@ footer {
 .btn-sleek-checkout.btn-ruby-checkout:hover {
   box-shadow: 0 6px 20px rgba(244, 63, 94, 0.5);
 }
+
+/* Quick-pick buttons (Surprise Me / Healthiest Combo) */
+.quick-pick-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+.quick-pick-btn {
+  padding: 10px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(251, 113, 133, 0.4);
+  background: rgba(251, 113, 133, 0.08);
+  color: #fb7185;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.quick-pick-btn:hover {
+  background: #fb7185;
+  color: #fff;
+  transform: translateY(-1px);
+}
