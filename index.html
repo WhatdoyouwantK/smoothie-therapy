@@ -16,6 +16,7 @@
 
   <!-- Toastify CSS -->
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" href="./shared/checkout-extras.css">
 
   <style>
     /* --- SMOOTHIE THERAPY LUXURY OBSIDIAN & HEALTH THEME --- */
@@ -1941,6 +1942,7 @@
     </div>
 
     <div class="drawer-footer">
+      <div id="cartComboBanner"></div>
       <div class="drawer-total-row">
         <span>Total Bayar:</span>
         <span style="color: var(--gold);" id="drawerGrandTotal">Rp 0</span>
@@ -1969,6 +1971,7 @@
 
       <!-- Quick Item Chips Preview -->
       <div class="sheet-quick-preview" id="checkoutMiniList"></div>
+      <div id="checkoutComboBanner"></div>
 
       <!-- Sleek Inputs: Nama, WhatsApp & Alamat Pengiriman -->
       <div class="checkout-grid-2col">
@@ -1992,6 +1995,25 @@
         <input type="text" id="custNotesInput" placeholder="Misal: saus dipisah, tanpa es">
       </div>
 
+      <!-- Pickup Batch / Time Slot Picker -->
+      <div class="sleek-control-group">
+        <label id="batchGroupLabel">Batch Pengambilan</label>
+        <div class="sleek-segmented-row" role="radiogroup" aria-labelledby="batchGroupLabel">
+          <button type="button" role="radio" aria-checked="true" class="sleek-segment-item active" id="batch_1" onclick="selectBatch('batch-1')">
+            <span class="seg-title">☀️ Istirahat 1</span>
+            <span class="seg-time">09:30 – 10:00</span>
+          </button>
+          <button type="button" role="radio" aria-checked="false" class="sleek-segment-item" id="batch_2" onclick="selectBatch('batch-2')">
+            <span class="seg-title">🌤️ Istirahat 2</span>
+            <span class="seg-time">12:00 – 12:30</span>
+          </button>
+          <button type="button" role="radio" aria-checked="false" class="sleek-segment-item" id="batch_3" onclick="selectBatch('batch-3')">
+            <span class="seg-title">🎒 Pulang</span>
+            <span class="seg-time">14:30 – 15:30</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Segmented Payment Selector -->
       <div class="sleek-control-group">
         <label id="payMethodGroupLabel">Metode Pembayaran</label>
@@ -2009,12 +2031,49 @@
         <div class="sleek-pay-hint" id="payHintText">
           ⚡ Scan QRIS via GoPay, BCA, Livin, Dana, atau ShopeePay.
         </div>
+        <div id="instantPayBox"></div>
       </div>
 
       <!-- Sleek Action Button -->
       <button class="btn-sleek-checkout" id="btnSubmitPO" onclick="submitPreOrder()">
         <span>Kirim Pre-Order ke WhatsApp</span>
         <strong id="btnPriceTag">Rp 0</strong>
+      </button>
+    </div>
+  </div>
+
+  <!-- Order Success & Instant Payment Ticket Modal -->
+  <div class="modal-overlay" id="mainTrackerModal" role="dialog" aria-modal="true" aria-labelledby="mainTrackerTitle">
+    <div class="sleek-checkout-sheet" style="text-align: center;">
+      <div class="checkout-sheet-header" style="justify-content: center; position: relative;">
+        <div class="sheet-title-group">
+          <div style="font-size: 0.72rem; font-weight: 700; color: #4ade80; text-transform: uppercase; letter-spacing: 1px;">✅ Pre-Order Terkirim</div>
+          <h3 id="mainTrackerTitle" style="margin-top: 2px;">Tiket Pesanan Smoothie Therapy</h3>
+        </div>
+        <button class="sheet-close-btn" onclick="closeMainTrackerModal()" aria-label="Tutup" style="position: absolute; right: 0; top: 0;">✕</button>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">WhatsApp telah dibuka. Selesaikan pembayaran di bawah dan kirim bukti transfer di chat WhatsApp.</p>
+      <div style="background: rgba(255,255,255,0.02); border: 1.5px dashed var(--gold); border-radius: 12px; padding: 12px; text-align: left; font-size: 0.8rem; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span style="color: var(--text-muted);">Kode PO:</span>
+          <strong style="color: var(--gold);" id="mainTrackerCode">#PO-P8-1001</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span style="color: var(--text-muted);">Pemesan:</span>
+          <strong style="color: #fff;" id="mainTrackerName">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span style="color: var(--text-muted);">Batch Pengambilan:</span>
+          <strong style="color: #4ade80;" id="mainTrackerBatch">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08);">
+          <span style="color: var(--text-muted);">Total Bayar:</span>
+          <strong style="color: var(--gold); font-size: 0.96rem;" id="mainTrackerTotal">Rp 0</strong>
+        </div>
+      </div>
+      <div id="mainTrackerPayBox" style="margin-bottom: 14px;"></div>
+      <button class="btn-main-cta" style="width: 100%; justify-content: center;" onclick="closeMainTrackerModal()">
+        <span>Selesai &amp; Kembali ke Menu</span>
       </button>
     </div>
   </div>
@@ -2094,12 +2153,14 @@
 
   <!-- Toastify JS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <!-- Shared Unified Cart, Auto-Combo, Batch & Payment Engine -->
+  <script src="./shared/cart-store.js"></script>
 
   <!-- Core App JS -->
   <script>
-    // State
-    let cart = [];
-    let selectedBatchId = '1';
+    // Unified Persistent State (synced across index, salad studio, and bowl studio)
+    let cart = SmoothieStore.getCart();
+    let selectedBatchId = SmoothieStore.getSelectedBatch();
     let selectedPayMethod = 'qris';
 
     function formatRupiah(num) {
@@ -2144,35 +2205,25 @@
     }
 
     function addToCart(title, price, desc) {
-      const existing = cart.find(item => item.title === title && item.desc === desc);
-      if (existing) {
-        existing.qty = (existing.qty || 1) + 1;
-        existing.price = existing.unitPrice * existing.qty;
-      } else {
-        cart.push({
-          id: 'item_' + Date.now() + Math.random().toString(36).substr(2, 3),
-          title: title,
-          unitPrice: price,
-          price: price,
-          desc: desc,
-          qty: 1
-        });
-      }
+      cart = SmoothieStore.addItem({
+        title: title,
+        unitPrice: price,
+        price: price,
+        desc: desc,
+        qty: 1
+      });
       updateCartUI();
-      notify(`Ditambahkan: ${title} (${formatRupiah(price)})`);
+      const totals = SmoothieStore.calculateTotals(cart);
+      if (totals.discount > 0) {
+        notify(`🎉 Auto-Combo Aktif! Hemat ${formatRupiah(totals.discount)}`);
+      } else {
+        notify(`Ditambahkan: ${title} (${formatRupiah(price)})`);
+      }
       openCartDrawer();
     }
 
     function changeCartQty(id, delta) {
-      const item = cart.find(i => i.id === id);
-      if (!item) return;
-      const newQty = (item.qty || 1) + delta;
-      if (newQty <= 0) {
-        removeFromCart(id);
-        return;
-      }
-      item.qty = newQty;
-      item.price = item.unitPrice * item.qty;
+      cart = SmoothieStore.changeQty(id, delta);
       updateCartUI();
       if (document.getElementById('preOrderModal')?.classList.contains('open')) {
         renderCheckoutMiniList();
@@ -2180,21 +2231,43 @@
     }
 
     function removeFromCart(id) {
-      cart = cart.filter(item => item.id !== id);
+      cart = SmoothieStore.removeItem(id);
       updateCartUI();
       if (document.getElementById('preOrderModal')?.classList.contains('open')) {
         renderCheckoutMiniList();
       }
     }
 
-    function updateCartUI() {
-      const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
+    function renderComboBannerHtml(totals) {
+      if (totals.discount > 0) {
+        return `
+          <div class="combo-savings-banner">
+            <strong>🎉 Auto-Combo Aktif: Hemat ${formatRupiah(totals.discount)}!</strong>
+            <span>${totals.promoBadges.join(' • ')} (Subtotal ${formatRupiah(totals.subtotal)})</span>
+          </div>
+        `;
+      }
+      if (totals.upsellHint) {
+        return `<div class="combo-upsell-hint">${totals.upsellHint}</div>`;
+      }
+      return '';
+    }
 
-      document.getElementById('navCartCount').textContent = count;
-      document.getElementById('floatCartCount').textContent = count;
-      document.getElementById('floatCartTotal').textContent = formatRupiah(total);
-      document.getElementById('drawerGrandTotal').textContent = formatRupiah(total);
+    function updateCartUI() {
+      cart = SmoothieStore.getCart();
+      const totals = SmoothieStore.calculateTotals(cart);
+
+      const navC = document.getElementById('navCartCount');
+      const floatC = document.getElementById('floatCartCount');
+      const floatT = document.getElementById('floatCartTotal');
+      const drawerT = document.getElementById('drawerGrandTotal');
+      const comboBanner = document.getElementById('cartComboBanner');
+
+      if (navC) navC.textContent = totals.totalQty;
+      if (floatC) floatC.textContent = totals.totalQty;
+      if (floatT) floatT.textContent = formatRupiah(totals.finalTotal);
+      if (drawerT) drawerT.textContent = formatRupiah(totals.finalTotal);
+      if (comboBanner) comboBanner.innerHTML = renderComboBannerHtml(totals);
 
       const list = document.getElementById('cartItemsList');
       if (!list) return;
@@ -2204,7 +2277,7 @@
           <div style="text-align: center; padding: 40px 10px; color: var(--text-muted);">
             <i data-lucide="shopping-bag" style="width: 40px; height: 40px; color: var(--gold); opacity: 0.5; margin-bottom: 10px;"></i>
             <h4>Keranjang Masih Kosong</h4>
-            <p style="font-size: 0.8rem; margin-top: 4px;">Pilih menu Smoothie Therapy di atas untuk melakukan Pre-Order.</p>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Pilih menu Smoothie Therapy di atas atau racik di Studio — keranjang otomatis tersinkron!</p>
           </div>
         `;
         if (window.lucide) lucide.createIcons();
@@ -2217,6 +2290,7 @@
             <div>
               <div style="font-weight: 700; color: #ffffff; font-size: 0.9rem;">#${idx + 1} ${it.title}</div>
               <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">${it.desc}</div>
+              ${it.toppings ? `<div style="font-size: 0.72rem; color: var(--gold); margin-top: 2px;">${it.toppings}</div>` : ''}
               <div style="font-weight: 800; color: var(--gold); font-size: 0.88rem; margin-top: 4px;">${formatRupiah(it.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(it.unitPrice)}/porsi)</span></div>
             </div>
             <button onclick="removeFromCart('${it.id}')" title="Hapus menu" aria-label="Hapus menu" style="background: none; border: none; color: #f43f5e; cursor: pointer; padding: 4px;">
@@ -2249,17 +2323,25 @@
     }
 
     function renderCheckoutMiniList() {
-      const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cart = SmoothieStore.getCart();
+      const totals = SmoothieStore.calculateTotals(cart);
 
       const countBadge = document.getElementById('checkoutBadgeCount');
       const totalBadge = document.getElementById('checkoutBadgeTotal');
       const priceTag = document.getElementById('btnPriceTag');
       const miniList = document.getElementById('checkoutMiniList');
+      const comboBanner = document.getElementById('checkoutComboBanner');
 
-      if (countBadge) countBadge.textContent = `${count} Porsi`;
-      if (totalBadge) totalBadge.textContent = formatRupiah(total);
-      if (priceTag) priceTag.textContent = formatRupiah(total);
+      if (countBadge) countBadge.textContent = `${totals.totalQty} Porsi`;
+      if (totalBadge) totalBadge.textContent = formatRupiah(totals.finalTotal);
+      if (priceTag) priceTag.textContent = formatRupiah(totals.finalTotal);
+      if (comboBanner) comboBanner.innerHTML = renderComboBannerHtml(totals);
+
+      // Keep instant payment amount synced
+      const payBox = document.getElementById('instantPayBox');
+      if (payBox) {
+        payBox.innerHTML = SmoothieStore.renderPaymentCardHtml(selectedPayMethod, formatRupiah(totals.finalTotal), false);
+      }
 
       if (miniList) {
         if (cart.length === 0) {
@@ -2273,9 +2355,9 @@
               <div class="checkout-item-price">${formatRupiah(it.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(it.unitPrice)}/porsi)</span></div>
             </div>
             <div class="qty-stepper">
-              <button type="button" class="qty-btn" onclick="changeCartQty('${it.id}', -1)" title="Kurangi porsi">−</button>
+              <button type="button" class="qty-btn" onclick="changeCartQty('${it.id}', -1)" title="Kurangi porsi" aria-label="Kurangi porsi">−</button>
               <span class="qty-val">${it.qty || 1}</span>
-              <button type="button" class="qty-btn" onclick="changeCartQty('${it.id}', 1)" title="Tambah porsi">+</button>
+              <button type="button" class="qty-btn" onclick="changeCartQty('${it.id}', 1)" title="Tambah porsi" aria-label="Tambah porsi">+</button>
             </div>
           </div>
         `).join('');
@@ -2283,18 +2365,37 @@
     }
 
     function openPreOrderModal() {
+      cart = SmoothieStore.getCart();
       if (cart.length === 0) {
         alert('Keranjang Anda masih kosong. Silakan pilih menu terlebih dahulu!');
         return;
       }
       closeCartDrawer();
-      renderCheckoutMiniList();
+      selectBatch(selectedBatchId);
       selectPay(selectedPayMethod);
+      renderCheckoutMiniList();
       document.getElementById('preOrderModal')?.classList.add('open');
     }
 
     function closePreOrderModal() {
       document.getElementById('preOrderModal')?.classList.remove('open');
+    }
+
+    function closeMainTrackerModal() {
+      document.getElementById('mainTrackerModal')?.classList.remove('open');
+    }
+
+    function selectBatch(batchId) {
+      selectedBatchId = SmoothieStore.setSelectedBatch(batchId);
+      const map = { 'batch-1': 'batch_1', 'batch-2': 'batch_2', 'batch-3': 'batch_3' };
+      Object.keys(map).forEach(k => {
+        const el = document.getElementById(map[k]);
+        if (el) {
+          const active = k === selectedBatchId;
+          el.classList.toggle('active', active);
+          el.setAttribute('aria-checked', String(active));
+        }
+      });
     }
 
     function selectPay(method) {
@@ -2309,8 +2410,8 @@
       });
 
       const hints = {
-        'qris': '⚡ Scan kode QRIS via GoPay, BCA, Livin, Dana, atau ShopeePay.',
-        'transfer': '🏦 Rekening bank panitia akan dikirimkan otomatis via WhatsApp.',
+        'qris': '⚡ Scan kode QRIS di bawah via GoPay, BCA, Livin, Dana, atau ShopeePay.',
+        'transfer': '🏦 Salin nomor rekening / e-wallet di bawah & kirim bukti transfer di WhatsApp.',
         'cash': '💵 Catatan: Pembayaran tunai HANYA berlaku bagi yang bisa datang langsung ke sekolah / transaksi di booth.'
       };
 
@@ -2324,6 +2425,12 @@
           hintEl.style.borderColor = 'rgba(255, 255, 255, 0.08)';
           hintEl.style.color = '#cbd5e1';
         }
+      }
+
+      const totals = SmoothieStore.calculateTotals(cart);
+      const payBox = document.getElementById('instantPayBox');
+      if (payBox) {
+        payBox.innerHTML = SmoothieStore.renderPaymentCardHtml(method, formatRupiah(totals.finalTotal), false);
       }
     }
 
@@ -2345,30 +2452,41 @@
         return;
       }
 
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
-      const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      cart = SmoothieStore.getCart();
+      const totals = SmoothieStore.calculateTotals(cart);
+      const batchInfo = SmoothieStore.getBatchInfo(selectedBatchId);
 
       const payNames = {
         'qris': 'QRIS (GoPay / BCA / Livin / Dana / ShopeePay)',
-        'transfer': 'Transfer Bank Panitia P8',
+        'transfer': 'Transfer Bank / E-Wallet Panitia P8',
         'cash': 'Tunai (Khusus datang langsung ke sekolah)'
       };
 
       const orderCode = '#PO-P8-' + Math.floor(1000 + Math.random() * 9000);
       const itemsListText = cart.map((it, idx) => `${idx + 1}. ${it.qty || 1}x ${it.title} - ${formatRupiah(it.price)}`).join('%0A');
+      const promoLine = totals.discount > 0 ? `%0APromo%20Combo:%20-${encodeURIComponent(formatRupiah(totals.discount))}%20(${encodeURIComponent(totals.promoBadges.join(', '))})` : '';
+
+      const now = new Date();
+      const timeStr = `${now.getDate()} Nov, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
       // Auto-send order directly to Google Sheets Webhook
       const webhookPayload = {
         code: orderCode,
+        time: timeStr,
         name: name,
         phone: phone,
         items: cart.map(it => `${it.qty || 1}x ${it.title}`).join(', '),
-        qty: totalQty,
-        total: total,
+        qty: totals.totalQty,
+        total: totals.finalTotal,
         payment: payNames[selectedPayMethod] || 'QRIS',
+        pay: payNames[selectedPayMethod] || 'QRIS',
+        batch: batchInfo.short,
         address: address,
-        notes: notes || '-'
+        notes: `${notes} [Batch: ${batchInfo.short}]${totals.discount > 0 ? ' [Auto-Combo -' + formatRupiah(totals.discount) + ']' : ''}`,
+        status: 'LUNAS / PAID',
+        stage: 'Antrean'
       };
+      SmoothieStore.pushLiveOrder(webhookPayload);
       try {
         fetch('https://script.google.com/macros/s/AKfycbwAlKee1CwycT00s56ZWyvGts68_V2T0QVHfVCZmrzcr0iMGUEFneLuyBjKix6ZiYib0w/exec', {
           method: 'POST',
@@ -2380,15 +2498,36 @@
         console.warn('GSheet Auto-Input Warning:', err);
       }
 
-      const waText = `Halo%20Tim%20Smoothie%20Therapy!%0A%0ASaya%20ingin%20melakukan%20Pre-Order:%0A------------------------------------%0AKode%20PO:%20${encodeURIComponent(orderCode)}%0ANama%20Pemesan:%20${encodeURIComponent(name)}%0AAlamat%20Pengiriman:%20${encodeURIComponent(address)}%0AMetode%20Bayar:%20${encodeURIComponent(payNames[selectedPayMethod])}%0A%0ADaftar%20Pesanan:%0A${itemsListText}%0A%0ACatatan:%20${encodeURIComponent(notes)}%0ATotal%20Bayar:%20${encodeURIComponent(formatRupiah(total))}%0A------------------------------------%0AMohon%20diproses%20pesanan%20saya.%20Terima%20kasih!`;
+      const waText = `Halo%20Tim%20Smoothie%20Therapy!%0A%0ASaya%20ingin%20melakukan%20Pre-Order:%0A------------------------------------%0AKode%20PO:%20${encodeURIComponent(orderCode)}%0ANama%20Pemesan:%20${encodeURIComponent(name)}%0AAlamat%20Pengiriman:%20${encodeURIComponent(address)}%0ABatch:%20${encodeURIComponent(batchInfo.label)}%0AMetode%20Bayar:%20${encodeURIComponent(payNames[selectedPayMethod])}%0A%0ADaftar%20Pesanan:%0A${itemsListText}${promoLine}%0A%0ACatatan:%20${encodeURIComponent(notes)}%0ATotal%20Bayar:%20${encodeURIComponent(formatRupiah(totals.finalTotal))}%0A------------------------------------%0AMohon%20diproses%20pesanan%20saya.%20Terima%20kasih!`;
 
       closePreOrderModal();
-      cart = [];
+      cart = SmoothieStore.clearCart();
       updateCartUI();
+
+      // Show Instant Payment & Ticket Confirmation Modal
+      const cEl = document.getElementById('mainTrackerCode');
+      const nEl = document.getElementById('mainTrackerName');
+      const bEl = document.getElementById('mainTrackerBatch');
+      const tEl = document.getElementById('mainTrackerTotal');
+      const pEl = document.getElementById('mainTrackerPayBox');
+      if (cEl) cEl.textContent = orderCode;
+      if (nEl) nEl.textContent = name;
+      if (bEl) bEl.textContent = batchInfo.label;
+      if (tEl) tEl.textContent = formatRupiah(totals.finalTotal);
+      if (pEl) pEl.innerHTML = SmoothieStore.renderPaymentCardHtml(selectedPayMethod, formatRupiah(totals.finalTotal), false);
+      document.getElementById('mainTrackerModal')?.classList.add('open');
 
       notify('Pesanan Anda diteruskan ke WhatsApp Panitia!');
       window.open(`https://wa.me/628118411410?text=${waText}`, '_blank');
     }
+
+    // Sync unified cart when navigating back or updating from another studio tab
+    window.addEventListener('storage', (e) => {
+      if (e.key === SmoothieStore.CART_KEY) updateCartUI();
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartUI();
+    });
 
     function openConciergeWhatsApp() {
       const msg = `Halo%20Tim%20Smoothie%20Therapy%2C%20saya%20ingin%20bertanya%20seputar%20menu%20dan%20Pre-Order.`;

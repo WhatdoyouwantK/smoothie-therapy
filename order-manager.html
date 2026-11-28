@@ -505,6 +505,176 @@
       z-index: 100;
     }
 
+    /* Booth Analytics & Kitchen Prep Upgrades */
+    .booth-analytics-wrap {
+      max-width: 1200px;
+      margin: 22px auto 0;
+      padding: 0 20px;
+    }
+    .incoming-alert-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.22), rgba(212, 162, 76, 0.18));
+      border: 1px solid var(--green);
+      border-radius: 12px;
+      padding: 11px 16px;
+      margin-bottom: 14px;
+      color: #ffffff;
+      font-size: 0.84rem;
+      font-weight: 700;
+      animation: pulseAlertBorder 1.4s ease-in-out infinite;
+    }
+    .incoming-alert-banner.show {
+      display: flex;
+    }
+    @keyframes pulseAlertBorder {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+      50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    }
+    .booth-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) 1.5fr;
+      gap: 14px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .kpi-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 700;
+    }
+    .kpi-value {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 4px;
+    }
+    .kpi-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .bestseller-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 8px;
+    }
+    .bestseller-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .bestseller-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.74rem;
+      color: #e7e5e4;
+      font-weight: 600;
+    }
+    .bestseller-bar-bg {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bestseller-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+    .prep-checklist-box {
+      background: rgba(212, 162, 76, 0.07);
+      border: 1px solid rgba(212, 162, 76, 0.25);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .prep-checklist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .prep-pills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .prep-pill {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .prep-pill-num {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: block;
+    }
+    .prep-pill-lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .batch-chip-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.16);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fde68a;
+      margin-left: 6px;
+    }
+    .btn-sound-toggle {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+      padding: 8px 12px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.2s;
+    }
+    .btn-sound-toggle.muted {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.14);
+      color: var(--text-muted);
+    }
+    @media (max-width: 960px) {
+      .booth-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .kpi-card.bestseller-card {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 560px) {
+      .booth-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Thermal Ticket & Print Styling */
     .thermal-ticket {
       background: #fafaf9;
@@ -659,6 +829,12 @@
       </div>
     </div>
     <div class="header-actions">
+      <button onclick="toggleSoundAlert()" id="soundToggleBtn" class="btn-sound-toggle" title="Aktifkan/Matikan Suara Ping Pesanan Baru">
+        <span>🔔 Suara: ON</span>
+      </button>
+      <button onclick="playOrderPing(true)" class="btn-lock" title="Tes Suara Notifikasi">
+        <span>🔊 Test Ping</span>
+      </button>
       <button onclick="downloadLiveCsv()" class="btn-download-csv" title="Unduh CSV Langsung">
         <i data-lucide="download" style="width: 15px; height: 15px;"></i>
         <span>Unduh CSV Pesanan</span>
@@ -673,6 +849,36 @@
       </button>
     </div>
   </header>
+
+  <!-- BOOTH ANALYTICS, REVENUE & PALING LARIS STRIP -->
+  <section class="booth-analytics-wrap" aria-label="Ringkasan Booth Hari Ini">
+    <div id="incomingOrderAlert" class="incoming-alert-banner">
+      <span id="incomingAlertText">🔔 PESANAN BARU MASUK! Cek antrean dapur di bawah.</span>
+      <button type="button" onclick="dismissIncomingAlert()" style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; padding: 4px 10px; font-size: 0.74rem; cursor: pointer;">Tutup</button>
+    </div>
+
+    <div class="booth-kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">💰 Omset Lunas Hari Ini</span>
+        <span class="kpi-value" id="kpiTotalRevenue" style="color: var(--gold);">Rp 0</span>
+        <span class="kpi-sub" id="kpiAvgOrder">Rata-rata: Rp 0 / transaksi</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">✅ Pesanan Lunas</span>
+        <span class="kpi-value" id="kpiPaidOrders" style="color: var(--green);">0</span>
+        <span class="kpi-sub" id="kpiTotalPortions">Total 0 porsi terjual</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">⏳ Antrean Aktif</span>
+        <span class="kpi-value" id="kpiPendingKitchen" style="color: var(--rose);">0</span>
+        <span class="kpi-sub">Belum berstatus Selesai</span>
+      </div>
+      <div class="kpi-card bestseller-card">
+        <span class="kpi-label">🏆 Menu Paling Laris (Lunas)</span>
+        <div class="bestseller-list" id="bestsellerChart"></div>
+      </div>
+    </div>
+  </section>
 
   <!-- Main Content -->
   <main class="main-container">
@@ -742,9 +948,19 @@
         </div>
       </div>
 
-      <div class="input-group">
-        <label class="input-label">Alamat / Lokasi Pengantaran:</label>
-        <input type="text" id="orderAddress" class="form-input" placeholder="Gedung Utama Lt. 2 / Kelas">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="input-group">
+          <label class="input-label">Alamat / Lokasi Pengantaran:</label>
+          <input type="text" id="orderAddress" class="form-input" placeholder="Gedung Utama Lt. 2 / Kelas">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Batch Pengambilan:</label>
+          <select id="orderBatch" class="form-select">
+            <option value="Istirahat 1">☀️ Istirahat 1 (09:30)</option>
+            <option value="Istirahat 2">🌤️ Istirahat 2 (12:00)</option>
+            <option value="Pulang Sekolah">🎒 Pulang Sekolah (14:30)</option>
+          </select>
+        </div>
       </div>
 
       <div class="input-group">
@@ -780,12 +996,39 @@
         </span>
       </div>
       
+      <!-- Kitchen Prep Checklist (Remaining items to make per batch) -->
+      <div class="prep-checklist-box">
+        <div class="prep-checklist-header">
+          <strong style="font-size: 0.78rem; color: #fde68a; letter-spacing: 0.4px;">🍳 CHECKLIST PERSIAPAN DAPUR (BELUM SELESAI)</strong>
+          <select id="batchFilterSelect" onchange="setBatchFilter(this.value)" style="background: rgba(0,0,0,0.45); border: 1px solid rgba(212,162,76,0.35); color: #fff; font-size: 0.72rem; border-radius: 8px; padding: 4px 8px; cursor: pointer;">
+            <option value="all">Semua Batch</option>
+            <option value="Istirahat 1">☀️ Istirahat 1</option>
+            <option value="Istirahat 2">🌤️ Istirahat 2</option>
+            <option value="Pulang Sekolah">🎒 Pulang Sekolah</option>
+          </select>
+        </div>
+        <div class="prep-pills-grid">
+          <div class="prep-pill">
+            <span class="prep-pill-num" id="prepWrapCount" style="color: #4ade80;">0</span>
+            <span class="prep-pill-lbl">🌯 Chicken Wrap</span>
+          </div>
+          <div class="prep-pill">
+            <span class="prep-pill-num" id="prepBowlCount" style="color: #fb7185;">0</span>
+            <span class="prep-pill-lbl">🍓 Smoothie Bowl</span>
+          </div>
+          <div class="prep-pill">
+            <span class="prep-pill-num" id="prepMangoCount" style="color: #fbbf24;">0</span>
+            <span class="prep-pill-lbl">🥭 Malibu Mango</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Filter Tabs & Clear All Button -->
       <div class="filter-tabs" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <div style="display: flex; gap: 8px;">
-          <button class="filter-tab active" onclick="setFilter('all')">Semua</button>
-          <button class="filter-tab" onclick="setFilter('paid')">🟢 Lunas (Dapur)</button>
-          <button class="filter-tab" onclick="setFilter('unpaid')">🔴 Batal / Unpaid</button>
+          <button class="filter-tab active" onclick="setFilter('all', this)">Semua</button>
+          <button class="filter-tab" onclick="setFilter('paid', this)">🟢 Lunas (Dapur)</button>
+          <button class="filter-tab" onclick="setFilter('unpaid', this)">🔴 Batal / Unpaid</button>
         </div>
         <button onclick="clearAllOrdersLog()" style="background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; font-size: 0.74rem; font-weight: 600; padding: 5px 12px; border-radius: 8px; cursor: pointer;">
           🧹 Bersihkan Semua Log
@@ -837,17 +1080,18 @@
       setTimeout(() => document.getElementById('pinInput').focus(), 300);
     }
 
-    // Initial in-memory orders matching Google Sheets
-    let ordersList = [
+    const ORDERS_STORAGE_KEY = 'st_live_orders_v1';
+    const DEFAULT_SEED_ORDERS = [
       {
         code: '#PO-P8-1021',
         time: '14 Nov, 11:15',
         name: 'Jessica Tan',
         phone: '081234567890',
-        items: 'Strawberry Smoothie Bowl (Extra Chia + Almond)',
+        items: '1x Strawberry Smoothie Bowl (Granola & Stroberi)',
         qty: 1,
-        total: 24000,
+        total: 25000,
         pay: 'QRIS',
+        batch: 'Istirahat 1',
         address: 'Gedung Utama Lt. 2',
         notes: 'Minta sendok kayu',
         status: 'LUNAS / PAID',
@@ -858,10 +1102,11 @@
         time: '14 Nov, 11:30',
         name: 'Kevin Wijaya',
         phone: '081987654321',
-        items: 'Chicken Salad Wrap (Roasted Sesame + Telur)',
+        items: '1x Chicken Salad Wrap (Roasted Sesame)',
         qty: 1,
-        total: 23000,
+        total: 25000,
         pay: 'Transfer BCA',
+        batch: 'Istirahat 2',
         address: 'Lobby Resepsi',
         notes: 'Saus dipisah',
         status: 'LUNAS / PAID',
@@ -872,10 +1117,11 @@
         time: '14 Nov, 11:45',
         name: 'Amanda Putri',
         phone: '081333444555',
-        items: 'Malibu Mango Tropical Smoothie (x2)',
+        items: '2x Malibu Mango',
         qty: 2,
-        total: 36000,
+        total: 40000,
         pay: 'Transfer Mandiri',
+        batch: 'Pulang Sekolah',
         address: 'Kelas 12-A',
         notes: 'Tidak ada bukti transfer',
         status: 'BATAL / UNPAID',
@@ -883,17 +1129,192 @@
       }
     ];
 
+    function loadSavedOrders() {
+      try {
+        const raw = localStorage.getItem(ORDERS_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) {}
+      return [...DEFAULT_SEED_ORDERS];
+    }
+
+    function saveOrders() {
+      try {
+        localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(ordersList));
+      } catch (e) {}
+    }
+
+    let ordersList = loadSavedOrders();
     let currentFilter = 'all';
+    let currentBatchFilter = 'all';
+    let soundEnabled = true;
 
     function formatRupiah(num) {
       return 'Rp ' + Number(num).toLocaleString('id-ID');
     }
 
+    // Pure Web Audio API two-tone cafe chime (zero external audio files)
+    function playOrderPing(forcePlay) {
+      if (!soundEnabled && !forcePlay) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+        [880, 1174.66].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.14);
+          gain.gain.setValueAtTime(0.001, now + i * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.18, now + i * 0.14 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.14 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.14);
+          osc.stop(now + i * 0.14 + 0.36);
+        });
+        if (forcePlay) showToast('🔊 Suara notifikasi pesanan aktif!');
+      } catch (e) {
+        console.warn('Audio ping blocked:', e);
+      }
+    }
+
+    function toggleSoundAlert() {
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById('soundToggleBtn');
+      if (btn) {
+        btn.classList.toggle('muted', !soundEnabled);
+        btn.innerHTML = soundEnabled ? '<span>🔔 Suara: ON</span>' : '<span>🔕 Suara: OFF</span>';
+      }
+      if (soundEnabled) playOrderPing(true);
+    }
+
+    function flashIncomingAlert(msg) {
+      const banner = document.getElementById('incomingOrderAlert');
+      const txt = document.getElementById('incomingAlertText');
+      if (txt) txt.textContent = msg;
+      if (banner) banner.classList.add('show');
+    }
+
+    function dismissIncomingAlert() {
+      document.getElementById('incomingOrderAlert')?.classList.remove('show');
+    }
+
+    // Parse item counts (Wraps, Bowls, Malibu Mango) from order items string
+    function countMenuBreakdown(itemsStr, fallbackQty) {
+      let wraps = 0, bowls = 0, mangos = 0;
+      const parts = String(itemsStr || '').split(/,\s*/);
+      parts.forEach(part => {
+        const lower = part.toLowerCase();
+        const mPrefix = part.match(/(\d+)\s*x/i);
+        const mSuffix = part.match(/x\s*(\d+)/i);
+        const q = mPrefix ? Number(mPrefix[1]) : (mSuffix ? Number(mSuffix[1]) : 1);
+
+        if (lower.includes('trio')) {
+          wraps += q; bowls += q; mangos += q;
+        } else if (lower.includes('duo refresh')) {
+          wraps += q; mangos += q;
+        } else if (lower.includes('duo superfood')) {
+          bowls += q; mangos += q;
+        } else {
+          if (lower.includes('wrap') || lower.includes('salad')) wraps += q;
+          if (lower.includes('bowl') || lower.includes('strawberry')) bowls += q;
+          if (lower.includes('malibu') || lower.includes('mango')) mangos += q;
+        }
+      });
+      if (wraps === 0 && bowls === 0 && mangos === 0 && fallbackQty) {
+        bowls = Number(fallbackQty) || 0;
+      }
+      return { wraps, bowls, mangos };
+    }
+
+    function renderBoothAnalytics() {
+      const paidOrders = ordersList.filter(o => o.status === 'LUNAS / PAID');
+      const totalRev = paidOrders.reduce((s, o) => s + (Number(o.total) || 0), 0);
+      const totalPortions = paidOrders.reduce((s, o) => s + (Number(o.qty) || 1), 0);
+      const avg = paidOrders.length > 0 ? Math.round(totalRev / paidOrders.length) : 0;
+      const pendingKitchen = paidOrders.filter(o => o.stage !== 'Selesai').length;
+
+      const elRev = document.getElementById('kpiTotalRevenue');
+      const elAvg = document.getElementById('kpiAvgOrder');
+      const elPaid = document.getElementById('kpiPaidOrders');
+      const elPortions = document.getElementById('kpiTotalPortions');
+      const elPending = document.getElementById('kpiPendingKitchen');
+
+      if (elRev) elRev.textContent = formatRupiah(totalRev);
+      if (elAvg) elAvg.textContent = `Rata-rata: ${formatRupiah(avg)} / transaksi`;
+      if (elPaid) elPaid.textContent = paidOrders.length;
+      if (elPortions) elPortions.textContent = `Total ${totalPortions} porsi terjual`;
+      if (elPending) elPending.textContent = pendingKitchen;
+
+      // Paling Laris Chart (all paid orders)
+      let totalWraps = 0, totalBowls = 0, totalMangos = 0;
+      paidOrders.forEach(o => {
+        const c = countMenuBreakdown(o.items, o.qty);
+        totalWraps += c.wraps;
+        totalBowls += c.bowls;
+        totalMangos += c.mangos;
+      });
+      const chartData = [
+        { label: '🌯 Chicken Salad Wrap', count: totalWraps, color: '#10b981' },
+        { label: '🍓 Strawberry Smoothie Bowl', count: totalBowls, color: '#fb7185' },
+        { label: '🥭 Malibu Mango', count: totalMangos, color: '#f59e0b' }
+      ].sort((a, b) => b.count - a.count);
+
+      const maxCount = Math.max(1, ...chartData.map(d => d.count));
+      const chartEl = document.getElementById('bestsellerChart');
+      if (chartEl) {
+        chartEl.innerHTML = chartData.map(d => {
+          const pct = Math.round((d.count / maxCount) * 100);
+          return `
+            <div class="bestseller-row">
+              <div class="bestseller-meta">
+                <span>${d.label}</span>
+                <span style="color: ${d.color};">${d.count} porsi</span>
+              </div>
+              <div class="bestseller-bar-bg">
+                <div class="bestseller-bar-fill" style="width: ${pct}%; background: ${d.color};"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Kitchen Prep Checklist (remaining paid orders NOT Selesai, filtered by batch)
+      const prepOrders = paidOrders.filter(o => {
+        if (o.stage === 'Selesai') return false;
+        if (currentBatchFilter !== 'all') {
+          return (o.batch || 'Istirahat 1') === currentBatchFilter;
+        }
+        return true;
+      });
+      let pWraps = 0, pBowls = 0, pMangos = 0;
+      prepOrders.forEach(o => {
+        const c = countMenuBreakdown(o.items, o.qty);
+        pWraps += c.wraps;
+        pBowls += c.bowls;
+        pMangos += c.mangos;
+      });
+      const pwEl = document.getElementById('prepWrapCount');
+      const pbEl = document.getElementById('prepBowlCount');
+      const pmEl = document.getElementById('prepMangoCount');
+      if (pwEl) pwEl.textContent = pWraps;
+      if (pbEl) pbEl.textContent = pBowls;
+      if (pmEl) pmEl.textContent = pMangos;
+    }
+
     function renderOrders() {
+      renderBoothAnalytics();
+
       const container = document.getElementById('ordersContainer');
-      const filtered = ordersList.filter(o => {
-        if (currentFilter === 'paid') return o.status === 'LUNAS / PAID';
-        if (currentFilter === 'unpaid') return o.status === 'BATAL / UNPAID';
+      const indexed = ordersList.map((ord, realIdx) => ({ ord, realIdx }));
+      const filtered = indexed.filter(({ ord }) => {
+        if (currentFilter === 'paid' && ord.status !== 'LUNAS / PAID') return false;
+        if (currentFilter === 'unpaid' && ord.status !== 'BATAL / UNPAID') return false;
+        if (currentBatchFilter !== 'all' && (ord.batch || 'Istirahat 1') !== currentBatchFilter) return false;
         return true;
       });
 
@@ -901,28 +1322,30 @@
       document.getElementById('orderCountBadge').textContent = `${activePaidCount} Pesanan Dapur`;
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.85rem;">Tidak ada pesanan pada kategori ini.</div>`;
+        container.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.85rem;">Tidak ada pesanan pada filter &amp; batch ini.</div>`;
         return;
       }
 
-      container.innerHTML = filtered.map((ord, idx) => {
+      container.innerHTML = filtered.map(({ ord, realIdx }) => {
         const isPaid = ord.status === 'LUNAS / PAID';
+        const batchLabel = ord.batch || 'Istirahat 1';
         return `
           <div class="order-card ${isPaid ? 'paid' : 'cancelled'}">
             <div class="order-header-row">
               <div>
                 <span class="order-code">${ord.code}</span>
                 <span class="order-time">• ${ord.time}</span>
+                <span class="batch-chip-badge">⏰ ${batchLabel}</span>
               </div>
               <div class="order-header-actions">
                 <span class="${isPaid ? 'order-badge-paid' : 'order-badge-unpaid'}">
                   ${isPaid ? '✅ LUNAS' : '❌ BATAL'}
                 </span>
-                <button type="button" onclick="openReceiptModal(${idx})" title="Cetak struk dapur / struk pelanggan" style="background: rgba(212, 162, 76, 0.15); border: 1px solid rgba(212, 162, 76, 0.35); color: #ecd09b; cursor: pointer; border-radius: 6px; padding: 4px 8px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px; transition: 0.2s;">
+                <button type="button" onclick="openReceiptModal(${realIdx})" title="Cetak struk dapur / struk pelanggan" style="background: rgba(212, 162, 76, 0.15); border: 1px solid rgba(212, 162, 76, 0.35); color: #ecd09b; cursor: pointer; border-radius: 6px; padding: 4px 8px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px; transition: 0.2s;">
                   <i data-lucide="printer" style="width: 12px; height: 12px;"></i>
                   <span>Struk</span>
                 </button>
-                <button type="button" onclick="deleteOrderCard(${idx})" title="Hapus log pesanan ini" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; cursor: pointer; border-radius: 6px; padding: 4px 8px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px;">
+                <button type="button" onclick="deleteOrderCard(${realIdx})" title="Hapus log pesanan ini" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; cursor: pointer; border-radius: 6px; padding: 4px 8px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px;">
                   <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
                   <span>Hapus</span>
                 </button>
@@ -940,10 +1363,10 @@
 
             ${isPaid ? `
               <div class="kitchen-stage-row">
-                <button class="btn-stage ${ord.stage === 'Antrean' ? 'current' : ''}" onclick="setStage(${idx}, 'Antrean')">⏳ Antrean</button>
-                <button class="btn-stage ${ord.stage === 'Sedang Diracik' ? 'current' : ''}" onclick="setStage(${idx}, 'Sedang Diracik')">🥣 Diracik</button>
-                <button class="btn-stage ${ord.stage === 'Siap Diambil' ? 'current' : ''}" onclick="setStage(${idx}, 'Siap Diambil')">🛵 Siap</button>
-                <button class="btn-stage ${ord.stage === 'Selesai' ? 'current' : ''}" onclick="setStage(${idx}, 'Selesai')">✅ Selesai</button>
+                <button class="btn-stage ${ord.stage === 'Antrean' ? 'current' : ''}" onclick="setStage(${realIdx}, 'Antrean')">⏳ Antrean</button>
+                <button class="btn-stage ${ord.stage === 'Sedang Diracik' ? 'current' : ''}" onclick="setStage(${realIdx}, 'Sedang Diracik')">🥣 Diracik</button>
+                <button class="btn-stage ${ord.stage === 'Siap Diambil' ? 'current' : ''}" onclick="setStage(${realIdx}, 'Siap Diambil')">🛵 Siap</button>
+                <button class="btn-stage ${ord.stage === 'Selesai' ? 'current' : ''}" onclick="setStage(${realIdx}, 'Selesai')">✅ Selesai</button>
               </div>
             ` : ''}
           </div>
@@ -953,15 +1376,22 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function setFilter(filter) {
+    function setFilter(filter, btnEl) {
       currentFilter = filter;
       document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
+      renderOrders();
+    }
+
+    function setBatchFilter(batchVal) {
+      currentBatchFilter = batchVal;
       renderOrders();
     }
 
     function setStage(idx, newStage) {
+      if (!ordersList[idx]) return;
       ordersList[idx].stage = newStage;
+      saveOrders();
       renderOrders();
       showToast(`Status ${ordersList[idx].code} diubah jadi: ${newStage}`);
     }
@@ -990,6 +1420,10 @@
         <div class="t-row" style="font-size: 11px;">
           <span>WAKTU:</span>
           <span>${nowStr}</span>
+        </div>
+        <div class="t-row" style="font-size: 11px;">
+          <span>BATCH:</span>
+          <span class="t-bold">${ord.batch || 'Istirahat 1'}</span>
         </div>
         <div class="t-row" style="font-size: 11px;">
           <span>PELANGGAN:</span>
@@ -1043,6 +1477,7 @@
 
     function deleteOrderCard(idx) {
       const removed = ordersList.splice(idx, 1);
+      saveOrders();
       renderOrders();
       showToast(`Log ${removed[0]?.code || 'pesanan'} telah dihapus!`);
     }
@@ -1050,6 +1485,7 @@
     function clearAllOrdersLog() {
       if (confirm('Yakin ingin membersihkan semua log pesanan dari slide?')) {
         ordersList = [];
+        saveOrders();
         renderOrders();
         showToast('Semua log pesanan telah dibersihkan!');
       }
@@ -1062,12 +1498,22 @@
       const codeMatch = raw.match(/Kode (?:PO|Pesanan):\s*([#A-Za-z0-9-]+)/i);
       const nameMatch = raw.match(/Nama(?:\s*Pemesan)?:\s*([^\n\r]+)/i);
       const addressMatch = raw.match(/Alamat(?:\s*Pengiriman)?:\s*([^\n\r]+)/i);
+      const batchMatch = raw.match(/Batch:\s*([^\n\r]+)/i);
       const totalMatch = raw.match(/Total(?:\s*Bayar)?:\s*(?:Rp\s*)?([0-9.,]+)/i);
       const payMatch = raw.match(/Metode Bayar:\s*([^\n\r]+)/i);
 
       if (codeMatch) document.getElementById('orderCode').value = codeMatch[1].trim();
       if (nameMatch) document.getElementById('custName').value = nameMatch[1].trim();
       if (addressMatch) document.getElementById('orderAddress').value = addressMatch[1].trim();
+      if (batchMatch) {
+        const bText = batchMatch[1].toLowerCase();
+        const bSel = document.getElementById('orderBatch');
+        if (bSel) {
+          if (bText.includes('istirahat 2') || bText.includes('batch 2')) bSel.value = 'Istirahat 2';
+          else if (bText.includes('pulang') || bText.includes('batch 3')) bSel.value = 'Pulang Sekolah';
+          else bSel.value = 'Istirahat 1';
+        }
+      }
       if (totalMatch) {
         const cleaned = totalMatch[1].replace(/[^0-9]/g, '');
         document.getElementById('orderTotal').value = cleaned;
@@ -1076,7 +1522,7 @@
         const p = payMatch[1].trim();
         const sel = document.getElementById('payMethod');
         for (let i = 0; i < sel.options.length; i++) {
-          if (sel.options[i].value.toLowerCase().includes(p.toLowerCase())) {
+          if (sel.options[i].value.toLowerCase().includes(p.toLowerCase()) || p.toLowerCase().includes(sel.options[i].value.toLowerCase())) {
             sel.selectedIndex = i;
             break;
           }
@@ -1094,6 +1540,7 @@
       const total = Number(document.getElementById('orderTotal').value) || 25000;
       const qty = Number(document.getElementById('orderQty').value) || 1;
       const pay = document.getElementById('payMethod').value;
+      const batch = document.getElementById('orderBatch')?.value || 'Istirahat 1';
       const address = document.getElementById('orderAddress').value || '-';
       const notes = document.getElementById('orderNotes').value || '-';
 
@@ -1109,6 +1556,7 @@
         qty,
         total,
         pay,
+        batch,
         address,
         notes,
         status: decisionStatus,
@@ -1116,6 +1564,7 @@
       };
 
       ordersList.unshift(newOrder);
+      saveOrders();
       renderOrders();
 
       // Clear input fields
@@ -1129,6 +1578,8 @@
       document.getElementById('orderNotes').value = '';
 
       if (decisionStatus === 'LUNAS / PAID') {
+        playOrderPing(false);
+        flashIncomingAlert(`✅ Pesanan Lunas ${code} (${name} • ${batch}) masuk antrean dapur!`);
         try {
           fetch('https://script.google.com/macros/s/AKfycbwAlKee1CwycT00s56ZWyvGts68_V2T0QVHfVCZmrzcr0iMGUEFneLuyBjKix6ZiYib0w/exec', {
             method: 'POST',
@@ -1145,15 +1596,33 @@
       }
     }
 
+    // Live listener for orders submitted from the storefront / studio tabs
+    window.addEventListener('storage', (e) => {
+      if (e.key === ORDERS_STORAGE_KEY && e.newValue) {
+        try {
+          const updated = JSON.parse(e.newValue);
+          if (Array.isArray(updated) && updated.length > ordersList.length) {
+            const newest = updated[0];
+            ordersList = updated;
+            renderOrders();
+            playOrderPing(false);
+            flashIncomingAlert(`🔔 PESANAN BARU: ${newest.code} — ${newest.name} (${newest.items}) • ${newest.batch || 'Istirahat 1'}`);
+            showToast(`🔔 Pesanan baru masuk: ${newest.code}!`);
+          }
+        } catch (err) {}
+      }
+    });
+
     // Direct Browser CSV Download
     function downloadLiveCsv() {
       let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Kode PO,Waktu,Nama,WhatsApp,Menu Items,Qty,Total,Metode Bayar,Alamat,Catatan,Status Pembayaran,Status Dapur\n";
+      csvContent += "Kode PO,Waktu,Batch,Nama,WhatsApp,Menu Items,Qty,Total,Metode Bayar,Alamat,Catatan,Status Pembayaran,Status Dapur\n";
       
       ordersList.forEach(o => {
         const row = [
           `"${o.code}"`,
           `"${o.time}"`,
+          `"${o.batch || 'Istirahat 1'}"`,
           `"${o.name}"`,
           `"${o.phone}"`,
           `"${o.items}"`,

@@ -1,0 +1,136 @@
+/* Shared Styles for Auto-Combo Savings Banner & Instant Payment Cards */
+.combo-savings-banner {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.16) 0%, rgba(16, 185, 129, 0.14) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-bottom: 10px;
+  font-size: 0.76rem;
+  color: #fde68a;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.combo-savings-banner strong {
+  color: #4ade80;
+  font-size: 0.8rem;
+}
+.combo-upsell-hint {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(212, 175, 55, 0.35);
+  border-radius: 9px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  font-size: 0.73rem;
+  color: #d6d3d1;
+  line-height: 1.4;
+}
+
+.instant-pay-card {
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+.instant-pay-qris-wrap {
+  flex-shrink: 0;
+}
+.instant-qris-img {
+  width: 76px;
+  height: 76px;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 4px;
+  object-fit: contain;
+  display: block;
+}
+.instant-qris-fallback {
+  width: 78px;
+  min-height: 76px;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px dashed rgba(212, 175, 55, 0.45);
+  padding: 6px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.65rem;
+  color: #fde68a;
+  gap: 2px;
+}
+.instant-pay-details {
+  flex: 1;
+  min-width: 0;
+}
+.instant-pay-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+.instant-pay-sub {
+  font-size: 0.7rem;
+  color: #a8a096;
+  margin-top: 1px;
+}
+.instant-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.instant-acct-num {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fde68a;
+  letter-spacing: 0.5px;
+}
+.btn-copy-acct {
+  background: rgba(212, 175, 55, 0.16);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  color: #fde68a;
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 28px;
+}
+.btn-copy-acct:hover {
+  background: #d4af37;
+  color: #0c0b0a;
+}
+.instant-pay-amount {
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  margin-top: 5px;
+}
+.instant-pay-amount strong {
+  color: #4ade80;
+}
+
+/* Make sure checkout modal scrolls gracefully on smaller screens when batch + instant pay card are shown */
+.sleek-checkout-sheet {
+  max-height: 92vh;
+  max-height: 92dvh;
+  overflow-y: auto;
+}
+
+@media (max-width: 440px) {
+  .instant-pay-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

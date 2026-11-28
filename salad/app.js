@@ -132,10 +132,18 @@ let customWrap = {
   toppings: []
 };
 
-let orderBag = [];
+let orderBag = window.SmoothieStore ? SmoothieStore.getCart() : [];
 let activeOrderRecord = null;
-let selectedBatch = 'batch-1';
+let selectedBatch = window.SmoothieStore ? SmoothieStore.getSelectedBatch() : 'batch-1';
 let selectedPaymentMethod = 'qris';
+
+window.addEventListener('storage', (e) => {
+  if (window.SmoothieStore && e.key === SmoothieStore.CART_KEY) {
+    orderBag = SmoothieStore.getCart();
+    updateBagBadge();
+    renderCartDrawer();
+  }
+});
 
 // ========================================================
 // INITIALIZATION
@@ -500,23 +508,45 @@ function addCustomWrapToBag() {
   const item = {
     id: 'wrap_' + Date.now(),
     title: 'Custom Chicken Salad Wrap',
-    details: `${base.name} • ${greens.name} • ${protein.name} • ${dressing.name}`,
-    toppings: toppingsList.length > 0 ? `Topping: ${toppingsList.join(', ')}` : 'Topping Standar',
+    desc: `${base.name} • ${greens.name} • ${protein.name} • ${dressing.name}`,
+    toppings: toppingsList.length > 0 ? `Ekstra: ${toppingsList.join(', ')}` : 'Porsi Standar',
+    category: 'wrap',
     unitPrice: price,
     price: price,
     qty: 1
   };
 
-  orderBag.push(item);
+  orderBag = SmoothieStore.addItem(item);
   updateBagBadge();
-  notifyGuest(`Ditambahkan ke Keranjang: Custom Wrap (${formatRupiah(price)})`);
+  const totals = SmoothieStore.calculateTotals(orderBag);
+  if (totals.discount > 0) {
+    notifyGuest(`🎉 Auto-Combo Aktif! Hemat ${formatRupiah(totals.discount)}`);
+  } else {
+    notifyGuest(`Ditambahkan ke Keranjang: Custom Wrap (${formatRupiah(price)})`);
+  }
   openCartDrawer();
 }
 
+function renderComboBannerHtml(totals) {
+  if (totals.discount > 0) {
+    return `
+      <div class="combo-savings-banner">
+        <strong>🎉 Auto-Combo Aktif: Hemat ${formatRupiah(totals.discount)}!</strong>
+        <span>${totals.promoBadges.join(' • ')}</span>
+      </div>
+    `;
+  }
+  if (totals.upsellHint) {
+    return `<div class="combo-upsell-hint">${totals.upsellHint}</div>`;
+  }
+  return '';
+}
+
 // ========================================================
-// CART FOLIO & DRAWER
+// CART FOLIO & DRAWER (UNIFIED ACROSS ALL PAGES)
 // ========================================================
 function updateBagBadge() {
+  orderBag = SmoothieStore.getCart();
   const badge = document.getElementById('cartBadgeCount');
   if (badge) badge.textContent = orderBag.reduce((sum, item) => sum + (item.qty || 1), 0);
 }
@@ -533,15 +563,7 @@ function closeCartDrawer() {
 }
 
 function changeWrapQty(id, delta) {
-  const item = orderBag.find(i => i.id === id);
-  if (!item) return;
-  const newQty = (item.qty || 1) + delta;
-  if (newQty <= 0) {
-    removeFromBag(id);
-    return;
-  }
-  item.qty = newQty;
-  item.price = item.unitPrice * item.qty;
+  orderBag = SmoothieStore.changeQty(id, delta);
   updateBagBadge();
   renderCartDrawer();
   if (document.getElementById('checkoutModal')?.classList.contains('open')) {
@@ -550,17 +572,22 @@ function changeWrapQty(id, delta) {
 }
 
 function renderCartDrawer() {
+  orderBag = SmoothieStore.getCart();
   const list = document.getElementById('cartDrawerItemsList');
   const subtotalEl = document.getElementById('drawerSubtotal');
   const totalEl = document.getElementById('drawerGrandTotal');
+  const comboEl = document.getElementById('cartComboBanner');
   if (!list) return;
+
+  const totals = SmoothieStore.calculateTotals(orderBag);
+  if (comboEl) comboEl.innerHTML = renderComboBannerHtml(totals);
 
   if (orderBag.length === 0) {
     list.innerHTML = `
       <div style="text-align: center; padding: 40px 10px; color: var(--text-muted);">
         <i data-lucide="shopping-bag" style="width: 44px; height: 44px; color: var(--gold); opacity: 0.5; margin-bottom: 12px;"></i>
         <h4>Keranjang Pesanan Kosong</h4>
-        <p style="font-size: 0.85rem; margin-top: 6px;">Pilih menu Chicken Salad Wrap andalan P8 di atas untuk memulai Pre-Order.</p>
+        <p style="font-size: 0.85rem; margin-top: 6px;">Rakit Chicken Salad Wrap atau gabungkan dengan menu dari Smoothie Studio — keranjang otomatis tersinkron!</p>
       </div>
     `;
     if (subtotalEl) subtotalEl.textContent = 'Rp 0';
@@ -569,15 +596,13 @@ function renderCartDrawer() {
     return;
   }
 
-  const grandTotal = orderBag.reduce((acc, item) => acc + item.price, 0);
-
   list.innerHTML = orderBag.map((item, index) => `
     <div class="cart-item-card">
       <div class="cart-item-title">#${index + 1} ${item.title}</div>
-      <div class="cart-item-desc">${item.details}</div>
-      <div class="cart-item-desc" style="color: var(--gold); font-size: 0.72rem;">${item.toppings}</div>
+      <div class="cart-item-desc">${item.desc || item.details || ''}</div>
+      ${item.toppings ? `<div class="cart-item-desc" style="color: var(--gold); font-size: 0.72rem;">${item.toppings}</div>` : ''}
       <div class="cart-item-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-        <span class="cart-item-price">${formatRupiah(item.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(item.unitPrice)}/wrap)</span></span>
+        <span class="cart-item-price">${formatRupiah(item.price)} <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(${formatRupiah(item.unitPrice)}/porsi)</span></span>
         <div style="display: flex; align-items: center; gap: 8px;">
           <div class="qty-stepper">
             <button class="qty-btn" onclick="changeWrapQty('${item.id}', -1)" title="Kurangi" aria-label="Kurangi jumlah">−</button>
@@ -592,13 +617,13 @@ function renderCartDrawer() {
     </div>
   `).join('');
 
-  if (subtotalEl) subtotalEl.textContent = formatRupiah(grandTotal);
-  if (totalEl) totalEl.textContent = formatRupiah(grandTotal);
+  if (subtotalEl) subtotalEl.textContent = formatRupiah(totals.subtotal);
+  if (totalEl) totalEl.textContent = formatRupiah(totals.finalTotal);
   if (window.lucide) lucide.createIcons();
 }
 
 function removeFromBag(id) {
-  orderBag = orderBag.filter(item => item.id !== id);
+  orderBag = SmoothieStore.removeItem(id);
   updateBagBadge();
   renderCartDrawer();
   if (document.getElementById('checkoutModal')?.classList.contains('open')) {
@@ -610,17 +635,24 @@ function removeFromBag(id) {
 // CHECKOUT & PRE-ORDER MODAL
 // ========================================================
 function renderCheckoutMiniList() {
+  orderBag = SmoothieStore.getCart();
+  const totals = SmoothieStore.calculateTotals(orderBag);
+
   const countBadge = document.getElementById('checkoutBadgeCount');
   const totalBadge = document.getElementById('checkoutBadgeTotal');
   const miniList = document.getElementById('checkoutMiniList');
   const priceTag = document.getElementById('btnPriceTag');
+  const comboBanner = document.getElementById('checkoutComboBanner');
 
-  const totalPortions = orderBag.reduce((acc, item) => acc + (item.qty || 1), 0);
-  const grandTotal = orderBag.reduce((acc, item) => acc + item.price, 0);
+  if (countBadge) countBadge.textContent = `${totals.totalQty} Porsi`;
+  if (totalBadge) totalBadge.textContent = formatRupiah(totals.finalTotal);
+  if (priceTag) priceTag.textContent = formatRupiah(totals.finalTotal);
+  if (comboBanner) comboBanner.innerHTML = renderComboBannerHtml(totals);
 
-  if (countBadge) countBadge.textContent = `${totalPortions} Wrap`;
-  if (totalBadge) totalBadge.textContent = formatRupiah(grandTotal);
-  if (priceTag) priceTag.textContent = formatRupiah(grandTotal);
+  const payBox = document.getElementById('instantPayBox');
+  if (payBox) {
+    payBox.innerHTML = SmoothieStore.renderPaymentCardHtml(selectedPaymentMethod, formatRupiah(totals.finalTotal), true);
+  }
 
   if (miniList) {
     if (orderBag.length === 0) {
@@ -644,17 +676,32 @@ function renderCheckoutMiniList() {
 }
 
 function openCheckoutModal() {
+  orderBag = SmoothieStore.getCart();
   if (orderBag.length === 0) {
     addCustomWrapToBag();
   }
   closeCartDrawer();
-  renderCheckoutMiniList();
+  setPickupBatch(selectedBatch);
   setPaymentMethod(selectedPaymentMethod);
+  renderCheckoutMiniList();
   document.getElementById('checkoutModal')?.classList.add('open');
 }
 
 function closeCheckoutModal() {
   document.getElementById('checkoutModal')?.classList.remove('open');
+}
+
+function setPickupBatch(batchId) {
+  selectedBatch = SmoothieStore.setSelectedBatch(batchId);
+  const map = { 'batch-1': 'batch_1', 'batch-2': 'batch_2', 'batch-3': 'batch_3' };
+  Object.keys(map).forEach(k => {
+    const el = document.getElementById(map[k]);
+    if (el) {
+      const active = k === selectedBatch;
+      el.classList.toggle('active', active);
+      el.setAttribute('aria-checked', String(active));
+    }
+  });
 }
 
 function setPaymentMethod(method) {
@@ -669,8 +716,8 @@ function setPaymentMethod(method) {
   });
 
   const hints = {
-    'qris': '⚡ Scan QRIS via GoPay, BCA, Livin, Dana, atau ShopeePay.',
-    'transfer': '🏦 Rekening bank panitia akan dikirimkan otomatis via WhatsApp.',
+    'qris': '⚡ Scan kode QRIS di bawah via GoPay, BCA, Livin, Dana, atau ShopeePay.',
+    'transfer': '🏦 Salin nomor rekening / e-wallet di bawah & kirim bukti transfer di WhatsApp.',
     'cash': '💵 Catatan: Pembayaran tunai HANYA berlaku bagi yang bisa datang langsung ke sekolah / transaksi di booth.'
   };
 
@@ -685,14 +732,20 @@ function setPaymentMethod(method) {
       hintEl.style.color = '#cbd5e1';
     }
   }
+
+  const totals = SmoothieStore.calculateTotals(orderBag);
+  const payBox = document.getElementById('instantPayBox');
+  if (payBox) {
+    payBox.innerHTML = SmoothieStore.renderPaymentCardHtml(method, formatRupiah(totals.finalTotal), true);
+  }
 }
 
 function updateCheckoutTotal() {
-  const grandTotal = orderBag.reduce((acc, item) => acc + item.price, 0);
+  const totals = SmoothieStore.calculateTotals(orderBag);
   const priceTag = document.getElementById('btnPriceTag');
-  if (priceTag) priceTag.textContent = formatRupiah(grandTotal);
+  if (priceTag) priceTag.textContent = formatRupiah(totals.finalTotal);
   const totalBadge = document.getElementById('checkoutBadgeTotal');
-  if (totalBadge) totalBadge.textContent = formatRupiah(grandTotal);
+  if (totalBadge) totalBadge.textContent = formatRupiah(totals.finalTotal);
 }
 
 function executeOrderPayment() {
@@ -712,41 +765,57 @@ function executeOrderPayment() {
     return;
   }
 
-  const grandTotal = orderBag.reduce((acc, item) => acc + item.price, 0);
+  orderBag = SmoothieStore.getCart();
+  const totals = SmoothieStore.calculateTotals(orderBag);
+  const batchInfo = SmoothieStore.getBatchInfo(selectedBatch);
   const orderCode = '#WRAP-P8-' + Math.floor(1000 + Math.random() * 9000);
 
   const paymentMap = {
     'qris': 'QRIS (E-Wallet / M-Banking)',
-    'transfer': 'Transfer Bank Panitia P8',
+    'transfer': 'Transfer Bank / E-Wallet Panitia P8',
     'cash': 'Tunai (Khusus datang langsung ke sekolah)'
   };
 
+  const now = new Date();
+  const timeStr = `${now.getDate()} Nov, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
   activeOrderRecord = {
     code: orderCode,
+    time: timeStr,
     name: customerName,
     address: deliveryAddress,
+    batch: batchInfo.short,
+    batchLabel: batchInfo.label,
+    payMethod: selectedPaymentMethod,
     payment: paymentMap[selectedPaymentMethod] || 'QRIS',
     notes: notes,
     items: [...orderBag],
-    total: grandTotal
+    total: totals.finalTotal,
+    discount: totals.discount
   };
 
   // Construct structured WhatsApp message
   let orderItemsText = activeOrderRecord.items.map((it, idx) => `${idx + 1}. ${it.qty || 1}x ${it.title} (${formatRupiah(it.price)})`).join('%0A');
-  
-  // Auto-send order directly to Google Sheets Webhook
-  const totalPortions = activeOrderRecord.items.reduce((sum, item) => sum + (item.qty || 1), 0);
+  const promoLine = totals.discount > 0 ? `%0APromo%20Combo:%20-${encodeURIComponent(formatRupiah(totals.discount))}%20(${encodeURIComponent(totals.promoBadges.join(', '))})` : '';
+
+  // Auto-send order directly to Google Sheets Webhook & Local Order Manager
   const webhookPayload = {
     code: orderCode,
+    time: timeStr,
     name: customerName,
     phone: '-',
     items: activeOrderRecord.items.map(it => `${it.qty || 1}x ${it.title}`).join(', '),
-    qty: totalPortions,
-    total: grandTotal,
+    qty: totals.totalQty,
+    total: totals.finalTotal,
     payment: activeOrderRecord.payment,
+    pay: activeOrderRecord.payment,
+    batch: batchInfo.short,
     address: deliveryAddress,
-    notes: notes || '-'
+    notes: `${notes} [Batch: ${batchInfo.short}]${totals.discount > 0 ? ' [Auto-Combo -' + formatRupiah(totals.discount) + ']' : ''}`,
+    status: 'LUNAS / PAID',
+    stage: 'Antrean'
   };
+  SmoothieStore.pushLiveOrder(webhookPayload);
   try {
     fetch('https://script.google.com/macros/s/AKfycbwAlKee1CwycT00s56ZWyvGts68_V2T0QVHfVCZmrzcr0iMGUEFneLuyBjKix6ZiYib0w/exec', {
       method: 'POST',
@@ -758,10 +827,10 @@ function executeOrderPayment() {
     console.warn('GSheet Auto-Input Warning:', err);
   }
 
-  const waMessage = `Halo%20Tim%20Smoothie%20Therapy!%0A%0ASaya%20ingin%20melakukan%20Pre-Order%20Chicken%20Salad%20Wrap:%0A----------------------------%0AKode%20Pesanan:%20${encodeURIComponent(orderCode)}%0ANama:%20${encodeURIComponent(customerName)}%0AAlamat%20Pengiriman:%20${encodeURIComponent(deliveryAddress)}%0AMetode%20Bayar:%20${encodeURIComponent(activeOrderRecord.payment)}%0A%0ARincian%20Pesanan:%0A${orderItemsText}%0A%0ACatatan:%20${encodeURIComponent(notes)}%0ATotal:%20${encodeURIComponent(formatRupiah(grandTotal))}%0A----------------------------%0AMohon%20konfirmasi%20pesanan%20saya.%20Terima%20kasih!`;
+  const waMessage = `Halo%20Tim%20Smoothie%20Therapy!%0A%0ASaya%20ingin%20melakukan%20Pre-Order%20Chicken%20Salad%20Wrap:%0A----------------------------%0AKode%20Pesanan:%20${encodeURIComponent(orderCode)}%0ANama:%20${encodeURIComponent(customerName)}%0AAlamat%20Pengiriman:%20${encodeURIComponent(deliveryAddress)}%0ABatch:%20${encodeURIComponent(batchInfo.label)}%0AMetode%20Bayar:%20${encodeURIComponent(activeOrderRecord.payment)}%0A%0ARincian%20Pesanan:%0A${orderItemsText}${promoLine}%0A%0ACatatan:%20${encodeURIComponent(notes)}%0ATotal:%20${encodeURIComponent(formatRupiah(totals.finalTotal))}%0A----------------------------%0AMohon%20konfirmasi%20pesanan%20saya.%20Terima%20kasih!`;
 
   closeCheckoutModal();
-  orderBag = [];
+  orderBag = SmoothieStore.clearCart();
   updateBagBadge();
 
   launchTrackerModal(activeOrderRecord);
@@ -775,12 +844,16 @@ function launchTrackerModal(order) {
   const codeEl = document.getElementById('trackerOrderCode');
   const addressEl = document.getElementById('trackerAddressText');
   const studentEl = document.getElementById('trackerStudentText');
+  const batchEl = document.getElementById('trackerBatchText');
   const totalEl = document.getElementById('trackerTotalText');
+  const payBox = document.getElementById('trackerPayBox');
 
   if (codeEl) codeEl.textContent = order.code;
   if (addressEl) addressEl.textContent = order.address;
   if (studentEl) studentEl.textContent = order.name;
+  if (batchEl) batchEl.textContent = order.batchLabel || order.batch || '-';
   if (totalEl) totalEl.textContent = formatRupiah(order.total);
+  if (payBox) payBox.innerHTML = SmoothieStore.renderPaymentCardHtml(order.payMethod, formatRupiah(order.total), true);
 
   document.getElementById('trackerModal')?.classList.add('open');
 }

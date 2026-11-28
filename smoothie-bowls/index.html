@@ -16,6 +16,7 @@
 
   <!-- Dedicated Stylesheet -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../shared/checkout-extras.css">
 </head>
 <body>
 
@@ -275,6 +276,7 @@
     <div class="drawer-items-list" id="cartDrawerItemsList"></div>
 
     <div class="drawer-footer">
+      <div id="cartComboBanner"></div>
       <div class="drawer-subtotal-row">
         <span>Subtotal</span>
         <span id="drawerSubtotal">Rp 0</span>
@@ -309,6 +311,7 @@
 
       <!-- Quick Item Chips Preview -->
       <div class="sheet-quick-preview" id="checkoutMiniList"></div>
+      <div id="checkoutComboBanner"></div>
 
       <!-- Compact 2-Col Input for Name & Address -->
       <div class="checkout-grid-2col">
@@ -328,6 +331,25 @@
         <input type="text" id="orderNotesInput" placeholder="Misal: ekstra sendok, madu agak banyak">
       </div>
 
+      <!-- Pickup Batch / Time Slot Picker -->
+      <div class="sleek-control-group">
+        <label id="batchGroupLabel">Batch Pengambilan</label>
+        <div class="sleek-segmented-row" role="radiogroup" aria-labelledby="batchGroupLabel">
+          <button type="button" role="radio" aria-checked="true" class="sleek-segment-item active" id="batch_1" onclick="setPickupBatch('batch-1')">
+            <span class="seg-title">☀️ Istirahat 1</span>
+            <span class="seg-time">09:30 – 10:00</span>
+          </button>
+          <button type="button" role="radio" aria-checked="false" class="sleek-segment-item" id="batch_2" onclick="setPickupBatch('batch-2')">
+            <span class="seg-title">🌤️ Istirahat 2</span>
+            <span class="seg-time">12:00 – 12:30</span>
+          </button>
+          <button type="button" role="radio" aria-checked="false" class="sleek-segment-item" id="batch_3" onclick="setPickupBatch('batch-3')">
+            <span class="seg-title">🎒 Pulang</span>
+            <span class="seg-time">14:30 – 15:30</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Segmented Payment Selector -->
       <div class="sleek-control-group">
         <label id="payMethodGroupLabel">Metode Pembayaran</label>
@@ -345,6 +367,7 @@
         <div class="sleek-pay-hint" id="payHintText">
           ⚡ Scan QRIS via GoPay, BCA, Livin, Dana, atau ShopeePay.
         </div>
+        <div id="instantPayBox"></div>
       </div>
 
       <!-- Sleek Action Button -->
@@ -381,11 +404,17 @@
           <span style="color: var(--text-muted);">Alamat Pengiriman:</span>
           <strong style="color: #fb7185;" id="trackerAddressText">-</strong>
         </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Batch Pengambilan:</span>
+          <strong style="color: #fde68a;" id="trackerBatchText">-</strong>
+        </div>
         <div style="display: flex; justify-content: space-between; margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08);">
           <span style="color: var(--text-muted);">Total Bayar:</span>
           <strong style="color: #fb7185; font-size: 1rem;" id="trackerTotalText">Rp 0</strong>
         </div>
       </div>
+
+      <div id="trackerPayBox" style="margin-bottom: 14px;"></div>
 
       <button class="btn-ruby" style="width: 100%; justify-content: center;" onclick="closeTrackerModal()">
         <span>Selesai & Kembali ke Atelier</span>
@@ -449,7 +478,8 @@
     </div>
   </footer>
 
-  <!-- Dedicated App JS Engine -->
+  <!-- Shared Store + Dedicated App JS Engine -->
+  <script src="../shared/cart-store.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
