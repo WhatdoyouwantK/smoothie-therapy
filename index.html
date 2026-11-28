@@ -1531,6 +1531,192 @@
       transform: translateY(-1px);
     }
 
+    /* ==========================================================
+       HEART-LINE DIVIDER & AUTO-SCROLLABLE REVIEWS SECTION
+       ========================================================== */
+    .heart-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      max-width: 720px;
+      margin: 10px auto 34px;
+      padding: 0 24px;
+    }
+    .heart-divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.55) 60%, rgba(251, 113, 133, 0.85) 100%);
+    }
+    .heart-divider-line.right {
+      background: linear-gradient(90deg, rgba(251, 113, 133, 0.85) 0%, rgba(212, 175, 55, 0.55) 40%, transparent 100%);
+    }
+    .heart-divider-emblem {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(244, 63, 94, 0.22) 0%, rgba(20, 18, 16, 0.9) 75%);
+      border: 1px solid rgba(251, 113, 133, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fb7185;
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.28);
+      flex-shrink: 0;
+      animation: heartBeatGlow 2.4s ease-in-out infinite;
+    }
+    @keyframes heartBeatGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 16px rgba(244, 63, 94, 0.22); }
+      35% { transform: scale(1.12); box-shadow: 0 0 26px rgba(244, 63, 94, 0.48); }
+      55% { transform: scale(1.02); box-shadow: 0 0 18px rgba(244, 63, 94, 0.28); }
+      72% { transform: scale(1.09); box-shadow: 0 0 24px rgba(244, 63, 94, 0.42); }
+    }
+
+    .reviews-section {
+      padding: 20px 0 84px;
+      position: relative;
+      overflow: hidden;
+    }
+    .reviews-header-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .review-nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: var(--gold);
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .review-nav-btn:hover {
+      background: var(--gold);
+      color: #0c0b0a;
+      transform: scale(1.06);
+    }
+    .reviews-scroll-hint {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+    .reviews-scroller {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+      padding: 10px 0 16px;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    }
+    .reviews-scroller::-webkit-scrollbar {
+      display: none;
+    }
+    .reviews-scroller.dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+    .reviews-track {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      padding: 0 24px;
+    }
+    .review-card {
+      width: 330px;
+      flex-shrink: 0;
+      background: linear-gradient(145deg, rgba(28, 25, 22, 0.95) 0%, rgba(18, 16, 14, 0.95) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+    }
+    .review-card:hover {
+      border-color: rgba(251, 113, 133, 0.55);
+      transform: translateY(-4px);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
+    }
+    .review-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .review-stars {
+      color: var(--gold);
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+    }
+    .review-menu-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e7e5e4;
+      white-space: nowrap;
+    }
+    .review-quote {
+      font-size: 0.88rem;
+      color: #e7e5e4;
+      line-height: 1.65;
+      font-style: italic;
+    }
+    .review-author-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .review-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #0c0b0a;
+      flex-shrink: 0;
+    }
+    .review-author-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #ffffff;
+    }
+    .review-author-tag {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    @media (max-width: 560px) {
+      .review-card {
+        width: 280px;
+        padding: 18px;
+      }
+      .reviews-scroller {
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+      }
+    }
+
     /* Accessibility: Visible Focus & Reduced Motion */
     button:focus-visible,
     a:focus-visible,
@@ -1601,6 +1787,7 @@
       <div class="nav-menu">
         <a href="#menu" class="nav-link">Menu Produk</a>
         <a href="#studios" class="nav-link">Interactive Studios</a>
+        <a href="#reviews" class="nav-link">Ulasan</a>
         <button class="nav-btn-qr" onclick="openQrModal()" title="Pindai QR Code untuk akses di HP">
           <i data-lucide="qr-code" style="width: 14px; height: 14px; color: var(--gold);"></i>
           <span>Pindai QR</span>
@@ -1916,6 +2103,39 @@
             </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontal Heart-Line Divider -->
+  <div class="heart-divider" aria-hidden="true">
+    <div class="heart-divider-line"></div>
+    <div class="heart-divider-emblem">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    <div class="heart-divider-line right"></div>
+  </div>
+
+  <!-- Auto-Moving & Scrollable Reviews Section -->
+  <section class="reviews-section" id="reviews" aria-label="Ulasan Pembeli Smoothie Therapy">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 26px;">
+        <span class="section-tag" style="color: #fb7185;">♥ Loved By Our Community</span>
+        <h2 class="section-title">Kata Mereka tentang <em>Smoothie Therapy</em></h2>
+        <p class="section-desc">Cerita &amp; ulasan jujur dari teman-teman yang sudah mencoba racikan segar kami.</p>
+        <div class="reviews-header-controls">
+          <button type="button" class="review-nav-btn" onclick="nudgeReviews(-340)" aria-label="Geser ulasan ke kiri">‹</button>
+          <span class="reviews-scroll-hint">Geser atau arahkan kursor untuk berhenti sejenak</span>
+          <button type="button" class="review-nav-btn" onclick="nudgeReviews(340)" aria-label="Geser ulasan ke kanan">›</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-scroller" id="reviewsScroller" tabindex="0" aria-label="Daftar ulasan dapat digeser secara horizontal">
+      <div class="reviews-track" id="reviewsTrack">
+        <!-- Populated & seamlessly looped via JS -->
       </div>
     </div>
   </section>
@@ -2578,8 +2798,146 @@
       }
     }
 
+    // ==========================================================
+    // AUTO-MOVING & SCROLLABLE REVIEWS ENGINE
+    // ==========================================================
+    const communityReviews = [
+      {
+        name: 'Chai Kim Sin',
+        initials: 'CK',
+        tag: 'Smoothie Therapy Team • Verified',
+        favorite: '🌯 Trio Full Therapy',
+        avatarBg: 'linear-gradient(135deg, #d4af37, #f59e0b)',
+        quote: 'Paling suka Chicken Salad Wrap pakai saus Roasted Sesame, terus minumnya Malibu Mango yang super dingin. Beneran bikin kenyang tapi tetap ringan & sehat!'
+      },
+      {
+        name: 'Camishya',
+        initials: 'CA',
+        tag: 'Verified Taste Tester',
+        favorite: '🍓 Strawberry Bowl',
+        avatarBg: 'linear-gradient(135deg, #fb7185, #f43f5e)',
+        quote: 'Strawberry Smoothie Bowl-nya kental banget kayak gelato, manisnya pas dari buah asli & madu. Ditambah granola renyah dan stroberi segar jadi nagih banget!'
+      },
+      {
+        name: 'Shafa',
+        initials: 'SH',
+        tag: 'Verified Taste Tester',
+        favorite: '🥭 Malibu Mango',
+        avatarBg: 'linear-gradient(135deg, #fbbf24, #d97706)',
+        quote: 'Malibu Mango-nya super seger! Perpaduan mangga, nanas, pisang, sama coconut milk-nya creamy tapi gak enek. Cocok banget buat diminum pas jam istirahat!'
+      },
+      {
+        name: 'Bintang',
+        initials: 'BI',
+        tag: 'Verified Taste Tester',
+        favorite: '🌯 Chicken Salad Wrap',
+        avatarBg: 'linear-gradient(135deg, #34d399, #10b981)',
+        quote: 'Ayam boneless-nya empuk dan bumbunya meresap, selada romaine-nya masih super crunchy pas diterima. Pakai saus Thousand Island dan ekstra ayam—worth it banget!'
+      }
+    ];
+
+    let reviewAutoPaused = false;
+    let reviewResumeTimer = null;
+
+    function pauseReviewsTemporarily(ms) {
+      reviewAutoPaused = true;
+      if (reviewResumeTimer) clearTimeout(reviewResumeTimer);
+      if (ms) {
+        reviewResumeTimer = setTimeout(() => { reviewAutoPaused = false; }, ms);
+      }
+    }
+
+    function nudgeReviews(delta) {
+      const scroller = document.getElementById('reviewsScroller');
+      if (!scroller) return;
+      pauseReviewsTemporarily(2500);
+      scroller.scrollBy({ left: delta, behavior: 'smooth' });
+    }
+
+    function initReviewsCarousel() {
+      const scroller = document.getElementById('reviewsScroller');
+      const track = document.getElementById('reviewsTrack');
+      if (!scroller || !track) return;
+
+      const makeCard = (r) => `
+        <article class="review-card">
+          <div>
+            <div class="review-top-row">
+              <span class="review-stars" aria-label="5 dari 5 bintang">★★★★★</span>
+              <span class="review-menu-pill">${r.favorite}</span>
+            </div>
+            <p class="review-quote" style="margin-top: 12px;">“${r.quote}”</p>
+          </div>
+          <div class="review-author-row">
+            <div class="review-avatar" style="background: ${r.avatarBg};" aria-hidden="true">${r.initials}</div>
+            <div>
+              <div class="review-author-name">${r.name}</div>
+              <div class="review-author-tag">${r.tag}</div>
+            </div>
+          </div>
+        </article>
+      `;
+
+      // Duplicate track for seamless infinite glide while keeping full manual scrollability
+      track.innerHTML = [...communityReviews, ...communityReviews].map(makeCard).join('');
+
+      // Pause on hover, focus, or touch interaction
+      scroller.addEventListener('mouseenter', () => { reviewAutoPaused = true; });
+      scroller.addEventListener('mouseleave', () => { reviewAutoPaused = false; });
+      scroller.addEventListener('focusin', () => { reviewAutoPaused = true; });
+      scroller.addEventListener('focusout', () => { reviewAutoPaused = false; });
+      scroller.addEventListener('touchstart', () => pauseReviewsTemporarily(0), { passive: true });
+      scroller.addEventListener('touchend', () => pauseReviewsTemporarily(2200), { passive: true });
+
+      // Mouse drag-to-scroll for desktop
+      let isDown = false;
+      let startX = 0;
+      let startScrollLeft = 0;
+      scroller.addEventListener('mousedown', (e) => {
+        isDown = true;
+        reviewAutoPaused = true;
+        scroller.classList.add('dragging');
+        startX = e.pageX - scroller.offsetLeft;
+        startScrollLeft = scroller.scrollLeft;
+      });
+      const stopDrag = () => {
+        if (!isDown) return;
+        isDown = false;
+        scroller.classList.remove('dragging');
+        pauseReviewsTemporarily(1800);
+      };
+      scroller.addEventListener('mouseup', stopDrag);
+      scroller.addEventListener('mouseleave', stopDrag);
+      scroller.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scroller.offsetLeft;
+        scroller.scrollLeft = startScrollLeft - (x - startX) * 1.4;
+      });
+
+      // Smooth continuous motion (disabled if user prefers reduced motion)
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        let lastTs = null;
+        function step(ts) {
+          if (lastTs !== null && !reviewAutoPaused) {
+            const dt = Math.min(40, ts - lastTs);
+            scroller.scrollLeft += dt * 0.045; // smooth ~45px/sec glide
+            const half = track.scrollWidth / 2;
+            if (half > 0 && scroller.scrollLeft >= half) {
+              scroller.scrollLeft -= half;
+            }
+          }
+          lastTs = ts;
+          requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+    }
+
     // Auto-dismiss after 1600ms and initialize icons
     document.addEventListener('DOMContentLoaded', () => {
+      initReviewsCarousel();
       if (window.lucide) lucide.createIcons();
       setTimeout(() => {
         dismissEntrySplash();
