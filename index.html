@@ -1074,7 +1074,9 @@
         margin: 6px;
         max-height: 92vh;
       }
-      .sleek-input-field input {
+      .sleek-input-field input,
+      .sleek-input-field select,
+      .sleek-input-field textarea {
         font-size: 16px; /* Prevents auto-zoom on mobile Safari */
         padding: 10px 12px;
         min-height: 44px;
@@ -1609,6 +1611,74 @@
       color: var(--text-muted);
       letter-spacing: 0.3px;
     }
+    .btn-write-review {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(212, 175, 55, 0.22) 100%);
+      border: 1px solid rgba(251, 113, 133, 0.55);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .btn-write-review:hover {
+      background: linear-gradient(135deg, #f43f5e 0%, #d4af37 100%);
+      color: #0c0b0a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 63, 94, 0.35);
+    }
+    .star-picker-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .star-pick-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #57534e;
+      font-size: 1.35rem;
+      width: 42px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .star-pick-btn.lit {
+      color: var(--gold);
+      border-color: rgba(212, 175, 55, 0.45);
+      background: rgba(212, 175, 55, 0.12);
+    }
+    .sleek-input-field select,
+    .sleek-input-field textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 9px;
+      padding: 9px 12px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.86rem;
+      outline: none;
+      transition: all 0.2s;
+      resize: vertical;
+    }
+    .sleek-input-field select option {
+      background: #141210;
+      color: #ffffff;
+    }
+    .sleek-input-field select:focus,
+    .sleek-input-field textarea:focus {
+      border-color: var(--gold);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+    }
     .reviews-scroller {
       overflow-x: auto;
       overflow-y: hidden;
@@ -2125,11 +2195,14 @@
         <span class="section-tag" style="color: #fb7185;">♥ Loved By Our Community</span>
         <h2 class="section-title">Kata Mereka tentang <em>Smoothie Therapy</em></h2>
         <p class="section-desc">Cerita &amp; ulasan jujur dari teman-teman yang sudah mencoba racikan segar kami.</p>
-        <div class="reviews-header-controls">
+        <div class="reviews-header-controls" style="flex-wrap: wrap;">
           <button type="button" class="review-nav-btn" onclick="nudgeReviews(-340)" aria-label="Geser ulasan ke kiri">‹</button>
-          <span class="reviews-scroll-hint">Geser atau arahkan kursor untuk berhenti sejenak</span>
+          <button type="button" class="btn-write-review" onclick="openReviewModal()">
+            <span>✍️ Tulis Ulasan Kamu</span>
+          </button>
           <button type="button" class="review-nav-btn" onclick="nudgeReviews(340)" aria-label="Geser ulasan ke kanan">›</button>
         </div>
+        <div class="reviews-scroll-hint" style="margin-top: 8px;">Geser atau arahkan kursor untuk berhenti sejenak</div>
       </div>
     </div>
 
@@ -2139,6 +2212,56 @@
       </div>
     </div>
   </section>
+
+  <!-- Write a Review Modal -->
+  <div class="modal-overlay" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle" onclick="if(event.target===this) closeReviewModal()">
+    <div class="sleek-checkout-sheet">
+      <div class="checkout-sheet-header">
+        <div class="sheet-title-group">
+          <div style="font-size: 0.7rem; font-weight: 700; color: #fb7185; text-transform: uppercase; letter-spacing: 1px;">♥ Bagikan Pengalamanmu</div>
+          <h3 id="reviewModalTitle" style="margin-top: 2px;">Tulis Ulasan</h3>
+        </div>
+        <button class="sheet-close-btn" onclick="closeReviewModal()" aria-label="Tutup">✕</button>
+      </div>
+
+      <div class="checkout-grid-2col">
+        <div class="sleek-input-field">
+          <label for="reviewNameInput">Nama Kamu *</label>
+          <input type="text" id="reviewNameInput" maxlength="40" placeholder="Misal: Nadia (11-B)">
+        </div>
+        <div class="sleek-input-field">
+          <label for="reviewMenuSelect">Menu Favorit</label>
+          <select id="reviewMenuSelect">
+            <option value="🍓 Strawberry Bowl">🍓 Strawberry Bowl</option>
+            <option value="🥭 Malibu Mango">🥭 Malibu Mango</option>
+            <option value="🌯 Chicken Salad Wrap">🌯 Chicken Salad Wrap</option>
+            <option value="🌯 Trio Full Therapy">🌯 Trio Full Therapy</option>
+            <option value="✨ Duo Combo">✨ Duo Combo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sleek-input-field" style="margin-top: 8px;">
+        <label id="reviewStarLabel">Rating Kamu *</label>
+        <div class="star-picker-row" role="radiogroup" aria-labelledby="reviewStarLabel">
+          <button type="button" class="star-pick-btn lit" data-star="1" role="radio" aria-checked="false" aria-label="1 bintang" onclick="setReviewRating(1)">★</button>
+          <button type="button" class="star-pick-btn lit" data-star="2" role="radio" aria-checked="false" aria-label="2 bintang" onclick="setReviewRating(2)">★</button>
+          <button type="button" class="star-pick-btn lit" data-star="3" role="radio" aria-checked="false" aria-label="3 bintang" onclick="setReviewRating(3)">★</button>
+          <button type="button" class="star-pick-btn lit" data-star="4" role="radio" aria-checked="false" aria-label="4 bintang" onclick="setReviewRating(4)">★</button>
+          <button type="button" class="star-pick-btn lit" data-star="5" role="radio" aria-checked="true" aria-label="5 bintang" onclick="setReviewRating(5)">★</button>
+        </div>
+      </div>
+
+      <div class="sleek-input-field" style="margin-top: 10px;">
+        <label for="reviewQuoteInput">Ulasan Kamu *</label>
+        <textarea id="reviewQuoteInput" rows="3" maxlength="220" placeholder="Ceritakan rasa, kesegaran, atau racikan favoritmu..."></textarea>
+      </div>
+
+      <button type="button" class="btn-sleek-checkout" style="justify-content: center; gap: 8px;" onclick="submitCommunityReview()">
+        <span>♥ Kirim Ulasan Sekarang</span>
+      </button>
+    </div>
+  </div>
 
   <!-- Floating Cart Pill -->
   <div class="floating-cart-pill" role="button" tabindex="0" aria-label="Buka Keranjang Pre-Order" onclick="openCartDrawer()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCartDrawer();}">
@@ -2799,45 +2922,248 @@
     }
 
     // ==========================================================
-    // AUTO-MOVING & SCROLLABLE REVIEWS ENGINE
+    // AUTO-MOVING & SCROLLABLE REVIEWS ENGINE + GOOGLE SHEETS SYNC
     // ==========================================================
-    const communityReviews = [
+    const REVIEWS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwAlKee1CwycT00s56ZWyvGts68_V2T0QVHfVCZmrzcr0iMGUEFneLuyBjKix6ZiYib0w/exec';
+    const REVIEWS_LOCAL_KEY = 'st_user_reviews_v1';
+    const AVATAR_GRADIENTS = [
+      'linear-gradient(135deg, #d4af37, #f59e0b)',
+      'linear-gradient(135deg, #fb7185, #f43f5e)',
+      'linear-gradient(135deg, #fbbf24, #d97706)',
+      'linear-gradient(135deg, #34d399, #10b981)',
+      'linear-gradient(135deg, #38bdf8, #0ea5e9)'
+    ];
+
+    const seedCommunityReviews = [
       {
         name: 'Ng Ko Bun',
         initials: 'NK',
+        rating: 5,
         tag: 'Smoothie Therapy Team • Verified',
         favorite: '🌯 Trio Full Therapy',
-        avatarBg: 'linear-gradient(135deg, #d4af37, #f59e0b)',
+        avatarBg: AVATAR_GRADIENTS[0],
         quote: 'Paling suka Chicken Salad Wrap pakai saus Roasted Sesame, terus minumnya Malibu Mango yang super dingin. Beneran bikin kenyang tapi tetap ringan & sehat!'
       },
       {
         name: 'Camishya',
         initials: 'CA',
+        rating: 5,
         tag: 'Verified Taste Tester',
         favorite: '🍓 Strawberry Bowl',
-        avatarBg: 'linear-gradient(135deg, #fb7185, #f43f5e)',
+        avatarBg: AVATAR_GRADIENTS[1],
         quote: 'Strawberry Smoothie Bowl-nya kental banget kayak gelato, manisnya pas dari buah asli & madu. Ditambah granola renyah dan stroberi segar jadi nagih banget!'
       },
       {
         name: 'Shafa',
         initials: 'SH',
+        rating: 5,
         tag: 'Verified Taste Tester',
         favorite: '🥭 Malibu Mango',
-        avatarBg: 'linear-gradient(135deg, #fbbf24, #d97706)',
+        avatarBg: AVATAR_GRADIENTS[2],
         quote: 'Malibu Mango-nya super seger! Perpaduan mangga, nanas, pisang, sama coconut milk-nya creamy tapi gak enek. Cocok banget buat diminum pas jam istirahat!'
       },
       {
         name: 'Bintang',
         initials: 'BI',
+        rating: 5,
         tag: 'Verified Taste Tester',
         favorite: '🌯 Chicken Salad Wrap',
-        avatarBg: 'linear-gradient(135deg, #34d399, #10b981)',
+        avatarBg: AVATAR_GRADIENTS[3],
         quote: 'Ayam boneless-nya empuk dan bumbunya meresap, selada romaine-nya masih super crunchy pas diterima. Pakai saus Thousand Island dan ekstra ayam—worth it banget!'
       }
     ];
 
+    let allReviewsList = [...seedCommunityReviews];
+    let selectedReviewRating = 5;
     let reviewAutoPaused = false;
     let reviewResumeTimer = null;
+    let reviewCarouselStarted = false;
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function makeInitials(name) {
+      const parts = String(name || 'ST').trim().split(/\s+/).filter(Boolean);
+      if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      return String(name || 'ST').trim().slice(0, 2).toUpperCase() || 'ST';
+    }
+
+    function pickAvatarBg(name) {
+      let hash = 0;
+      const s = String(name || '');
+      for (let i = 0; i < s.length; i++) hash = (hash * 31 + s.charCodeAt(i)) % 997;
+      return AVATAR_GRADIENTS[hash % AVATAR_GRADIENTS.length];
+    }
+
+    function getLocalUserReviews() {
+      try {
+        const raw = localStorage.getItem(REVIEWS_LOCAL_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function mergeUniqueReviews(lists) {
+      const seen = new Set();
+      const merged = [];
+      lists.flat().forEach(r => {
+        if (!r || !r.name || !r.quote) return;
+        const key = `${String(r.name).trim().toLowerCase()}|${String(r.quote).trim().toLowerCase()}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        const ratingNum = Math.min(5, Math.max(1, Number(r.rating) || 5));
+        merged.push({
+          name: String(r.name).trim(),
+          initials: r.initials || makeInitials(r.name),
+          rating: ratingNum,
+          tag: r.tag || 'Customer Review',
+          favorite: r.favorite || '🍓 Smoothie Therapy',
+          avatarBg: r.avatarBg || pickAvatarBg(r.name),
+          quote: String(r.quote).trim()
+        });
+      });
+      return merged;
+    }
+
+    function renderReviewsTrack() {
+      const track = document.getElementById('reviewsTrack');
+      if (!track) return;
+
+      const makeCard = (r) => {
+        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        return `
+          <article class="review-card">
+            <div>
+              <div class="review-top-row">
+                <span class="review-stars" aria-label="${r.rating} dari 5 bintang">${stars}</span>
+                <span class="review-menu-pill">${escapeHtml(r.favorite)}</span>
+              </div>
+              <p class="review-quote" style="margin-top: 12px;">“${escapeHtml(r.quote)}”</p>
+            </div>
+            <div class="review-author-row">
+              <div class="review-avatar" style="background: ${r.avatarBg};" aria-hidden="true">${escapeHtml(r.initials)}</div>
+              <div>
+                <div class="review-author-name">${escapeHtml(r.name)}</div>
+                <div class="review-author-tag">${escapeHtml(r.tag)}</div>
+              </div>
+            </div>
+          </article>
+        `;
+      };
+
+      // Duplicate cards for seamless infinite glide while remaining manually scrollable
+      track.innerHTML = [...allReviewsList, ...allReviewsList].map(makeCard).join('');
+    }
+
+    function openReviewModal() {
+      setReviewRating(5);
+      document.getElementById('reviewModal')?.classList.add('open');
+      setTimeout(() => document.getElementById('reviewNameInput')?.focus(), 120);
+    }
+
+    function closeReviewModal() {
+      document.getElementById('reviewModal')?.classList.remove('open');
+    }
+
+    function setReviewRating(val) {
+      selectedReviewRating = val;
+      document.querySelectorAll('#reviewModal .star-pick-btn').forEach(btn => {
+        const s = Number(btn.getAttribute('data-star'));
+        btn.classList.toggle('lit', s <= val);
+        btn.setAttribute('aria-checked', String(s === val));
+      });
+    }
+
+    function submitCommunityReview() {
+      const nameEl = document.getElementById('reviewNameInput');
+      const menuEl = document.getElementById('reviewMenuSelect');
+      const quoteEl = document.getElementById('reviewQuoteInput');
+
+      const name = nameEl?.value?.trim();
+      const favorite = menuEl?.value || '🍓 Strawberry Bowl';
+      const quote = quoteEl?.value?.trim();
+
+      if (!name) {
+        alert('Mohon masukkan nama kamu dulu ya!');
+        nameEl?.focus();
+        return;
+      }
+      if (!quote || quote.length < 5) {
+        alert('Mohon tulis ulasan singkat (minimal 5 karakter).');
+        quoteEl?.focus();
+        return;
+      }
+
+      const newRev = {
+        name,
+        initials: makeInitials(name),
+        rating: selectedReviewRating,
+        tag: 'Customer Review • Baru',
+        favorite,
+        avatarBg: pickAvatarBg(name),
+        quote
+      };
+
+      // Save locally so user sees it immediately even across reloads
+      const localList = getLocalUserReviews();
+      localList.unshift(newRev);
+      try {
+        localStorage.setItem(REVIEWS_LOCAL_KEY, JSON.stringify(localList.slice(0, 30)));
+      } catch (e) {}
+
+      allReviewsList = mergeUniqueReviews([[newRev], allReviewsList]);
+      renderReviewsTrack();
+
+      // Send to Google Sheets Ulasan tab via Apps Script webhook
+      try {
+        fetch(REVIEWS_WEBHOOK_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'review',
+            name: name,
+            rating: selectedReviewRating,
+            favorite: favorite,
+            quote: quote
+          })
+        });
+      } catch (e) {
+        console.warn('Review sync warning:', e);
+      }
+
+      if (nameEl) nameEl.value = '';
+      if (quoteEl) quoteEl.value = '';
+      closeReviewModal();
+
+      const scroller = document.getElementById('reviewsScroller');
+      if (scroller) scroller.scrollTo({ left: 0, behavior: 'smooth' });
+      pauseReviewsTemporarily(2500);
+      notify('♥ Terima kasih! Ulasanmu berhasil ditambahkan!');
+    }
+
+    async function loadLiveReviewsFromSheet() {
+      try {
+        const res = await fetch(`${REVIEWS_WEBHOOK_URL}?action=reviews`, { method: 'GET' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const remote = Array.isArray(data) ? data : (Array.isArray(data?.reviews) ? data.reviews : []);
+        if (remote.length > 0) {
+          allReviewsList = mergeUniqueReviews([getLocalUserReviews(), remote, seedCommunityReviews]);
+          renderReviewsTrack();
+        }
+      } catch (e) {
+        // Silent fallback when Apps Script GET endpoint is not yet deployed
+      }
+    }
 
     function pauseReviewsTemporarily(ms) {
       reviewAutoPaused = true;
@@ -2859,27 +3185,12 @@
       const track = document.getElementById('reviewsTrack');
       if (!scroller || !track) return;
 
-      const makeCard = (r) => `
-        <article class="review-card">
-          <div>
-            <div class="review-top-row">
-              <span class="review-stars" aria-label="5 dari 5 bintang">★★★★★</span>
-              <span class="review-menu-pill">${r.favorite}</span>
-            </div>
-            <p class="review-quote" style="margin-top: 12px;">“${r.quote}”</p>
-          </div>
-          <div class="review-author-row">
-            <div class="review-avatar" style="background: ${r.avatarBg};" aria-hidden="true">${r.initials}</div>
-            <div>
-              <div class="review-author-name">${r.name}</div>
-              <div class="review-author-tag">${r.tag}</div>
-            </div>
-          </div>
-        </article>
-      `;
+      allReviewsList = mergeUniqueReviews([getLocalUserReviews(), seedCommunityReviews]);
+      renderReviewsTrack();
+      loadLiveReviewsFromSheet();
 
-      // Duplicate track for seamless infinite glide while keeping full manual scrollability
-      track.innerHTML = [...communityReviews, ...communityReviews].map(makeCard).join('');
+      if (reviewCarouselStarted) return;
+      reviewCarouselStarted = true;
 
       // Pause on hover, focus, or touch interaction
       scroller.addEventListener('mouseenter', () => { reviewAutoPaused = true; });
@@ -2922,7 +3233,7 @@
         function step(ts) {
           if (lastTs !== null && !reviewAutoPaused) {
             const dt = Math.min(40, ts - lastTs);
-            scroller.scrollLeft += dt * 0.045; // smooth ~45px/sec glide
+            scroller.scrollLeft += dt * 0.045;
             const half = track.scrollWidth / 2;
             if (half > 0 && scroller.scrollLeft >= half) {
               scroller.scrollLeft -= half;
@@ -2939,6 +3250,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       initReviewsCarousel();
       if (window.lucide) lucide.createIcons();
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeReviewModal();
+      });
       setTimeout(() => {
         dismissEntrySplash();
       }, 1600);
